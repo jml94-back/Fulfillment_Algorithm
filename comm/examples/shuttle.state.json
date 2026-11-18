@@ -1,0 +1,24 @@
+{
+ "topic": "wh/v1/shuttle/MS-R1-LV01/state",
+ "v": 1,
+ "id": "3c2c96dd071f75b5",
+ "ts": 1794999282.576,
+ "t": 0.0,
+ "src": "unity-sim",
+ "type": "shuttle.state",
+ "corr": null,
+ "data": {
+  "mode": "idle",
+  "y": 20.4,
+  "satellite": {
+   "where": "docked",
+   "lane": null,
+   "pos": null
+  },
+  "pallet": null,
+  "cmd_id": null,
+  "queue": 0,
+  "battery": null,
+  "error": null
+ }
+}

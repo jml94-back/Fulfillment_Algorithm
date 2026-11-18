@@ -1,0 +1,17 @@
+{
+ "topic": "wh/v1/dock/IN1/state",
+ "v": 1,
+ "id": "1ec7d36006ca972a",
+ "ts": 1794999282.587,
+ "t": 0.0,
+ "src": "unity-sim",
+ "type": "dock.state",
+ "corr": null,
+ "data": {
+  "status": "empty",
+  "truck": null,
+  "order_id": null,
+  "pallets_total": 0,
+  "pallets_done": 0
+ }
+}

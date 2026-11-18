@@ -1,0 +1,98 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "type": "object",
+ "properties": {
+  "v": {
+   "const": 1
+  },
+  "id": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{8,32}$"
+  },
+  "ts": {
+   "type": "number"
+  },
+  "t": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "src": {
+   "type": "string",
+   "minLength": 1
+  },
+  "type": {
+   "const": "sim.control"
+  },
+  "corr": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "data": {
+   "type": "object",
+   "properties": {
+    "action": {
+     "type": "string",
+     "enum": [
+      "start",
+      "pause",
+      "resume",
+      "reset",
+      "set_scale"
+     ]
+    },
+    "scale": {
+     "anyOf": [
+      {
+       "type": "number",
+       "exclusiveMinimum": 0
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "seed": {
+     "anyOf": [
+      {
+       "type": "integer"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    }
+   },
+   "required": [
+    "action",
+    "scale",
+    "seed"
+   ],
+   "additionalProperties": false
+  }
+ },
+ "required": [
+  "v",
+  "id",
+  "ts",
+  "t",
+  "src",
+  "type",
+  "corr",
+  "data"
+ ],
+ "additionalProperties": false,
+ "$id": "sim.control.schema.json",
+ "title": "sim.control"
+}

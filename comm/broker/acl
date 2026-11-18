@@ -1,0 +1,59 @@
+# 자동 생성: python -m whmqtt.export  (사용자명 = 역할, 토픽 레지스트리의 발행자 기준)
+# 모든 클라이언트: 자기 접속 상태(LWT) 토픽만 쓰기
+pattern readwrite wh/v1/sys/%c/online
+
+user unity
+topic read wh/v1/#
+topic write wh/v1/sim/clock
+topic write wh/v1/amr/+/pose
+topic write wh/v1/amr/+/scan2d
+topic write wh/v1/amr/+/state
+topic write wh/v1/amr/+/evt
+topic write wh/v1/lift/+/state
+topic write wh/v1/lift/+/evt
+topic write wh/v1/buffer/+/state
+topic write wh/v1/shuttle/+/state
+topic write wh/v1/shuttle/+/evt
+topic write wh/v1/dock/+/state
+topic write wh/v1/dock/+/evt
+topic write wh/v1/scale/+/reading
+topic write wh/v1/charger/+/state
+
+user scheduler
+topic read wh/v1/#
+topic write wh/v1/sim/control
+topic write wh/v1/amr/+/cmd/mission
+topic write wh/v1/amr/+/cmd/control
+topic write wh/v1/lift/+/cmd
+topic write wh/v1/shuttle/+/cmd
+topic write wh/v1/wms/job
+topic write wh/v1/wms/inventory/evt
+topic write wh/v1/wms/inventory/snapshot
+topic write wh/v1/traffic/reservations
+topic write wh/v1/fleet/kpi
+topic write wh/v1/ctrl/evt
+
+user rl
+topic read wh/v1/#
+topic write wh/v1/amr/+/cmd/vel
+
+user control
+topic read wh/v1/#
+topic write wh/v1/sim/control
+topic write wh/v1/amr/+/cmd/control
+topic write wh/v1/wms/order
+topic write wh/v1/ctrl/cmd
+topic write wh/v1/alert/+
+
+user sensor
+topic read wh/v1/#
+topic write wh/v1/sensor/temp/+
+topic write wh/v1/sensor/cam/+/detect
+
+user monitor
+topic read wh/v1/#
+
+# 개발용 관리자 (mosquitto_sub/pub 로 디버깅)
+user admin
+topic readwrite wh/v1/#
+topic read $SYS/#

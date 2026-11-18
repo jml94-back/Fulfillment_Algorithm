@@ -1,0 +1,93 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "type": "object",
+ "properties": {
+  "v": {
+   "const": 1
+  },
+  "id": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{8,32}$"
+  },
+  "ts": {
+   "type": "number"
+  },
+  "t": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "src": {
+   "type": "string",
+   "minLength": 1
+  },
+  "type": {
+   "const": "alert"
+  },
+  "corr": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "data": {
+   "type": "object",
+   "properties": {
+    "kind": {
+     "type": "string",
+     "enum": [
+      "fire",
+      "rack_collapse",
+      "rack_tilt",
+      "leak",
+      "injury"
+     ]
+    },
+    "origin": {
+     "type": "array",
+     "items": {
+      "type": "number"
+     },
+     "minItems": 2,
+     "maxItems": 2
+    },
+    "radius_m": {
+     "type": "number",
+     "minimum": 0
+    },
+    "active": {
+     "type": "boolean"
+    }
+   },
+   "required": [
+    "kind",
+    "origin",
+    "radius_m",
+    "active"
+   ],
+   "additionalProperties": false
+  }
+ },
+ "required": [
+  "v",
+  "id",
+  "ts",
+  "t",
+  "src",
+  "type",
+  "corr",
+  "data"
+ ],
+ "additionalProperties": false,
+ "$id": "alert.schema.json",
+ "title": "alert"
+}

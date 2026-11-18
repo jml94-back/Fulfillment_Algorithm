@@ -1,0 +1,17 @@
+{
+ "topic": "wh/v1/lift/L1/cmd",
+ "v": 1,
+ "id": "fe8ea688eae99ce9",
+ "ts": 1794999284.902,
+ "t": 71.98,
+ "src": "scheduler",
+ "type": "lift.cmd",
+ "corr": null,
+ "data": {
+  "cmd_id": "C00017",
+  "job_id": "J00009",
+  "action": "lift_in",
+  "pallet": "P00000001",
+  "level": 1
+ }
+}

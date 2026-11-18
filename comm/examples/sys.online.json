@@ -1,0 +1,15 @@
+{
+ "topic": "wh/v1/sys/monitor-99282/online",
+ "v": 1,
+ "id": "732781c99a845e9c",
+ "ts": 1794999282.111,
+ "t": null,
+ "src": "monitor-99282",
+ "type": "sys.online",
+ "corr": null,
+ "data": {
+  "online": true,
+  "role": "monitor",
+  "version": "1.0.0"
+ }
+}

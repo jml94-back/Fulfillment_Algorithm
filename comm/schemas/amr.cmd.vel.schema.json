@@ -1,0 +1,88 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "type": "object",
+ "properties": {
+  "v": {
+   "const": 1
+  },
+  "id": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{8,32}$"
+  },
+  "ts": {
+   "type": "number"
+  },
+  "t": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "src": {
+   "type": "string",
+   "minLength": 1
+  },
+  "type": {
+   "const": "amr.cmd.vel"
+  },
+  "corr": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "data": {
+   "type": "object",
+   "properties": {
+    "v": {
+     "type": "number",
+     "minimum": -0.3,
+     "maximum": 1.5
+    },
+    "w": {
+     "type": "number",
+     "minimum": -1.2,
+     "maximum": 1.2
+    },
+    "seq": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "ttl": {
+     "type": "number",
+     "exclusiveMinimum": 0,
+     "maximum": 2,
+     "description": "이 시간(초, 벽시계) 안에 다음 명령이 없으면 정지"
+    }
+   },
+   "required": [
+    "v",
+    "w",
+    "seq",
+    "ttl"
+   ],
+   "additionalProperties": false
+  }
+ },
+ "required": [
+  "v",
+  "id",
+  "ts",
+  "t",
+  "src",
+  "type",
+  "corr",
+  "data"
+ ],
+ "additionalProperties": false,
+ "$id": "amr.cmd.vel.schema.json",
+ "title": "amr.cmd.vel"
+}

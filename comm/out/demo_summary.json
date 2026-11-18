@@ -1,0 +1,315 @@
+{
+ "ok": true,
+ "sim_seconds": 663.0,
+ "wall_seconds": 22.6,
+ "scale": 30.0,
+ "jobs": [
+  {
+   "job_id": "J00001",
+   "kind": "outbound",
+   "pallet": "P90000168",
+   "sku": "SKU011",
+   "status": "done",
+   "lane": "R2-W-LV01-N22",
+   "pos": 6,
+   "amr": "AMR02",
+   "lead_s": 245.3,
+   "reason": null
+  },
+  {
+   "job_id": "J00003",
+   "kind": "outbound",
+   "pallet": "P90000167",
+   "sku": "SKU011",
+   "status": "done",
+   "lane": "R2-W-LV01-N22",
+   "pos": 7,
+   "amr": "AMR03",
+   "lead_s": 347.5,
+   "reason": null
+  },
+  {
+   "job_id": "J00005",
+   "kind": "outbound",
+   "pallet": "P90000053",
+   "sku": "SKU014",
+   "status": "done",
+   "lane": "R2-E-LV10-N25",
+   "pos": 5,
+   "amr": "AMR04",
+   "lead_s": 335.2,
+   "reason": null
+  },
+  {
+   "job_id": "J00007",
+   "kind": "outbound",
+   "pallet": "P90000052",
+   "sku": "SKU014",
+   "status": "done",
+   "lane": "R2-E-LV10-N25",
+   "pos": 6,
+   "amr": "AMR01",
+   "lead_s": 359.2,
+   "reason": null
+  },
+  {
+   "job_id": "J00009",
+   "kind": "inbound",
+   "pallet": "P00000001",
+   "sku": "SKU101",
+   "status": "done",
+   "lane": "R1-W-LV01-N01",
+   "pos": 14,
+   "amr": "AMR01",
+   "lead_s": 157.0,
+   "reason": null
+  },
+  {
+   "job_id": "J00010",
+   "kind": "inbound",
+   "pallet": "P00000101",
+   "sku": "SKU102",
+   "status": "done",
+   "lane": "R3-W-LV01-N01",
+   "pos": 14,
+   "amr": "AMR02",
+   "lead_s": 232.0,
+   "reason": null
+  },
+  {
+   "job_id": "J00013",
+   "kind": "inbound",
+   "pallet": "P00000002",
+   "sku": "SKU101",
+   "status": "done",
+   "lane": "R1-W-LV01-N01",
+   "pos": 13,
+   "amr": "AMR03",
+   "lead_s": 255.2,
+   "reason": null
+  },
+  {
+   "job_id": "J00014",
+   "kind": "inbound",
+   "pallet": "P00000102",
+   "sku": "SKU102",
+   "status": "done",
+   "lane": "R3-W-LV01-N01",
+   "pos": 13,
+   "amr": "AMR04",
+   "lead_s": 282.0,
+   "reason": null
+  },
+  {
+   "job_id": "J00018",
+   "kind": "inbound",
+   "pallet": "P00000003",
+   "sku": "SKU101",
+   "status": "done",
+   "lane": "R1-W-LV01-N01",
+   "pos": 11,
+   "amr": "AMR02",
+   "lead_s": 485.9,
+   "reason": null
+  },
+  {
+   "job_id": "J00020",
+   "kind": "inbound",
+   "pallet": "P00000103",
+   "sku": "SKU102",
+   "status": "done",
+   "lane": "R3-W-LV01-N01",
+   "pos": 12,
+   "amr": "AMR04",
+   "lead_s": 530.6,
+   "reason": null
+  },
+  {
+   "job_id": "J00024",
+   "kind": "inbound",
+   "pallet": "P00000004",
+   "sku": "SKU101",
+   "status": "done",
+   "lane": "R1-W-LV01-N01",
+   "pos": 12,
+   "amr": "AMR03",
+   "lead_s": 525.0,
+   "reason": null
+  }
+ ],
+ "jobs_done": 11,
+ "jobs_expected": 11,
+ "reports": [
+  {
+   "event": "ack",
+   "text": "J00018 보류 해제",
+   "data": {}
+  },
+  {
+   "event": "report",
+   "text": "완료 3건, 진행 8건, 보류 0건, 실패 0건, 평균 리드타임 211.4초",
+   "data": {
+    "jobs_done": 3,
+    "jobs_open": 8,
+    "held": 0,
+    "failed": 0,
+    "mean_lead_s": 211.4
+   }
+  }
+ ],
+ "messages": 1855,
+ "schema_violations": [],
+ "handler_errors": [],
+ "per_topic": {
+  "amr.cmd.mission": {
+   "count": 12,
+   "bytes": 29268,
+   "avg_bytes": 2439,
+   "per_sim_s": 0.02
+  },
+  "amr.evt": {
+   "count": 120,
+   "bytes": 24208,
+   "avg_bytes": 202,
+   "per_sim_s": 0.18
+  },
+  "amr.pose": {
+   "count": 884,
+   "bytes": 193661,
+   "avg_bytes": 219,
+   "per_sim_s": 1.33
+  },
+  "amr.state": {
+   "count": 253,
+   "bytes": 64971,
+   "avg_bytes": 257,
+   "per_sim_s": 0.38
+  },
+  "buffer.state": {
+   "count": 72,
+   "bytes": 12994,
+   "avg_bytes": 180,
+   "per_sim_s": 0.11
+  },
+  "charger.state": {
+   "count": 10,
+   "bytes": 1728,
+   "avg_bytes": 173,
+   "per_sim_s": 0.02
+  },
+  "ctrl.cmd": {
+   "count": 2,
+   "bytes": 332,
+   "avg_bytes": 166,
+   "per_sim_s": 0.0
+  },
+  "ctrl.evt": {
+   "count": 2,
+   "bytes": 504,
+   "avg_bytes": 252,
+   "per_sim_s": 0.0
+  },
+  "dock.evt": {
+   "count": 17,
+   "bytes": 3750,
+   "avg_bytes": 221,
+   "per_sim_s": 0.03
+  },
+  "dock.state": {
+   "count": 29,
+   "bytes": 6015,
+   "avg_bytes": 207,
+   "per_sim_s": 0.04
+  },
+  "fleet.kpi": {
+   "count": 12,
+   "bytes": 3476,
+   "avg_bytes": 290,
+   "per_sim_s": 0.02
+  },
+  "lift.cmd": {
+   "count": 11,
+   "bytes": 2267,
+   "avg_bytes": 206,
+   "per_sim_s": 0.02
+  },
+  "lift.evt": {
+   "count": 33,
+   "bytes": 7261,
+   "avg_bytes": 220,
+   "per_sim_s": 0.05
+  },
+  "lift.state": {
+   "count": 90,
+   "bytes": 18552,
+   "avg_bytes": 206,
+   "per_sim_s": 0.14
+  },
+  "scale.reading": {
+   "count": 7,
+   "bytes": 1471,
+   "avg_bytes": 210,
+   "per_sim_s": 0.01
+  },
+  "shuttle.cmd": {
+   "count": 11,
+   "bytes": 2835,
+   "avg_bytes": 258,
+   "per_sim_s": 0.02
+  },
+  "shuttle.evt": {
+   "count": 33,
+   "bytes": 7353,
+   "avg_bytes": 223,
+   "per_sim_s": 0.05
+  },
+  "shuttle.state": {
+   "count": 79,
+   "bytes": 21404,
+   "avg_bytes": 271,
+   "per_sim_s": 0.12
+  },
+  "sim.clock": {
+   "count": 48,
+   "bytes": 7500,
+   "avg_bytes": 156,
+   "per_sim_s": 0.07
+  },
+  "sys.online": {
+   "count": 8,
+   "bytes": 1361,
+   "avg_bytes": 170,
+   "per_sim_s": 0.01
+  },
+  "traffic.reservations": {
+   "count": 24,
+   "bytes": 103675,
+   "avg_bytes": 4320,
+   "per_sim_s": 0.04
+  },
+  "wms.inventory": {
+   "count": 24,
+   "bytes": 6288,
+   "avg_bytes": 262,
+   "per_sim_s": 0.04
+  },
+  "wms.job": {
+   "count": 58,
+   "bytes": 21049,
+   "avg_bytes": 363,
+   "per_sim_s": 0.09
+  },
+  "wms.order": {
+   "count": 3,
+   "bytes": 1097,
+   "avg_bytes": 366,
+   "per_sim_s": 0.0
+  },
+  "wms.snapshot": {
+   "count": 13,
+   "bytes": 16930,
+   "avg_bytes": 1302,
+   "per_sim_s": 0.02
+  }
+ }
+}

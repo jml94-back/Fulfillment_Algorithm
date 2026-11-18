@@ -1,0 +1,124 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "type": "object",
+ "properties": {
+  "v": {
+   "const": 1
+  },
+  "id": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{8,32}$"
+  },
+  "ts": {
+   "type": "number"
+  },
+  "t": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "src": {
+   "type": "string",
+   "minLength": 1
+  },
+  "type": {
+   "const": "amr.evt"
+  },
+  "corr": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "data": {
+   "type": "object",
+   "properties": {
+    "event": {
+     "type": "string",
+     "enum": [
+      "mission_accepted",
+      "mission_rejected",
+      "step_started",
+      "step_done",
+      "mission_done",
+      "mission_failed",
+      "mission_canceled",
+      "control_applied",
+      "battery_low"
+     ]
+    },
+    "mission_id": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "seq": {
+     "anyOf": [
+      {
+       "type": "integer"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "pallet": {
+     "anyOf": [
+      {
+       "type": "string",
+       "pattern": "^P\\d{8}$"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "reason": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    }
+   },
+   "required": [
+    "event",
+    "mission_id",
+    "seq",
+    "pallet",
+    "reason"
+   ],
+   "additionalProperties": false
+  }
+ },
+ "required": [
+  "v",
+  "id",
+  "ts",
+  "t",
+  "src",
+  "type",
+  "corr",
+  "data"
+ ],
+ "additionalProperties": false,
+ "$id": "amr.evt.schema.json",
+ "title": "amr.evt"
+}

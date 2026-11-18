@@ -1,0 +1,108 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "type": "object",
+ "properties": {
+  "v": {
+   "const": 1
+  },
+  "id": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{8,32}$"
+  },
+  "ts": {
+   "type": "number"
+  },
+  "t": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "src": {
+   "type": "string",
+   "minLength": 1
+  },
+  "type": {
+   "const": "lift.cmd"
+  },
+  "corr": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "data": {
+   "type": "object",
+   "properties": {
+    "cmd_id": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 64
+    },
+    "job_id": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "action": {
+     "type": "string",
+     "enum": [
+      "lift_in",
+      "lift_out",
+      "cancel"
+     ]
+    },
+    "pallet": {
+     "anyOf": [
+      {
+       "type": "string",
+       "pattern": "^P\\d{8}$"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "level": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 10
+    }
+   },
+   "required": [
+    "cmd_id",
+    "job_id",
+    "action",
+    "pallet",
+    "level"
+   ],
+   "additionalProperties": false
+  }
+ },
+ "required": [
+  "v",
+  "id",
+  "ts",
+  "t",
+  "src",
+  "type",
+  "corr",
+  "data"
+ ],
+ "additionalProperties": false,
+ "$id": "lift.cmd.schema.json",
+ "title": "lift.cmd"
+}

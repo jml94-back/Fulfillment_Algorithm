@@ -1,0 +1,19 @@
+{
+ "topic": "wh/v1/alert/fire",
+ "v": 1,
+ "id": "76933ad11caa248b",
+ "ts": 1794999305.293,
+ "t": 1234.5,
+ "src": "sensor",
+ "type": "alert",
+ "corr": null,
+ "data": {
+  "kind": "fire",
+  "origin": [
+   63.5,
+   44.2
+  ],
+  "radius_m": 3.6,
+  "active": true
+ }
+}

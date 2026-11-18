@@ -1,0 +1,224 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "type": "object",
+ "properties": {
+  "v": {
+   "const": 1
+  },
+  "id": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{8,32}$"
+  },
+  "ts": {
+   "type": "number"
+  },
+  "t": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "src": {
+   "type": "string",
+   "minLength": 1
+  },
+  "type": {
+   "const": "amr.cmd.mission"
+  },
+  "corr": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "data": {
+   "type": "object",
+   "properties": {
+    "mission_id": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 64
+    },
+    "job_id": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "priority": {
+     "type": "integer",
+     "minimum": 0,
+     "maximum": 9,
+     "description": "0 = 가장 높음"
+    },
+    "steps": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "seq": {
+        "type": "integer",
+        "minimum": 0
+       },
+       "action": {
+        "type": "string",
+        "enum": [
+         "move",
+         "pick",
+         "drop",
+         "charge",
+         "wait"
+        ]
+       },
+       "stop": {
+        "anyOf": [
+         {
+          "type": "string",
+          "description": "정지점 ID: SC-INn, DP-OUTn, Ln-IN, Ln-OUT, CH*, QC-IN, QC-OUT"
+         },
+         {
+          "type": "null"
+         }
+        ]
+       },
+       "pallet": {
+        "anyOf": [
+         {
+          "type": "string",
+          "pattern": "^P\\d{8}$"
+         },
+         {
+          "type": "null"
+         }
+        ]
+       },
+       "path": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "node": {
+           "type": "string",
+           "description": "unity/d4_layout.json nav 노드 id"
+          },
+          "x": {
+           "type": "number"
+          },
+          "y": {
+           "type": "number"
+          },
+          "t_start": {
+           "anyOf": [
+            {
+             "type": "number"
+            },
+            {
+             "type": "null"
+            }
+           ]
+          },
+          "t_end": {
+           "anyOf": [
+            {
+             "type": "number"
+            },
+            {
+             "type": "null"
+            }
+           ]
+          }
+         },
+         "required": [
+          "node",
+          "x",
+          "y",
+          "t_start",
+          "t_end"
+         ],
+         "additionalProperties": false,
+         "description": "경유점과 시간 예약 창. 이 노드를 t_start~t_end 사이에 지나간다(점유한다). 예약이 없으면 null."
+        },
+        "description": "move 단계의 경유점 (첫 점 = 현재 위치 노드)"
+       },
+       "theta": {
+        "anyOf": [
+         {
+          "type": "number"
+         },
+         {
+          "type": "null"
+         }
+        ]
+       },
+       "duration": {
+        "anyOf": [
+         {
+          "type": "number",
+          "minimum": 0
+         },
+         {
+          "type": "null"
+         }
+        ]
+       },
+       "deadline": {
+        "anyOf": [
+         {
+          "type": "number"
+         },
+         {
+          "type": "null"
+         }
+        ]
+       }
+      },
+      "required": [
+       "seq",
+       "action",
+       "stop",
+       "pallet",
+       "path",
+       "theta",
+       "duration",
+       "deadline"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    }
+   },
+   "required": [
+    "mission_id",
+    "job_id",
+    "priority",
+    "steps"
+   ],
+   "additionalProperties": false
+  }
+ },
+ "required": [
+  "v",
+  "id",
+  "ts",
+  "t",
+  "src",
+  "type",
+  "corr",
+  "data"
+ ],
+ "additionalProperties": false,
+ "$id": "amr.cmd.mission.schema.json",
+ "title": "amr.cmd.mission"
+}

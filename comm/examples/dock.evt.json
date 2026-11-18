@@ -1,0 +1,17 @@
+{
+ "topic": "wh/v1/dock/IN2/evt",
+ "v": 1,
+ "id": "b9a3d0888b04d8ed",
+ "ts": 1794999282.992,
+ "t": 15.0,
+ "src": "unity-sim",
+ "type": "dock.evt",
+ "corr": null,
+ "data": {
+  "event": "pallet_unloaded",
+  "truck": "TRK-IN-01",
+  "order_id": "ASN-0001",
+  "pallet": "P00000001",
+  "station": "SC-IN2"
+ }
+}

@@ -1,0 +1,129 @@
+{
+ "topic": "wh/v1/amr/AMR01/cmd/mission",
+ "v": 1,
+ "id": "22d4e288f3c24967",
+ "ts": 1794999283.02,
+ "t": 14.577,
+ "src": "scheduler",
+ "type": "amr.cmd.mission",
+ "corr": null,
+ "data": {
+  "mission_id": "M00011",
+  "job_id": "J00009",
+  "priority": 5,
+  "steps": [
+   {
+    "seq": 0,
+    "action": "move",
+    "stop": "SC-IN2",
+    "pallet": null,
+    "path": [
+     {
+      "node": "n_CHW1",
+      "x": 1.5,
+      "y": 23.6,
+      "t_start": null,
+      "t_end": 17.57
+     },
+     {
+      "node": "n_jn_CHW1",
+      "x": 4.5,
+      "y": 23.6,
+      "t_start": 16.07,
+      "t_end": 20.07
+     },
+     {
+      "node": "n_aisle_CH_W",
+      "x": 4.5,
+      "y": 16.8,
+      "t_start": 21.74,
+      "t_end": 25.74
+     },
+     {
+      "node": "n_aisle_IN2",
+      "x": 7.5,
+      "y": 16.8,
+      "t_start": 24.24,
+      "t_end": 28.24
+     },
+     {
+      "node": "n_dock_IN2",
+      "x": 7.5,
+      "y": 11.8,
+      "t_start": 28.41,
+      "t_end": 32.41
+     }
+    ],
+    "theta": -1.5708,
+    "duration": null,
+    "deadline": 90.4
+   },
+   {
+    "seq": 1,
+    "action": "pick",
+    "stop": "SC-IN2",
+    "pallet": "P00000001",
+    "path": [],
+    "theta": null,
+    "duration": 8.0,
+    "deadline": 98.4
+   },
+   {
+    "seq": 2,
+    "action": "move",
+    "stop": "L1-IN",
+    "pallet": null,
+    "path": [
+     {
+      "node": "n_dock_IN2",
+      "x": 7.5,
+      "y": 11.8,
+      "t_start": null,
+      "t_end": 40.41
+     },
+     {
+      "node": "n_aisle_IN2",
+      "x": 7.5,
+      "y": 16.8,
+      "t_start": 40.57,
+      "t_end": 44.57
+     },
+     {
+      "node": "n_aisle_IN3",
+      "x": 12.5,
+      "y": 16.8,
+      "t_start": 44.74,
+      "t_end": 48.74
+     },
+     {
+      "node": "n_aisle_L1-IN",
+      "x": 14.75,
+      "y": 16.8,
+      "t_start": 46.62,
+      "t_end": 50.62
+     },
+     {
+      "node": "n_buf_L1-IN",
+      "x": 14.75,
+      "y": 18.6,
+      "t_start": 48.12,
+      "t_end": 52.12
+     }
+    ],
+    "theta": 1.5708,
+    "duration": null,
+    "deadline": 110.1
+   },
+   {
+    "seq": 3,
+    "action": "drop",
+    "stop": "L1-IN",
+    "pallet": "P00000001",
+    "path": [],
+    "theta": null,
+    "duration": 8.0,
+    "deadline": 118.1
+   }
+  ]
+ }
+}

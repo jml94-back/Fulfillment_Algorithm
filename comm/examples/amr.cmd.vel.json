@@ -1,0 +1,16 @@
+{
+ "topic": "wh/v1/amr/AMR01/cmd/vel",
+ "v": 1,
+ "id": "3b7e7e4cacf48cf3",
+ "ts": 1794999305.293,
+ "t": 1234.5,
+ "src": "rl-amr",
+ "type": "amr.cmd.vel",
+ "corr": null,
+ "data": {
+  "v": 0.8,
+  "w": -0.15,
+  "seq": 1532,
+  "ttl": 0.5
+ }
+}

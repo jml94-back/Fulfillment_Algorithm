@@ -1,0 +1,102 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "type": "object",
+ "properties": {
+  "v": {
+   "const": 1
+  },
+  "id": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{8,32}$"
+  },
+  "ts": {
+   "type": "number"
+  },
+  "t": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "src": {
+   "type": "string",
+   "minLength": 1
+  },
+  "type": {
+   "const": "amr.cmd.control"
+  },
+  "corr": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "data": {
+   "type": "object",
+   "properties": {
+    "action": {
+     "type": "string",
+     "enum": [
+      "pause",
+      "resume",
+      "cancel_mission",
+      "set_drive_mode",
+      "go_charge"
+     ]
+    },
+    "drive_mode": {
+     "anyOf": [
+      {
+       "type": "string",
+       "enum": [
+        "scripted",
+        "rl"
+       ]
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "charger": {
+     "anyOf": [
+      {
+       "type": "string",
+       "pattern": "^CH[WE][1-3]$"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    }
+   },
+   "required": [
+    "action",
+    "drive_mode",
+    "charger"
+   ],
+   "additionalProperties": false
+  }
+ },
+ "required": [
+  "v",
+  "id",
+  "ts",
+  "t",
+  "src",
+  "type",
+  "corr",
+  "data"
+ ],
+ "additionalProperties": false,
+ "$id": "amr.cmd.control.schema.json",
+ "title": "amr.cmd.control"
+}

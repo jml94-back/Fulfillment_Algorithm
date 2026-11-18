@@ -1,0 +1,15 @@
+{
+ "topic": "wh/v1/sim/clock",
+ "v": 1,
+ "id": "8005cb970bfbe6e2",
+ "ts": 1794999282.574,
+ "t": 0.0,
+ "src": "unity-sim",
+ "type": "sim.clock",
+ "corr": null,
+ "data": {
+  "t": 0.0,
+  "scale": 30.0,
+  "paused": false
+ }
+}

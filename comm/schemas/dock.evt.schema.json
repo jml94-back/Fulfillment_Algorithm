@@ -1,0 +1,113 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "type": "object",
+ "properties": {
+  "v": {
+   "const": 1
+  },
+  "id": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{8,32}$"
+  },
+  "ts": {
+   "type": "number"
+  },
+  "t": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "src": {
+   "type": "string",
+   "minLength": 1
+  },
+  "type": {
+   "const": "dock.evt"
+  },
+  "corr": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "data": {
+   "type": "object",
+   "properties": {
+    "event": {
+     "type": "string",
+     "enum": [
+      "truck_arrived",
+      "truck_departed",
+      "pallet_unloaded",
+      "pallet_loaded"
+     ]
+    },
+    "truck": {
+     "type": "string"
+    },
+    "order_id": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "pallet": {
+     "anyOf": [
+      {
+       "type": "string",
+       "pattern": "^P\\d{8}$"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "station": {
+     "anyOf": [
+      {
+       "type": "string",
+       "pattern": "^(SC-IN[1-6]|DP-OUT[1-6])$"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    }
+   },
+   "required": [
+    "event",
+    "truck",
+    "order_id",
+    "pallet",
+    "station"
+   ],
+   "additionalProperties": false
+  }
+ },
+ "required": [
+  "v",
+  "id",
+  "ts",
+  "t",
+  "src",
+  "type",
+  "corr",
+  "data"
+ ],
+ "additionalProperties": false,
+ "$id": "dock.evt.schema.json",
+ "title": "dock.evt"
+}

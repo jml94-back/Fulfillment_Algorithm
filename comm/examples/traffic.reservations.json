@@ -1,0 +1,85 @@
+{
+ "topic": "wh/v1/traffic/reservations",
+ "v": 1,
+ "id": "c31eefa2e9e9d471",
+ "ts": 1794999283.021,
+ "t": 14.616,
+ "src": "scheduler",
+ "type": "traffic.reservations",
+ "corr": null,
+ "data": {
+  "horizon": 60.1,
+  "items": [
+   {
+    "amr": "AMR01",
+    "mission_id": "M00011",
+    "node": "n_CHW1",
+    "t_start": 13.57,
+    "t_end": 17.57
+   },
+   {
+    "amr": "AMR01",
+    "mission_id": "M00011",
+    "node": "n_jn_CHW1",
+    "t_start": 16.07,
+    "t_end": 20.07
+   },
+   {
+    "amr": "AMR01",
+    "mission_id": "M00011",
+    "node": "n_aisle_CH_W",
+    "t_start": 21.74,
+    "t_end": 25.74
+   },
+   {
+    "amr": "AMR01",
+    "mission_id": "M00011",
+    "node": "n_aisle_IN2",
+    "t_start": 24.24,
+    "t_end": 28.24
+   },
+   {
+    "amr": "AMR01",
+    "mission_id": "M00011",
+    "node": "n_dock_IN2",
+    "t_start": 28.41,
+    "t_end": 40.41
+   },
+   {
+    "amr": "AMR01",
+    "mission_id": "M00011",
+    "node": "n_dock_IN2",
+    "t_start": 36.41,
+    "t_end": 40.41
+   },
+   {
+    "amr": "AMR01",
+    "mission_id": "M00011",
+    "node": "n_aisle_IN2",
+    "t_start": 40.57,
+    "t_end": 44.57
+   },
+   {
+    "amr": "AMR01",
+    "mission_id": "M00011",
+    "node": "n_aisle_IN3",
+    "t_start": 44.74,
+    "t_end": 48.74
+   },
+   {
+    "amr": "AMR01",
+    "mission_id": "M00011",
+    "node": "n_aisle_L1-IN",
+    "t_start": 46.62,
+    "t_end": 50.62
+   },
+   {
+    "amr": "AMR01",
+    "mission_id": "M00011",
+    "node": "n_buf_L1-IN",
+    "t_start": 48.12,
+    "t_end": 60.12
+   }
+  ]
+ }
+}

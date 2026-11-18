@@ -1,0 +1,763 @@
+{
+ "root": "wh/v1",
+ "roles": {
+  "unity": "Unity 시뮬레이션 (Mac mini M4). 장비 물리·센서의 원본. 실제 현장에서는 각 장비 컨트롤러가 이 자리를 맡는다.",
+  "scheduler": "적재·출고 알고리즘 (Python). 작업 생성, 레인 배정, AMR·리프트·셔틀 지시, 시간 예약 경로.",
+  "rl": "AMR 주행 정책 추론 (RTX 4060 노트북). 미션 경로를 받아 속도 명령을 낸다.",
+  "control": "중앙 관제 (NPU, Qwen + LangGraph). 상태 요약, 운영 명령, 주문 투입.",
+  "sensor": "온도 센서·카메라 (자리만 예약, 비상 대응은 현재 범위 밖).",
+  "monitor": "기록·대시보드 (읽기 전용)."
+ },
+ "id_patterns": {
+  "amr": "^AMR0[1-9]$",
+  "lift": "^L[1-3]$",
+  "shuttle": "^MS-R([1-3])-LV(0[1-9]|10)$",
+  "lane": "^R([1-3])-([WE])-LV(0[1-9]|10)-N(0[1-9]|[12][0-9]|3[0-3])$",
+  "dock": "^(IN|OUT)[1-6]$",
+  "buffer": "^L[1-3]-(IN|OUT)$",
+  "charger": "^CH[WE][1-3]$",
+  "scale": "^SC-IN[1-6]$",
+  "drop": "^DP-OUT[1-6]$",
+  "point": "^(IN[1-6]|DP-OUT[1-6]|L[1-3]-(IN|OUT)|CH[WE][1-3])$",
+  "pallet": "^P\\d{8}$"
+ },
+ "topics": [
+  {
+   "key": "sys.online",
+   "pattern": "sys/{client}/online",
+   "pub": [
+    "*"
+   ],
+   "sub": [
+    "control",
+    "monitor",
+    "scheduler"
+   ],
+   "qos": 1,
+   "retain": true,
+   "rate": "접속·끊김 시 (LWT)",
+   "desc": "클라이언트 접속 상태. 끊기면 브로커가 Last Will 로 online=false 를 대신 발행한다.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [
+    "client"
+   ],
+   "topic": "wh/v1/sys/{client}/online"
+  },
+  {
+   "key": "sim.clock",
+   "pattern": "sim/clock",
+   "pub": [
+    "unity"
+   ],
+   "sub": [
+    "scheduler",
+    "rl",
+    "control",
+    "monitor"
+   ],
+   "qos": 0,
+   "retain": true,
+   "rate": "1 Hz + 변경 시",
+   "desc": "시뮬레이션 시각·배속. 모든 봉투의 t 는 이 시각 기준. 실제 현장에서는 발행하지 않고 t = 벽시계.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [],
+   "topic": "wh/v1/sim/clock"
+  },
+  {
+   "key": "sim.control",
+   "pattern": "sim/control",
+   "pub": [
+    "scheduler",
+    "control"
+   ],
+   "sub": [
+    "unity"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "명령 시",
+   "desc": "시뮬레이션 시작·정지·재개·초기화·배속 변경.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [],
+   "topic": "wh/v1/sim/control"
+  },
+  {
+   "key": "amr.pose",
+   "pattern": "amr/{amr}/pose",
+   "pub": [
+    "unity"
+   ],
+   "sub": [
+    "rl",
+    "scheduler",
+    "monitor"
+   ],
+   "qos": 0,
+   "retain": false,
+   "rate": "10 Hz",
+   "desc": "위치·속도·배터리·적재 무게. 자주 오고 하나쯤 잃어도 다음 값으로 덮이므로 QoS 0.",
+   "expiry_s": 1,
+   "reserved": false,
+   "params": [
+    "amr"
+   ],
+   "topic": "wh/v1/amr/{amr}/pose"
+  },
+  {
+   "key": "amr.scan2d",
+   "pattern": "amr/{amr}/scan2d",
+   "pub": [
+    "unity"
+   ],
+   "sub": [
+    "rl"
+   ],
+   "qos": 0,
+   "retain": false,
+   "rate": "10 Hz",
+   "desc": "2D LiDAR 72빔(5° 간격, 0번 = 정면, 반시계), 최대 10 m, 단위 m. 3D LiDAR는 MQTT로 보내지 않는다.",
+   "expiry_s": 1,
+   "reserved": false,
+   "params": [
+    "amr"
+   ],
+   "topic": "wh/v1/amr/{amr}/scan2d"
+  },
+  {
+   "key": "amr.state",
+   "pattern": "amr/{amr}/state",
+   "pub": [
+    "unity"
+   ],
+   "sub": [
+    "scheduler",
+    "control",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": true,
+   "rate": "변경 시 + 5초마다",
+   "desc": "운행 모드, 배터리, 실은 팔레트, 진행 중 미션·단계. retain 이라 새로 붙은 클라이언트도 바로 현재 상태를 안다.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [
+    "amr"
+   ],
+   "topic": "wh/v1/amr/{amr}/state"
+  },
+  {
+   "key": "amr.evt",
+   "pattern": "amr/{amr}/evt",
+   "pub": [
+    "unity"
+   ],
+   "sub": [
+    "scheduler",
+    "control",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "사건 시",
+   "desc": "미션 수락·거부, 단계 시작·완료, 미션 완료·실패, 배터리 부족. 명령에 대한 응답은 corr 에 명령 id.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [
+    "amr"
+   ],
+   "topic": "wh/v1/amr/{amr}/evt"
+  },
+  {
+   "key": "amr.cmd.mission",
+   "pattern": "amr/{amr}/cmd/mission",
+   "pub": [
+    "scheduler"
+   ],
+   "sub": [
+    "unity",
+    "rl"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "작업 배정 시",
+   "desc": "이동·적재·하역·충전 단계 목록. 각 이동 단계에 경유 노드와 시간 예약 창(t_start~t_end).",
+   "expiry_s": 60,
+   "reserved": false,
+   "params": [
+    "amr"
+   ],
+   "topic": "wh/v1/amr/{amr}/cmd/mission"
+  },
+  {
+   "key": "amr.cmd.vel",
+   "pattern": "amr/{amr}/cmd/vel",
+   "pub": [
+    "rl"
+   ],
+   "sub": [
+    "unity"
+   ],
+   "qos": 0,
+   "retain": false,
+   "rate": "10 Hz",
+   "desc": "RL 정책의 속도 명령 v(m/s) w(rad/s). 0.5초 안에 새 명령이 없으면 Unity가 정지시킨다.",
+   "expiry_s": 1,
+   "reserved": false,
+   "params": [
+    "amr"
+   ],
+   "topic": "wh/v1/amr/{amr}/cmd/vel"
+  },
+  {
+   "key": "amr.cmd.control",
+   "pattern": "amr/{amr}/cmd/control",
+   "pub": [
+    "scheduler",
+    "control"
+   ],
+   "sub": [
+    "unity",
+    "rl"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "명령 시",
+   "desc": "일시정지·재개·미션 취소·주행 모드(scripted/rl) 변경·충전 보내기.",
+   "expiry_s": 30,
+   "reserved": false,
+   "params": [
+    "amr"
+   ],
+   "topic": "wh/v1/amr/{amr}/cmd/control"
+  },
+  {
+   "key": "lift.state",
+   "pattern": "lift/{lift}/state",
+   "pub": [
+    "unity"
+   ],
+   "sub": [
+    "scheduler",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": true,
+   "rate": "변경 시",
+   "desc": "리프트 높이(층), 모드, 실은 팔레트, 진행 중 명령.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [
+    "lift"
+   ],
+   "topic": "wh/v1/lift/{lift}/state"
+  },
+  {
+   "key": "lift.cmd",
+   "pattern": "lift/{lift}/cmd",
+   "pub": [
+    "scheduler"
+   ],
+   "sub": [
+    "unity"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "작업 시",
+   "desc": "lift_in: 입고 버퍼 1번 칸 → n층 셔틀 이송점. lift_out: n층 셔틀 이송점 → 출고 버퍼 1번 칸.",
+   "expiry_s": 60,
+   "reserved": false,
+   "params": [
+    "lift"
+   ],
+   "topic": "wh/v1/lift/{lift}/cmd"
+  },
+  {
+   "key": "lift.evt",
+   "pattern": "lift/{lift}/evt",
+   "pub": [
+    "unity"
+   ],
+   "sub": [
+    "scheduler",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "사건 시",
+   "desc": "명령 수락·거부·시작·완료·실패.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [
+    "lift"
+   ],
+   "topic": "wh/v1/lift/{lift}/evt"
+  },
+  {
+   "key": "buffer.state",
+   "pattern": "buffer/{buffer}/state",
+   "pub": [
+    "unity"
+   ],
+   "sub": [
+    "scheduler",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": true,
+   "rate": "변경 시",
+   "desc": "리프트 입·출고 컨베이어 5칸의 팔레트 (0번 원소 = 1번 칸 = 리프트 바로 옆).",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [
+    "buffer"
+   ],
+   "topic": "wh/v1/buffer/{buffer}/state"
+  },
+  {
+   "key": "shuttle.state",
+   "pattern": "shuttle/{shuttle}/state",
+   "pub": [
+    "unity"
+   ],
+   "sub": [
+    "scheduler",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": true,
+   "rate": "변경 시 (이동 중 2 Hz)",
+   "desc": "모셔틀 레일 위치와 세틀라이트 상태(모셔틀에 탑재 / 레인 안). 셔틀 세트 1개 = 토픽 1개.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [
+    "shuttle"
+   ],
+   "topic": "wh/v1/shuttle/{shuttle}/state"
+  },
+  {
+   "key": "shuttle.cmd",
+   "pattern": "shuttle/{shuttle}/cmd",
+   "pub": [
+    "scheduler"
+   ],
+   "sub": [
+    "unity"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "작업 시",
+   "desc": "store: 이송점의 팔레트를 레인 pos 에 넣기. retrieve: 레인 pos 의 팔레트를 이송점으로. relocate: 레인 간 이동.",
+   "expiry_s": 60,
+   "reserved": false,
+   "params": [
+    "shuttle"
+   ],
+   "topic": "wh/v1/shuttle/{shuttle}/cmd"
+  },
+  {
+   "key": "shuttle.evt",
+   "pattern": "shuttle/{shuttle}/evt",
+   "pub": [
+    "unity"
+   ],
+   "sub": [
+    "scheduler",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "사건 시",
+   "desc": "명령 수락·거부·시작·완료·실패.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [
+    "shuttle"
+   ],
+   "topic": "wh/v1/shuttle/{shuttle}/evt"
+  },
+  {
+   "key": "dock.state",
+   "pattern": "dock/{dock}/state",
+   "pub": [
+    "unity"
+   ],
+   "sub": [
+    "scheduler",
+    "control",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": true,
+   "rate": "변경 시",
+   "desc": "트럭 유무, 하차·상차 진행 수.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [
+    "dock"
+   ],
+   "topic": "wh/v1/dock/{dock}/state"
+  },
+  {
+   "key": "dock.evt",
+   "pattern": "dock/{dock}/evt",
+   "pub": [
+    "unity"
+   ],
+   "sub": [
+    "scheduler",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "사건 시",
+   "desc": "트럭 도착·출발, 팔레트 하차(계량대에 놓임)·상차(트럭에 실림).",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [
+    "dock"
+   ],
+   "topic": "wh/v1/dock/{dock}/evt"
+  },
+  {
+   "key": "scale.reading",
+   "pattern": "scale/{scale}/reading",
+   "pub": [
+    "unity"
+   ],
+   "sub": [
+    "scheduler",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "팔레트마다",
+   "desc": "검수 계량값. 송장 무게와 ±5% 넘게 다르면 스케줄러가 보류(QC-IN)로 보낸다.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [
+    "scale"
+   ],
+   "topic": "wh/v1/scale/{scale}/reading"
+  },
+  {
+   "key": "charger.state",
+   "pattern": "charger/{charger}/state",
+   "pub": [
+    "unity"
+   ],
+   "sub": [
+    "scheduler",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": true,
+   "rate": "변경 시",
+   "desc": "충전기 점유 AMR, 충전 중 여부.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [
+    "charger"
+   ],
+   "topic": "wh/v1/charger/{charger}/state"
+  },
+  {
+   "key": "wms.order",
+   "pattern": "wms/order",
+   "pub": [
+    "control"
+   ],
+   "sub": [
+    "scheduler",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "주문 시",
+   "desc": "입고 예정(ASN, 팔레트·송장 무게) 또는 출고 주문(SKU·수량). 관제나 테스트 스크립트가 넣는다.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [],
+   "topic": "wh/v1/wms/order"
+  },
+  {
+   "key": "wms.job",
+   "pattern": "wms/job",
+   "pub": [
+    "scheduler"
+   ],
+   "sub": [
+    "control",
+    "monitor",
+    "unity"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "작업 상태 변경 시",
+   "desc": "팔레트 1개 단위 작업의 계획·진행 상태(레인·리프트·셔틀·AMR 배정, 예상 완료).",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [],
+   "topic": "wh/v1/wms/job"
+  },
+  {
+   "key": "wms.inventory",
+   "pattern": "wms/inventory/evt",
+   "pub": [
+    "scheduler"
+   ],
+   "sub": [
+    "control",
+    "monitor",
+    "unity"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "재고 변경 시",
+   "desc": "입고 접수·보류·해제·적재·출고 인출·선적·조정. event_id 로 중복 수신을 걸러낸다.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [],
+   "topic": "wh/v1/wms/inventory/evt"
+  },
+  {
+   "key": "wms.snapshot",
+   "pattern": "wms/inventory/snapshot",
+   "pub": [
+    "scheduler"
+   ],
+   "sub": [
+    "control",
+    "monitor",
+    "unity"
+   ],
+   "qos": 1,
+   "retain": true,
+   "rate": "60초마다 + 시작 시",
+   "desc": "레인별 SKU·수량 전체 목록. 새로 붙은 Unity·관제가 재고를 한 번에 맞춘다.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [],
+   "topic": "wh/v1/wms/inventory/snapshot"
+  },
+  {
+   "key": "traffic.reservations",
+   "pattern": "traffic/reservations",
+   "pub": [
+    "scheduler"
+   ],
+   "sub": [
+    "rl",
+    "unity",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": true,
+   "rate": "변경 시",
+   "desc": "AMR별 경유 노드 시간 예약표(t_start~t_end). 통로 방향을 고정하지 않고 시간으로 나눠 쓴다.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [],
+   "topic": "wh/v1/traffic/reservations"
+  },
+  {
+   "key": "fleet.kpi",
+   "pattern": "fleet/kpi",
+   "pub": [
+    "scheduler"
+   ],
+   "sub": [
+    "control",
+    "monitor"
+   ],
+   "qos": 0,
+   "retain": true,
+   "rate": "10초마다",
+   "desc": "처리량, AMR 가동률, 대기 작업 수.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [],
+   "topic": "wh/v1/fleet/kpi"
+  },
+  {
+   "key": "ctrl.cmd",
+   "pattern": "ctrl/cmd",
+   "pub": [
+    "control"
+   ],
+   "sub": [
+    "scheduler"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "명령 시",
+   "desc": "전체 일시정지·재개, 정책 변경, 보고 요청, 보류 팔레트 해제.",
+   "expiry_s": 60,
+   "reserved": false,
+   "params": [],
+   "topic": "wh/v1/ctrl/cmd"
+  },
+  {
+   "key": "ctrl.evt",
+   "pattern": "ctrl/evt",
+   "pub": [
+    "scheduler"
+   ],
+   "sub": [
+    "control",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "응답·경고 시",
+   "desc": "관제 명령 응답, 상태 보고, 경고(배터리, 작업 지연).",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [],
+   "topic": "wh/v1/ctrl/evt"
+  },
+  {
+   "key": "sensor.temp",
+   "pattern": "sensor/temp/{sensor}",
+   "pub": [
+    "sensor"
+   ],
+   "sub": [
+    "control",
+    "monitor"
+   ],
+   "qos": 0,
+   "retain": true,
+   "rate": "10초마다",
+   "desc": "온도 센서 값.",
+   "expiry_s": null,
+   "reserved": true,
+   "params": [
+    "sensor"
+   ],
+   "topic": "wh/v1/sensor/temp/{sensor}"
+  },
+  {
+   "key": "sensor.cam",
+   "pattern": "sensor/cam/{camera}/detect",
+   "pub": [
+    "sensor"
+   ],
+   "sub": [
+    "control",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "감지 시",
+   "desc": "카메라 감지 결과(연기·누액·사람 등).",
+   "expiry_s": null,
+   "reserved": true,
+   "params": [
+    "camera"
+   ],
+   "topic": "wh/v1/sensor/cam/{camera}/detect"
+  },
+  {
+   "key": "alert",
+   "pattern": "alert/{kind}",
+   "pub": [
+    "control"
+   ],
+   "sub": [
+    "scheduler",
+    "unity",
+    "rl",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": true,
+   "rate": "발생·해제 시",
+   "desc": "비상 구역 발령·해제 (화재, 랙 붕괴·기울어짐, 누액, 부상). 해제는 빈 payload 로 retain 삭제.",
+   "expiry_s": null,
+   "reserved": true,
+   "params": [
+    "kind"
+   ],
+   "topic": "wh/v1/alert/{kind}"
+  }
+ ],
+ "subscriptions": {
+  "unity": [
+   "wh/v1/amr/+/cmd/control",
+   "wh/v1/amr/+/cmd/mission",
+   "wh/v1/amr/+/cmd/vel",
+   "wh/v1/lift/+/cmd",
+   "wh/v1/shuttle/+/cmd",
+   "wh/v1/sim/control",
+   "wh/v1/traffic/reservations",
+   "wh/v1/wms/inventory/evt",
+   "wh/v1/wms/inventory/snapshot",
+   "wh/v1/wms/job"
+  ],
+  "scheduler": [
+   "wh/v1/amr/+/evt",
+   "wh/v1/amr/+/pose",
+   "wh/v1/amr/+/state",
+   "wh/v1/buffer/+/state",
+   "wh/v1/charger/+/state",
+   "wh/v1/ctrl/cmd",
+   "wh/v1/dock/+/evt",
+   "wh/v1/dock/+/state",
+   "wh/v1/lift/+/evt",
+   "wh/v1/lift/+/state",
+   "wh/v1/scale/+/reading",
+   "wh/v1/shuttle/+/evt",
+   "wh/v1/shuttle/+/state",
+   "wh/v1/sim/clock",
+   "wh/v1/sys/+/online",
+   "wh/v1/wms/order"
+  ],
+  "rl": [
+   "wh/v1/amr/+/cmd/control",
+   "wh/v1/amr/+/cmd/mission",
+   "wh/v1/amr/+/pose",
+   "wh/v1/amr/+/scan2d",
+   "wh/v1/sim/clock",
+   "wh/v1/traffic/reservations"
+  ],
+  "control": [
+   "wh/v1/amr/+/evt",
+   "wh/v1/amr/+/state",
+   "wh/v1/ctrl/evt",
+   "wh/v1/dock/+/state",
+   "wh/v1/fleet/kpi",
+   "wh/v1/sim/clock",
+   "wh/v1/sys/+/online",
+   "wh/v1/wms/inventory/evt",
+   "wh/v1/wms/inventory/snapshot",
+   "wh/v1/wms/job"
+  ],
+  "sensor": [],
+  "monitor": [
+   "wh/v1/amr/+/evt",
+   "wh/v1/amr/+/pose",
+   "wh/v1/amr/+/state",
+   "wh/v1/buffer/+/state",
+   "wh/v1/charger/+/state",
+   "wh/v1/ctrl/evt",
+   "wh/v1/dock/+/evt",
+   "wh/v1/dock/+/state",
+   "wh/v1/fleet/kpi",
+   "wh/v1/lift/+/evt",
+   "wh/v1/lift/+/state",
+   "wh/v1/scale/+/reading",
+   "wh/v1/shuttle/+/evt",
+   "wh/v1/shuttle/+/state",
+   "wh/v1/sim/clock",
+   "wh/v1/sys/+/online",
+   "wh/v1/traffic/reservations",
+   "wh/v1/wms/inventory/evt",
+   "wh/v1/wms/inventory/snapshot",
+   "wh/v1/wms/job",
+   "wh/v1/wms/order"
+  ]
+ }
+}

@@ -1,0 +1,15 @@
+{
+ "topic": "wh/v1/amr/AMR01/cmd/control",
+ "v": 1,
+ "id": "d006bc8ee49262fc",
+ "ts": 1794999305.293,
+ "t": 1234.5,
+ "src": "rl-amr",
+ "type": "amr.cmd.control",
+ "corr": null,
+ "data": {
+  "action": "set_drive_mode",
+  "drive_mode": "rl",
+  "charger": null
+ }
+}

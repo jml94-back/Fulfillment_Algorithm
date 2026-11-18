@@ -1,0 +1,13 @@
+{
+ "topic": "wh/v1/sensor/temp/T-R2-N20",
+ "v": 1,
+ "id": "f25565f0471ce54f",
+ "ts": 1794999305.293,
+ "t": 1234.5,
+ "src": "sensor",
+ "type": "sensor.temp",
+ "corr": null,
+ "data": {
+  "celsius": 21.4
+ }
+}

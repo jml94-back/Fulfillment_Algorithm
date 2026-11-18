@@ -1,0 +1,16 @@
+# 맥 외 환경(리눅스 서버, 윈도우 노트북)에서 브로커를 띄울 때.
+#   docker compose up -d
+# passwd 파일은 먼저 만든다:
+#   docker run --rm -v "$PWD:/w" eclipse-mosquitto:2.0.20 mosquitto_passwd -c -b /w/passwd unity <비밀번호>
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2.0.20
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto.docker.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./acl:/mosquitto/config/acl:ro
+      - ./passwd:/mosquitto/config/passwd:ro
+      - ./data:/mosquitto/data

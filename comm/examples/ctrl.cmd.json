@@ -1,0 +1,16 @@
+{
+ "topic": "wh/v1/ctrl/cmd",
+ "v": 1,
+ "id": "09fc22bcbfeda855",
+ "ts": 1794999290.664,
+ "t": 244.67,
+ "src": "control-demo",
+ "type": "ctrl.cmd",
+ "corr": null,
+ "data": {
+  "action": "release_hold",
+  "args": {
+   "job_id": "J00018"
+  }
+ }
+}

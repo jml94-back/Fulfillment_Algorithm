@@ -1,0 +1,27 @@
+{
+ "topic": "wh/v1/wms/job",
+ "v": 1,
+ "id": "16e5d9ca218acf32",
+ "ts": 1794999285.005,
+ "t": 75.069,
+ "src": "scheduler",
+ "type": "wms.job",
+ "corr": null,
+ "data": {
+  "job_id": "J00018",
+  "order_id": null,
+  "kind": "inbound",
+  "status": "held",
+  "pallet": "P00000003",
+  "sku": "SKU101",
+  "dock": "IN2",
+  "lane": null,
+  "pos": null,
+  "lift": null,
+  "shuttle": null,
+  "amr": null,
+  "eta": null,
+  "created": 74.98,
+  "reason": "무게 불일치: 실측 728 kg / 송장 650 kg"
+ }
+}

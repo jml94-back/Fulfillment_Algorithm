@@ -1,0 +1,16 @@
+{
+ "topic": "wh/v1/sensor/cam/CAM03/detect",
+ "v": 1,
+ "id": "868e3b335658456a",
+ "ts": 1794999305.293,
+ "t": 1234.5,
+ "src": "sensor",
+ "type": "sensor.cam",
+ "corr": null,
+ "data": {
+  "label": "smoke",
+  "confidence": 0.87,
+  "x": 63.5,
+  "y": 44.2
+ }
+}

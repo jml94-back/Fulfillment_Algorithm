@@ -1,0 +1,41 @@
+{
+ "topic": "wh/v1/wms/order",
+ "v": 1,
+ "id": "baed7b1e6315e96b",
+ "ts": 1794999282.649,
+ "t": 4.394,
+ "src": "control-demo",
+ "type": "wms.order",
+ "corr": null,
+ "data": {
+  "order_id": "ASN-0001",
+  "kind": "inbound",
+  "dock": "IN2",
+  "truck": "TRK-IN-01",
+  "lines": [
+   {
+    "sku": "SKU101",
+    "qty": 4,
+    "pallets": [
+     {
+      "pallet": "P00000001",
+      "declared_kg": 650.0
+     },
+     {
+      "pallet": "P00000002",
+      "declared_kg": 650.0
+     },
+     {
+      "pallet": "P00000003",
+      "declared_kg": 650.0
+     },
+     {
+      "pallet": "P00000004",
+      "declared_kg": 650.0
+     }
+    ]
+   }
+  ],
+  "due": null
+ }
+}

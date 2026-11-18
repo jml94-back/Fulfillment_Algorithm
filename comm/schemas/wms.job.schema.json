@@ -1,0 +1,221 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "type": "object",
+ "properties": {
+  "v": {
+   "const": 1
+  },
+  "id": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{8,32}$"
+  },
+  "ts": {
+   "type": "number"
+  },
+  "t": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "src": {
+   "type": "string",
+   "minLength": 1
+  },
+  "type": {
+   "const": "wms.job"
+  },
+  "corr": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "data": {
+   "type": "object",
+   "properties": {
+    "job_id": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 64
+    },
+    "order_id": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "kind": {
+     "type": "string",
+     "enum": [
+      "inbound",
+      "outbound",
+      "relocate"
+     ]
+    },
+    "status": {
+     "type": "string",
+     "enum": [
+      "planned",
+      "waiting",
+      "amr_assigned",
+      "lifting",
+      "shuttling",
+      "done",
+      "held",
+      "failed",
+      "canceled"
+     ]
+    },
+    "pallet": {
+     "anyOf": [
+      {
+       "type": "string",
+       "pattern": "^P\\d{8}$"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "sku": {
+     "type": "string"
+    },
+    "dock": {
+     "anyOf": [
+      {
+       "type": "string",
+       "pattern": "^(IN|OUT)[1-6]$"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "lane": {
+     "anyOf": [
+      {
+       "type": "string",
+       "pattern": "^R([1-3])-([WE])-LV(0[1-9]|10)-N(0[1-9]|[12][0-9]|3[0-3])$"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "pos": {
+     "anyOf": [
+      {
+       "type": "integer",
+       "minimum": 1,
+       "maximum": 14,
+       "description": "레인 안 위치, 1 = 레일 쪽 입·출구"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "lift": {
+     "anyOf": [
+      {
+       "type": "string",
+       "pattern": "^L[1-3]$"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "shuttle": {
+     "anyOf": [
+      {
+       "type": "string",
+       "pattern": "^MS-R([1-3])-LV(0[1-9]|10)$"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "amr": {
+     "anyOf": [
+      {
+       "type": "string",
+       "pattern": "^AMR0[1-9]$"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "eta": {
+     "anyOf": [
+      {
+       "type": "number"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "created": {
+     "type": "number"
+    },
+    "reason": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    }
+   },
+   "required": [
+    "job_id",
+    "order_id",
+    "kind",
+    "status",
+    "pallet",
+    "sku",
+    "dock",
+    "lane",
+    "pos",
+    "lift",
+    "shuttle",
+    "amr",
+    "eta",
+    "created",
+    "reason"
+   ],
+   "additionalProperties": false
+  }
+ },
+ "required": [
+  "v",
+  "id",
+  "ts",
+  "t",
+  "src",
+  "type",
+  "corr",
+  "data"
+ ],
+ "additionalProperties": false,
+ "$id": "wms.job.schema.json",
+ "title": "wms.job"
+}

@@ -1,0 +1,20 @@
+{
+ "topic": "wh/v1/buffer/L1-IN/state",
+ "v": 1,
+ "id": "f73cbaee55e4e679",
+ "ts": 1794999282.585,
+ "t": 0.0,
+ "src": "unity-sim",
+ "type": "buffer.state",
+ "corr": null,
+ "data": {
+  "slots": [
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "blocked": false
+ }
+}

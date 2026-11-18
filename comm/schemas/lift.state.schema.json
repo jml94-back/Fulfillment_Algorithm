@@ -1,0 +1,121 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "type": "object",
+ "properties": {
+  "v": {
+   "const": 1
+  },
+  "id": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{8,32}$"
+  },
+  "ts": {
+   "type": "number"
+  },
+  "t": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "src": {
+   "type": "string",
+   "minLength": 1
+  },
+  "type": {
+   "const": "lift.state"
+  },
+  "corr": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "data": {
+   "type": "object",
+   "properties": {
+    "mode": {
+     "type": "string",
+     "enum": [
+      "idle",
+      "moving",
+      "transferring",
+      "paused",
+      "error"
+     ]
+    },
+    "level": {
+     "type": "number",
+     "minimum": 0,
+     "maximum": 10,
+     "description": "현재 높이(층 단위, 이동 중 소수)"
+    },
+    "pallet": {
+     "anyOf": [
+      {
+       "type": "string",
+       "pattern": "^P\\d{8}$"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "cmd_id": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "queue": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "error": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    }
+   },
+   "required": [
+    "mode",
+    "level",
+    "pallet",
+    "cmd_id",
+    "queue",
+    "error"
+   ],
+   "additionalProperties": false
+  }
+ },
+ "required": [
+  "v",
+  "id",
+  "ts",
+  "t",
+  "src",
+  "type",
+  "corr",
+  "data"
+ ],
+ "additionalProperties": false,
+ "$id": "lift.state.schema.json",
+ "title": "lift.state"
+}

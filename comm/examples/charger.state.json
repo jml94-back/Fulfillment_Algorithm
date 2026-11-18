@@ -1,0 +1,15 @@
+{
+ "topic": "wh/v1/charger/CHW1/state",
+ "v": 1,
+ "id": "5c5eda070460b402",
+ "ts": 1794999282.589,
+ "t": 0.0,
+ "src": "unity-sim",
+ "type": "charger.state",
+ "corr": null,
+ "data": {
+  "occupied_by": "AMR01",
+  "charging": true,
+  "power_kw": 3.0
+ }
+}

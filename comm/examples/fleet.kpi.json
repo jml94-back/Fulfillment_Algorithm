@@ -1,0 +1,24 @@
+{
+ "topic": "wh/v1/fleet/kpi",
+ "v": 1,
+ "id": "56093e22db4f2fd9",
+ "ts": 1794999282.154,
+ "t": null,
+ "src": "scheduler",
+ "type": "fleet.kpi",
+ "corr": null,
+ "data": {
+  "window_s": 600.0,
+  "inbound_ph": 0.0,
+  "outbound_ph": 0.0,
+  "amr_util": {
+   "AMR01": 0.0,
+   "AMR02": 0.0,
+   "AMR03": 0.0,
+   "AMR04": 0.0
+  },
+  "jobs_open": 0,
+  "jobs_done": 0,
+  "mean_lead_s": null
+ }
+}

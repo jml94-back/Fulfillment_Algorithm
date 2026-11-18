@@ -1,0 +1,144 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "type": "object",
+ "properties": {
+  "v": {
+   "const": 1
+  },
+  "id": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{8,32}$"
+  },
+  "ts": {
+   "type": "number"
+  },
+  "t": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "src": {
+   "type": "string",
+   "minLength": 1
+  },
+  "type": {
+   "const": "wms.order"
+  },
+  "corr": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "data": {
+   "type": "object",
+   "properties": {
+    "order_id": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 64
+    },
+    "kind": {
+     "type": "string",
+     "enum": [
+      "inbound",
+      "outbound"
+     ]
+    },
+    "dock": {
+     "type": "string",
+     "pattern": "^(IN|OUT)[1-6]$"
+    },
+    "truck": {
+     "type": "string"
+    },
+    "lines": {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "type": "object",
+      "properties": {
+       "sku": {
+        "type": "string"
+       },
+       "qty": {
+        "type": "integer",
+        "minimum": 1,
+        "description": "팔레트 수"
+       },
+       "pallets": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "pallet": {
+           "type": "string",
+           "pattern": "^P\\d{8}$"
+          },
+          "declared_kg": {
+           "type": "number",
+           "minimum": 0
+          }
+         },
+         "required": [
+          "pallet",
+          "declared_kg"
+         ],
+         "additionalProperties": false
+        },
+        "description": "입고: 팔레트별 송장 무게 (qty 개). 출고: 빈 배열"
+       }
+      },
+      "required": [
+       "sku",
+       "qty",
+       "pallets"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "due": {
+     "anyOf": [
+      {
+       "type": "number"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    }
+   },
+   "required": [
+    "order_id",
+    "kind",
+    "dock",
+    "truck",
+    "lines",
+    "due"
+   ],
+   "additionalProperties": false
+  }
+ },
+ "required": [
+  "v",
+  "id",
+  "ts",
+  "t",
+  "src",
+  "type",
+  "corr",
+  "data"
+ ],
+ "additionalProperties": false,
+ "$id": "wms.order.schema.json",
+ "title": "wms.order"
+}

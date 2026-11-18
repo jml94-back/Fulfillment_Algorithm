@@ -1,0 +1,110 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "type": "object",
+ "properties": {
+  "v": {
+   "const": 1
+  },
+  "id": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{8,32}$"
+  },
+  "ts": {
+   "type": "number"
+  },
+  "t": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "src": {
+   "type": "string",
+   "minLength": 1
+  },
+  "type": {
+   "const": "fleet.kpi"
+  },
+  "corr": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "data": {
+   "type": "object",
+   "properties": {
+    "window_s": {
+     "type": "number",
+     "exclusiveMinimum": 0
+    },
+    "inbound_ph": {
+     "type": "number",
+     "minimum": 0
+    },
+    "outbound_ph": {
+     "type": "number",
+     "minimum": 0
+    },
+    "amr_util": {
+     "type": "object",
+     "additionalProperties": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+     }
+    },
+    "jobs_open": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "jobs_done": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "mean_lead_s": {
+     "anyOf": [
+      {
+       "type": "number",
+       "minimum": 0
+      },
+      {
+       "type": "null"
+      }
+     ]
+    }
+   },
+   "required": [
+    "window_s",
+    "inbound_ph",
+    "outbound_ph",
+    "amr_util",
+    "jobs_open",
+    "jobs_done",
+    "mean_lead_s"
+   ],
+   "additionalProperties": false
+  }
+ },
+ "required": [
+  "v",
+  "id",
+  "ts",
+  "t",
+  "src",
+  "type",
+  "corr",
+  "data"
+ ],
+ "additionalProperties": false,
+ "$id": "fleet.kpi.schema.json",
+ "title": "fleet.kpi"
+}

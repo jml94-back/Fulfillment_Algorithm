@@ -1,0 +1,20 @@
+{
+ "topic": "wh/v1/amr/AMR01/state",
+ "v": 1,
+ "id": "25e27e1d55509b83",
+ "ts": 1794999282.574,
+ "t": 0.0,
+ "src": "unity-sim",
+ "type": "amr.state",
+ "corr": null,
+ "data": {
+  "mode": "idle",
+  "drive_mode": "scripted",
+  "battery": 75.9,
+  "pallet": null,
+  "mission_id": null,
+  "step": null,
+  "node": "n_CHW1",
+  "error": null
+ }
+}
