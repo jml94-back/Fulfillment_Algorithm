@@ -1,0 +1,525 @@
+{
+ "cost_per_line": {
+  "랜덤": {
+   "sshape": 12.626415908218748,
+   "nn2opt": 11.542554548772786,
+   "optimal": 11.49221180175312
+  },
+  "최근접 빈 칸": {
+   "sshape": 8.37899221301022,
+   "nn2opt": 8.06822038671331,
+   "optimal": 8.046466083778206
+  },
+  "ABC 회전율": {
+   "sshape": 7.5357213399213645,
+   "nn2opt": 7.097327711585664,
+   "optimal": 7.076299190617661
+  }
+ },
+ "retrieval": {
+  "fifo": 7.097327711585664,
+  "nearest": 6.378573278327427
+ },
+ "route_example": {
+  "sshape": 94,
+  "nn2opt": 72,
+  "optimal": 72
+ },
+ "runs": [
+  {
+   "slotting": "random",
+   "routing": "sshape",
+   "seed": 0,
+   "cost_per_line": 12.664635178601658,
+   "dist_per_pick": 10.599121918270855,
+   "trips": 990,
+   "picks": 2961,
+   "stores": 2946,
+   "stockouts": 33
+  },
+  {
+   "slotting": "random",
+   "routing": "sshape",
+   "seed": 1,
+   "cost_per_line": 12.514894354000694,
+   "dist_per_pick": 10.26206896551724,
+   "trips": 969,
+   "picks": 2900,
+   "stores": 2874,
+   "stockouts": 40
+  },
+  {
+   "slotting": "random",
+   "routing": "sshape",
+   "seed": 2,
+   "cost_per_line": 12.667173766058147,
+   "dist_per_pick": 10.42087542087542,
+   "trips": 995,
+   "picks": 2970,
+   "stores": 2946,
+   "stockouts": 54
+  },
+  {
+   "slotting": "random",
+   "routing": "sshape",
+   "seed": 3,
+   "cost_per_line": 12.588145896656535,
+   "dist_per_pick": 10.387878787878789,
+   "trips": 991,
+   "picks": 2970,
+   "stores": 2952,
+   "stockouts": 24
+  },
+  {
+   "slotting": "random",
+   "routing": "sshape",
+   "seed": 4,
+   "cost_per_line": 12.697230345776708,
+   "dist_per_pick": 10.507360492981855,
+   "trips": 972,
+   "picks": 2921,
+   "stores": 2892,
+   "stockouts": 19
+  },
+  {
+   "slotting": "random",
+   "routing": "nn2opt",
+   "seed": 0,
+   "cost_per_line": 11.521245979346538,
+   "dist_per_pick": 9.431273218507261,
+   "trips": 990,
+   "picks": 2961,
+   "stores": 2946,
+   "stockouts": 33
+  },
+  {
+   "slotting": "random",
+   "routing": "nn2opt",
+   "seed": 1,
+   "cost_per_line": 11.513508832698303,
+   "dist_per_pick": 9.255172413793103,
+   "trips": 969,
+   "picks": 2900,
+   "stores": 2874,
+   "stockouts": 40
+  },
+  {
+   "slotting": "random",
+   "routing": "nn2opt",
+   "seed": 2,
+   "cost_per_line": 11.57183908045977,
+   "dist_per_pick": 9.36026936026936,
+   "trips": 995,
+   "picks": 2970,
+   "stores": 2946,
+   "stockouts": 54
+  },
+  {
+   "slotting": "random",
+   "routing": "nn2opt",
+   "seed": 3,
+   "cost_per_line": 11.520938872002702,
+   "dist_per_pick": 9.330639730639732,
+   "trips": 991,
+   "picks": 2970,
+   "stores": 2952,
+   "stockouts": 24
+  },
+  {
+   "slotting": "random",
+   "routing": "nn2opt",
+   "seed": 4,
+   "cost_per_line": 11.585239979356615,
+   "dist_per_pick": 9.344744950359466,
+   "trips": 972,
+   "picks": 2921,
+   "stores": 2892,
+   "stockouts": 19
+  },
+  {
+   "slotting": "random",
+   "routing": "optimal",
+   "seed": 0,
+   "cost_per_line": 11.480277636702217,
+   "dist_per_pick": 9.398851739277271,
+   "trips": 990,
+   "picks": 2961,
+   "stores": 2946,
+   "stockouts": 33
+  },
+  {
+   "slotting": "random",
+   "routing": "optimal",
+   "seed": 1,
+   "cost_per_line": 11.461898164184275,
+   "dist_per_pick": 9.204137931034483,
+   "trips": 969,
+   "picks": 2900,
+   "stores": 2874,
+   "stockouts": 40
+  },
+  {
+   "slotting": "random",
+   "routing": "optimal",
+   "seed": 2,
+   "cost_per_line": 11.5184246112238,
+   "dist_per_pick": 9.311111111111112,
+   "trips": 995,
+   "picks": 2970,
+   "stores": 2946,
+   "stockouts": 54
+  },
+  {
+   "slotting": "random",
+   "routing": "optimal",
+   "seed": 3,
+   "cost_per_line": 11.4709557581898,
+   "dist_per_pick": 9.281481481481482,
+   "trips": 991,
+   "picks": 2970,
+   "stores": 2952,
+   "stockouts": 24
+  },
+  {
+   "slotting": "random",
+   "routing": "optimal",
+   "seed": 4,
+   "cost_per_line": 11.529502838465508,
+   "dist_per_pick": 9.289284491612461,
+   "trips": 972,
+   "picks": 2921,
+   "stores": 2892,
+   "stockouts": 19
+  },
+  {
+   "slotting": "nearest",
+   "routing": "sshape",
+   "seed": 0,
+   "cost_per_line": 8.254189944134078,
+   "dist_per_pick": 6.846335697399527,
+   "trips": 990,
+   "picks": 2961,
+   "stores": 2946,
+   "stockouts": 33
+  },
+  {
+   "slotting": "nearest",
+   "routing": "sshape",
+   "seed": 1,
+   "cost_per_line": 8.323779009352268,
+   "dist_per_pick": 6.864827586206896,
+   "trips": 969,
+   "picks": 2900,
+   "stores": 2874,
+   "stockouts": 40
+  },
+  {
+   "slotting": "nearest",
+   "routing": "sshape",
+   "seed": 2,
+   "cost_per_line": 8.382352941176471,
+   "dist_per_pick": 6.837037037037037,
+   "trips": 995,
+   "picks": 2970,
+   "stores": 2946,
+   "stockouts": 54
+  },
+  {
+   "slotting": "nearest",
+   "routing": "sshape",
+   "seed": 3,
+   "cost_per_line": 8.627912867274569,
+   "dist_per_pick": 6.986531986531986,
+   "trips": 991,
+   "picks": 2970,
+   "stores": 2952,
+   "stockouts": 24
+  },
+  {
+   "slotting": "nearest",
+   "routing": "sshape",
+   "seed": 4,
+   "cost_per_line": 8.306726303113711,
+   "dist_per_pick": 6.872304005477576,
+   "trips": 972,
+   "picks": 2921,
+   "stores": 2892,
+   "stockouts": 19
+  },
+  {
+   "slotting": "nearest",
+   "routing": "nn2opt",
+   "seed": 0,
+   "cost_per_line": 7.952852547824615,
+   "dist_per_pick": 6.4593042890915235,
+   "trips": 990,
+   "picks": 2961,
+   "stores": 2946,
+   "stockouts": 33
+  },
+  {
+   "slotting": "nearest",
+   "routing": "nn2opt",
+   "seed": 1,
+   "cost_per_line": 8.001645306546589,
+   "dist_per_pick": 6.456551724137931,
+   "trips": 969,
+   "picks": 2900,
+   "stores": 2874,
+   "stockouts": 40
+  },
+  {
+   "slotting": "nearest",
+   "routing": "nn2opt",
+   "seed": 2,
+   "cost_per_line": 8.073022312373226,
+   "dist_per_pick": 6.457912457912458,
+   "trips": 995,
+   "picks": 2970,
+   "stores": 2946,
+   "stockouts": 54
+  },
+  {
+   "slotting": "nearest",
+   "routing": "nn2opt",
+   "seed": 3,
+   "cost_per_line": 8.317882472137791,
+   "dist_per_pick": 6.598653198653198,
+   "trips": 991,
+   "picks": 2970,
+   "stores": 2952,
+   "stockouts": 24
+  },
+  {
+   "slotting": "nearest",
+   "routing": "nn2opt",
+   "seed": 4,
+   "cost_per_line": 7.995699294684329,
+   "dist_per_pick": 6.474495035946593,
+   "trips": 972,
+   "picks": 2921,
+   "stores": 2892,
+   "stockouts": 19
+  },
+  {
+   "slotting": "nearest",
+   "routing": "optimal",
+   "seed": 0,
+   "cost_per_line": 7.929490435077027,
+   "dist_per_pick": 6.432961837217157,
+   "trips": 990,
+   "picks": 2961,
+   "stores": 2946,
+   "stockouts": 33
+  },
+  {
+   "slotting": "nearest",
+   "routing": "optimal",
+   "seed": 1,
+   "cost_per_line": 7.980169726359542,
+   "dist_per_pick": 6.428965517241379,
+   "trips": 969,
+   "picks": 2900,
+   "stores": 2874,
+   "stockouts": 40
+  },
+  {
+   "slotting": "nearest",
+   "routing": "optimal",
+   "seed": 2,
+   "cost_per_line": 8.05578093306288,
+   "dist_per_pick": 6.441077441077441,
+   "trips": 995,
+   "picks": 2970,
+   "stores": 2946,
+   "stockouts": 54
+  },
+  {
+   "slotting": "nearest",
+   "routing": "optimal",
+   "seed": 3,
+   "cost_per_line": 8.294241810199257,
+   "dist_per_pick": 6.5777777777777775,
+   "trips": 991,
+   "picks": 2970,
+   "stores": 2952,
+   "stockouts": 24
+  },
+  {
+   "slotting": "nearest",
+   "routing": "optimal",
+   "seed": 4,
+   "cost_per_line": 7.972647514192327,
+   "dist_per_pick": 6.449845943170147,
+   "trips": 972,
+   "picks": 2921,
+   "stores": 2892,
+   "stockouts": 19
+  },
+  {
+   "slotting": "abc",
+   "routing": "sshape",
+   "seed": 0,
+   "cost_per_line": 7.3199593702387,
+   "dist_per_pick": 7.057075312394462,
+   "trips": 990,
+   "picks": 2961,
+   "stores": 2946,
+   "stockouts": 33
+  },
+  {
+   "slotting": "abc",
+   "routing": "sshape",
+   "seed": 1,
+   "cost_per_line": 7.580966401108417,
+   "dist_per_pick": 7.313103448275862,
+   "trips": 969,
+   "picks": 2900,
+   "stores": 2874,
+   "stockouts": 40
+  },
+  {
+   "slotting": "abc",
+   "routing": "sshape",
+   "seed": 2,
+   "cost_per_line": 7.449036511156186,
+   "dist_per_pick": 7.1952861952861955,
+   "trips": 995,
+   "picks": 2970,
+   "stores": 2946,
+   "stockouts": 54
+  },
+  {
+   "slotting": "abc",
+   "routing": "sshape",
+   "seed": 3,
+   "cost_per_line": 7.670550489699425,
+   "dist_per_pick": 7.356902356902357,
+   "trips": 991,
+   "picks": 2970,
+   "stores": 2952,
+   "stockouts": 24
+  },
+  {
+   "slotting": "abc",
+   "routing": "sshape",
+   "seed": 4,
+   "cost_per_line": 7.658093927404094,
+   "dist_per_pick": 7.3776104073947275,
+   "trips": 972,
+   "picks": 2921,
+   "stores": 2892,
+   "stockouts": 19
+  },
+  {
+   "slotting": "abc",
+   "routing": "nn2opt",
+   "seed": 0,
+   "cost_per_line": 6.930590824445573,
+   "dist_per_pick": 6.480243161094225,
+   "trips": 990,
+   "picks": 2961,
+   "stores": 2946,
+   "stockouts": 33
+  },
+  {
+   "slotting": "abc",
+   "routing": "nn2opt",
+   "seed": 1,
+   "cost_per_line": 7.132057499134049,
+   "dist_per_pick": 6.683448275862069,
+   "trips": 969,
+   "picks": 2900,
+   "stores": 2874,
+   "stockouts": 40
+  },
+  {
+   "slotting": "abc",
+   "routing": "nn2opt",
+   "seed": 2,
+   "cost_per_line": 7.021382691007437,
+   "dist_per_pick": 6.5784511784511785,
+   "trips": 995,
+   "picks": 2970,
+   "stores": 2946,
+   "stockouts": 54
+  },
+  {
+   "slotting": "abc",
+   "routing": "nn2opt",
+   "seed": 3,
+   "cost_per_line": 7.203140830800406,
+   "dist_per_pick": 6.6996632996633,
+   "trips": 991,
+   "picks": 2970,
+   "stores": 2952,
+   "stockouts": 24
+  },
+  {
+   "slotting": "abc",
+   "routing": "nn2opt",
+   "seed": 4,
+   "cost_per_line": 7.199466712540857,
+   "dist_per_pick": 6.736733995207121,
+   "trips": 972,
+   "picks": 2921,
+   "stores": 2892,
+   "stockouts": 19
+  },
+  {
+   "slotting": "abc",
+   "routing": "optimal",
+   "seed": 0,
+   "cost_per_line": 6.914000338581344,
+   "dist_per_pick": 6.4593042890915235,
+   "trips": 990,
+   "picks": 2961,
+   "stores": 2946,
+   "stockouts": 33
+  },
+  {
+   "slotting": "abc",
+   "routing": "optimal",
+   "seed": 1,
+   "cost_per_line": 7.104000692760652,
+   "dist_per_pick": 6.650344827586207,
+   "trips": 969,
+   "picks": 2900,
+   "stores": 2874,
+   "stockouts": 40
+  },
+  {
+   "slotting": "abc",
+   "routing": "optimal",
+   "seed": 2,
+   "cost_per_line": 7.002112914131169,
+   "dist_per_pick": 6.554882154882155,
+   "trips": 995,
+   "picks": 2970,
+   "stores": 2946,
+   "stockouts": 54
+  },
+  {
+   "slotting": "abc",
+   "routing": "optimal",
+   "seed": 3,
+   "cost_per_line": 7.181526511313745,
+   "dist_per_pick": 6.670707070707071,
+   "trips": 991,
+   "picks": 2970,
+   "stores": 2952,
+   "stockouts": 24
+  },
+  {
+   "slotting": "abc",
+   "routing": "optimal",
+   "seed": 4,
+   "cost_per_line": 7.179855496301394,
+   "dist_per_pick": 6.711400205409107,
+   "trips": 972,
+   "picks": 2921,
+   "stores": 2892,
+   "stockouts": 19
+  }
+ ]
+}
