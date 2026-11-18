@@ -8,7 +8,7 @@ Unity 시뮬레이션, 적재·출고 알고리즘(스케줄러), AMR 강화학�
 ```
 pip install paho-mqtt jsonschema matplotlib pytest     # + mosquitto (brew install mosquitto)
 python -m sim.run_demo -v          # 브로커를 띄우고 입고 7·출고 4 팔레트를 처리 (약 25초)
-python -m pytest -q tests          # 17개 (브로커·ACL·Unity C# 상호 운용 포함)
+python -m pytest -q tests          # 18개 (브로커·ACL·Unity C# 상호 운용·알고리즘 Planner 포함)
 ```
 
 ![데모 타임라인](out/demo_timeline.png)
@@ -368,6 +368,14 @@ C# DTO 로 만든 메시지 15종이 Python 스키마를 **전부 통과**, C# �
 | `pick_lane(sku, lift_load)` | 남은 수가 적은 레인의 맨 앞 | 레인 선입후출 출고 규칙 |
 | `choose_amr(amrs, src)` | 가장 가까운 유휴 AMR | 할당(헝가리안 등) |
 
+알고리즘 스레드의 구현이 이미 붙어 있습니다: `Scheduler(host, port, planner=D4Planner({}))`
+(`warehouse/d4/comm_planner.py`, 층별 허용 하중·회전율·리프트 부하 반영). 이 조합으로도 데모 11/11 완료, 스키마 위반 0건입니다
+(`tests/test_e2e.py::test_demo_with_algorithm_planner`).
+
+레인 안 위치(`pos`)는 셔틀에 store 명령을 보내는 순간 정합니다(이미 들어갔거나 들어갈 팔레트 바로 앞 칸).
+보류 팔레트처럼 도착 순서가 바뀌어도 세틀라이트가 다른 팔레트를 넘어가지 않게 하기 위해서이고,
+가상 장비도 앞에 팔레트가 있으면 store·retrieve 를 실패로 돌려 이를 검사합니다.
+
 AMR 경로·시간 예약은 `Scheduler._mission()` 이 nav 그래프 최단 경로 + 노드 예약 충돌 시 출발 지연으로 만듭니다.
 알고리즘의 Cooperative A*(시공간 예약)로 바꾸면 미션의 `path[].t_start/t_end` 에 그대로 들어갑니다.
 
@@ -386,7 +394,7 @@ comm/
 ├ sim/                    virtual_plant(Unity 대역), scheduler_bridge, monitor, run_demo, timeline
 ├ unity/WarehouseMqtt/    Unity C# 스크립트 6개
 ├ tools/                  C# 컴파일·상호 운용 확인 프로젝트
-├ tests/                  pytest 17개
+├ tests/                  pytest 18개
 └ out/                    demo_log.jsonl, demo_summary.json, demo_timeline.png
 ```
 

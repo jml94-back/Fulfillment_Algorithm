@@ -682,6 +682,8 @@ class Plant:
             elif sh.phase == "place":
                 if self.lanes[lane][pos - 1] is not None:
                     return self._dev_fail(sh, f"{lane} 위치 {pos} 이미 차 있음")
+                if any(self.lanes[lane][:pos - 1]):
+                    return self._dev_fail(sh, f"{lane} 위치 {pos} 앞에 팔레트가 있어 지나갈 수 없음")
                 self.lanes[lane][pos - 1], sh.pallet = c["pallet"], None
                 self._sat_back(sh, pos)
                 sh.phase = "done"
@@ -695,6 +697,8 @@ class Plant:
                 got = self.lanes[lane][pos - 1]
                 if got is None:
                     return self._dev_fail(sh, f"{lane} 위치 {pos} 비어 있음")
+                if any(self.lanes[lane][:pos - 1]):
+                    return self._dev_fail(sh, f"{lane} 위치 {pos} 앞에 팔레트가 있어 꺼낼 수 없음")
                 self.lanes[lane][pos - 1], sh.pallet = None, c["pallet"]
                 self._sat_back(sh, pos)
                 sh.phase = "carry"

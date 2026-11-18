@@ -101,3 +101,29 @@ def test_rl_dropout_falls_back_to_scripted(broker):
     finally:
         sched.stop()
         plant.stop()
+
+
+def test_demo_with_algorithm_planner(broker, tmp_path, monkeypatch):
+    """알고리즘 스레드의 D4Planner(warehouse/d4/comm_planner.py)를 끼워도 끝까지 돈다."""
+    import sys
+    from pathlib import Path
+
+    import pytest
+    algo = Path(__file__).resolve().parents[2]
+    if not (algo / "warehouse" / "d4" / "comm_planner.py").exists():
+        pytest.skip("warehouse/d4/comm_planner.py 없음")
+    monkeypatch.syspath_prepend(str(algo))
+    from warehouse.d4.comm_planner import D4Planner
+
+    import sim.run_demo as rd
+    from sim.scheduler_bridge import Scheduler
+
+    class D4Scheduler(Scheduler):
+        def __init__(self, *a, **k):
+            super().__init__(*a, planner=D4Planner({}), **k)
+
+    monkeypatch.setattr(rd, "Scheduler", D4Scheduler)
+    host, port = broker
+    s = rd.run(host, port, scale=40.0, out=tmp_path, timeout=180)
+    assert s["jobs_done"] == s["jobs_expected"], s["jobs"]
+    assert s["schema_violations"] == [] and s["handler_errors"] == []

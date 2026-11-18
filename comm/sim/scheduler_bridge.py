@@ -345,6 +345,9 @@ class Scheduler:
             if d["event"] != "done":
                 return
             if j.stage == "lift_in":
+                # 레인 안 위치는 셔틀에 넣으라고 보내는 순간 정한다: 보류·지연으로 도착 순서가 바뀌어도
+                # 항상 이미 들어간(또는 들어갈) 팔레트 바로 앞 칸 → 세틀라이트가 팔레트를 넘어가지 않음
+                j.pos = self._next_store_pos(j.lane)
                 j.stage, j.status = "store", "shuttling"
                 self._dev_cmd("shuttle.cmd", j.shuttle, j, "store", lane=j.lane, pos=j.pos)
             elif j.stage == "store":
@@ -375,6 +378,12 @@ class Scheduler:
                                                     "charger": None}, a.id)
             self.c.send("ctrl.evt", {"event": "warning", "text": f"RL 정책 {p['client']} 끊김: scripted 주행으로 전환",
                                      "data": {"client": p["client"]}})
+
+    def _next_store_pos(self, lane: str) -> int:
+        slots = self.lane_pallets.get(lane, [None] * ids.DEPTH)
+        taken = [i + 1 for i, x in enumerate(slots) if x]
+        taken += [j.pos for j in self.jobs.values() if j.lane == lane and j.stage == "store" and j.pos]
+        return min(taken, default=ids.DEPTH + 1) - 1
 
     def _on_ctrl(self, env: Envelope, _p) -> None:
         d = env.data
