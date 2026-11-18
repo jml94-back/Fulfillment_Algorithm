@@ -1,0 +1,194 @@
+{
+ "경유점 추종만 (회피 없음)": {
+  "stage2": {
+   "episodes": 20,
+   "arrivals": 309,
+   "arrivals_per_amr_hour": 92.7,
+   "collisions": 130,
+   "collisions_per_100_arrivals": 42.07,
+   "coll_robot": 65,
+   "coll_worker": 0,
+   "coll_static": 0,
+   "timeouts_per_100_arrivals": 0.0,
+   "near_miss_frac": 0.0063,
+   "worker_speeding_frac": 0.0,
+   "mean_speed_mps": 1.284,
+   "ctrl_ms_per_robot": 0.008
+  },
+  "stage4": {
+   "episodes": 20,
+   "arrivals": 318,
+   "arrivals_per_amr_hour": 95.4,
+   "collisions": 444,
+   "collisions_per_100_arrivals": 139.62,
+   "coll_robot": 65,
+   "coll_worker": 181,
+   "coll_static": 133,
+   "timeouts_per_100_arrivals": 0.0,
+   "near_miss_frac": 0.0138,
+   "worker_speeding_frac": 0.0718,
+   "mean_speed_mps": 1.254,
+   "ctrl_ms_per_robot": 0.008
+  }
+ },
+ "A* + DWA": {
+  "stage2": {
+   "episodes": 20,
+   "arrivals": 138,
+   "arrivals_per_amr_hour": 41.4,
+   "collisions": 0,
+   "collisions_per_100_arrivals": 0.0,
+   "coll_robot": 0,
+   "coll_worker": 0,
+   "coll_static": 0,
+   "timeouts_per_100_arrivals": 26.81,
+   "near_miss_frac": 0.1595,
+   "worker_speeding_frac": 0.0,
+   "mean_speed_mps": 0.596,
+   "ctrl_ms_per_robot": 0.74
+  },
+  "stage4": {
+   "episodes": 20,
+   "arrivals": 87,
+   "arrivals_per_amr_hour": 26.1,
+   "collisions": 0,
+   "collisions_per_100_arrivals": 0.0,
+   "coll_robot": 0,
+   "coll_worker": 0,
+   "coll_static": 0,
+   "timeouts_per_100_arrivals": 119.54,
+   "near_miss_frac": 0.2634,
+   "worker_speeding_frac": 0.0367,
+   "mean_speed_mps": 0.41,
+   "ctrl_ms_per_robot": 0.752
+  }
+ },
+ "A* + DWA + 우측통행·교착회복": {
+  "stage2": {
+   "episodes": 20,
+   "arrivals": 106,
+   "arrivals_per_amr_hour": 31.8,
+   "collisions": 1,
+   "collisions_per_100_arrivals": 0.94,
+   "coll_robot": 0,
+   "coll_worker": 0,
+   "coll_static": 1,
+   "timeouts_per_100_arrivals": 63.21,
+   "near_miss_frac": 0.187,
+   "worker_speeding_frac": 0.0,
+   "mean_speed_mps": 0.467,
+   "ctrl_ms_per_robot": 0.749
+  },
+  "stage4": {
+   "episodes": 20,
+   "arrivals": 89,
+   "arrivals_per_amr_hour": 26.7,
+   "collisions": 3,
+   "collisions_per_100_arrivals": 3.37,
+   "coll_robot": 1,
+   "coll_worker": 0,
+   "coll_static": 1,
+   "timeouts_per_100_arrivals": 106.74,
+   "near_miss_frac": 0.2741,
+   "worker_speeding_frac": 0.0346,
+   "mean_speed_mps": 0.397,
+   "ctrl_ms_per_robot": 0.75
+  }
+ },
+ "RL MAPPO": {
+  "stage2": {
+   "episodes": 20,
+   "arrivals": 158,
+   "arrivals_per_amr_hour": 47.4,
+   "collisions": 23,
+   "collisions_per_100_arrivals": 14.56,
+   "coll_robot": 11,
+   "coll_worker": 0,
+   "coll_static": 1,
+   "timeouts_per_100_arrivals": 44.94,
+   "near_miss_frac": 0.0024,
+   "worker_speeding_frac": 0.0,
+   "mean_speed_mps": 0.717,
+   "ctrl_ms_per_robot": 0.031
+  },
+  "stage4": {
+   "episodes": 20,
+   "arrivals": 150,
+   "arrivals_per_amr_hour": 45.0,
+   "collisions": 50,
+   "collisions_per_100_arrivals": 33.33,
+   "coll_robot": 10,
+   "coll_worker": 20,
+   "coll_static": 10,
+   "timeouts_per_100_arrivals": 51.33,
+   "near_miss_frac": 0.0191,
+   "worker_speeding_frac": 0.0541,
+   "mean_speed_mps": 0.669,
+   "ctrl_ms_per_robot": 0.033
+  }
+ },
+ "RL IPPO": {
+  "stage2": {
+   "episodes": 20,
+   "arrivals": 206,
+   "arrivals_per_amr_hour": 61.8,
+   "collisions": 40,
+   "collisions_per_100_arrivals": 19.42,
+   "coll_robot": 18,
+   "coll_worker": 0,
+   "coll_static": 4,
+   "timeouts_per_100_arrivals": 15.05,
+   "near_miss_frac": 0.0075,
+   "worker_speeding_frac": 0.0,
+   "mean_speed_mps": 0.924,
+   "ctrl_ms_per_robot": 0.033
+  },
+  "stage4": {
+   "episodes": 20,
+   "arrivals": 140,
+   "arrivals_per_amr_hour": 42.0,
+   "collisions": 125,
+   "collisions_per_100_arrivals": 89.29,
+   "coll_robot": 27,
+   "coll_worker": 38,
+   "coll_static": 33,
+   "timeouts_per_100_arrivals": 35.71,
+   "near_miss_frac": 0.0137,
+   "worker_speeding_frac": 0.056,
+   "mean_speed_mps": 0.82,
+   "ctrl_ms_per_robot": 0.035
+  }
+ },
+ "RL MAPPO + 안전 필터": {
+  "stage2": {
+   "episodes": 20,
+   "arrivals": 176,
+   "arrivals_per_amr_hour": 52.8,
+   "collisions": 17,
+   "collisions_per_100_arrivals": 9.66,
+   "coll_robot": 8,
+   "coll_worker": 0,
+   "coll_static": 1,
+   "timeouts_per_100_arrivals": 35.8,
+   "near_miss_frac": 0.0039,
+   "worker_speeding_frac": 0.0,
+   "mean_speed_mps": 0.759,
+   "ctrl_ms_per_robot": 0.035
+  },
+  "stage4": {
+   "episodes": 20,
+   "arrivals": 130,
+   "arrivals_per_amr_hour": 39.0,
+   "collisions": 23,
+   "collisions_per_100_arrivals": 17.69,
+   "coll_robot": 6,
+   "coll_worker": 4,
+   "coll_static": 7,
+   "timeouts_per_100_arrivals": 71.54,
+   "near_miss_frac": 0.0319,
+   "worker_speeding_frac": 0.0516,
+   "mean_speed_mps": 0.609,
+   "ctrl_ms_per_robot": 0.042
+  }
+ }
+}

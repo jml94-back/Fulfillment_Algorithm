@@ -1,0 +1,629 @@
+[   1] steps     2,048 stage 0 rew -0.060 arr    0 coll   1 to   0 succ 0.000 arr/h    0.0 std 0.61 1s
+[   5] steps    10,240 stage 0 rew -0.065 arr    0 coll   1 to   0 succ 0.000 arr/h    0.0 std 0.60 4s
+[  10] steps    20,480 stage 0 rew -0.034 arr    0 coll   0 to   0 succ 0.000 arr/h    0.0 std 0.60 8s
+[  15] steps    30,720 stage 0 rew -0.035 arr    1 coll   0 to   0 succ 1.000 arr/h   17.6 std 0.60 12s
+[  20] steps    40,960 stage 0 rew -0.020 arr    1 coll   1 to   0 succ 0.500 arr/h   17.6 std 0.60 16s
+[  25] steps    51,200 stage 0 rew -0.010 arr    3 coll   0 to   0 succ 1.000 arr/h   52.7 std 0.60 20s
+[  30] steps    61,440 stage 0 rew +0.048 arr   10 coll   0 to   0 succ 1.000 arr/h  175.8 std 0.60 24s
+[  35] steps    71,680 stage 0 rew +0.062 arr   11 coll   1 to   0 succ 0.917 arr/h  193.4 std 0.60 28s
+  → 커리큘럼 단계 1 로 진행
+[  40] steps    81,920 stage 1 rew +0.017 arr    4 coll   0 to   4 succ 0.500 arr/h   70.3 std 0.59 34s
+[  45] steps    92,160 stage 1 rew +0.045 arr    4 coll   0 to   3 succ 0.571 arr/h   70.3 std 0.59 38s
+[  50] steps   102,400 stage 1 rew +0.054 arr    4 coll   1 to   1 succ 0.667 arr/h   70.3 std 0.59 44s
+[  55] steps   112,640 stage 1 rew +0.075 arr    1 coll   0 to   0 succ 1.000 arr/h   17.6 std 0.59 49s
+[  60] steps   122,880 stage 1 rew +0.101 arr    4 coll   0 to   0 succ 1.000 arr/h   70.3 std 0.58 55s
+[  65] steps   133,120 stage 1 rew +0.126 arr    6 coll   0 to   0 succ 1.000 arr/h  105.5 std 0.58 61s
+[  70] steps   143,360 stage 1 rew +0.110 arr    3 coll   0 to   0 succ 1.000 arr/h   52.7 std 0.58 67s
+[  75] steps   153,600 stage 1 rew +0.040 arr    3 coll   5 to   0 succ 0.375 arr/h   52.7 std 0.58 74s
+[  80] steps   163,840 stage 1 rew +0.103 arr    6 coll   2 to   0 succ 0.750 arr/h  105.5 std 0.58 80s
+  → 커리큘럼 단계 2 로 진행
+[  85] steps   174,080 stage 2 rew +0.095 arr    3 coll   2 to   0 succ 0.600 arr/h   52.7 std 0.58 86s
+[  90] steps   184,320 stage 2 rew +0.111 arr    4 coll   0 to   0 succ 1.000 arr/h   70.3 std 0.58 92s
+[  95] steps   207,040 stage 2 rew +0.072 arr   15 coll  15 to   0 succ 0.500 arr/h   65.9 std 0.58 107s
+[ 100] steps   248,000 stage 2 rew +0.090 arr   14 coll   6 to   0 succ 0.700 arr/h   61.5 std 0.57 125s
+[ 105] steps   288,960 stage 2 rew +0.079 arr   12 coll   5 to   0 succ 0.706 arr/h   52.7 std 0.57 142s
+[ 110] steps   329,920 stage 2 rew +0.076 arr   21 coll  12 to   0 succ 0.636 arr/h   92.3 std 0.57 163s
+[ 115] steps   370,880 stage 2 rew +0.080 arr   13 coll   8 to   0 succ 0.619 arr/h   57.1 std 0.57 181s
+[ 120] steps   411,840 stage 2 rew +0.094 arr   15 coll   8 to   0 succ 0.652 arr/h   65.9 std 0.56 202s
+[ 125] steps   452,800 stage 2 rew +0.085 arr   19 coll  10 to   0 succ 0.655 arr/h   83.5 std 0.56 224s
+[ 130] steps   493,760 stage 2 rew +0.106 arr   14 coll   6 to   0 succ 0.700 arr/h   61.5 std 0.56 242s
+[ 135] steps   534,720 stage 2 rew +0.077 arr   22 coll  13 to   0 succ 0.629 arr/h   96.7 std 0.56 261s
+[ 140] steps   575,680 stage 2 rew +0.035 arr   12 coll  16 to   0 succ 0.429 arr/h   52.7 std 0.56 283s
+[ 145] steps   616,640 stage 2 rew +0.077 arr   20 coll   6 to   1 succ 0.741 arr/h   87.9 std 0.55 300s
+[ 150] steps   657,600 stage 2 rew +0.091 arr   18 coll   7 to   0 succ 0.720 arr/h   79.1 std 0.55 322s
+[ 155] steps   698,560 stage 2 rew +0.033 arr   14 coll  19 to   0 succ 0.424 arr/h   61.5 std 0.55 343s
+[ 160] steps   739,520 stage 2 rew +0.086 arr   24 coll  10 to   0 succ 0.706 arr/h  105.5 std 0.54 363s
+[ 165] steps   780,480 stage 2 rew +0.077 arr   15 coll  13 to   0 succ 0.536 arr/h   65.9 std 0.54 384s
+[ 170] steps   821,440 stage 2 rew +0.094 arr   17 coll   4 to   0 succ 0.810 arr/h   74.7 std 0.54 402s
+[ 175] steps   862,400 stage 2 rew +0.078 arr   11 coll   0 to   2 succ 0.846 arr/h   48.3 std 0.54 421s
+[ 180] steps   903,360 stage 2 rew +0.100 arr   22 coll   2 to   2 succ 0.846 arr/h   96.7 std 0.53 438s
+[ 185] steps   944,320 stage 2 rew +0.076 arr   24 coll   8 to   0 succ 0.750 arr/h  105.5 std 0.53 457s
+[ 190] steps   985,280 stage 2 rew +0.078 arr   12 coll   5 to   0 succ 0.706 arr/h   52.7 std 0.53 478s
+[ 195] steps 1,026,240 stage 2 rew +0.074 arr   16 coll   8 to   0 succ 0.667 arr/h   70.3 std 0.53 498s
+[ 200] steps 1,067,200 stage 2 rew +0.085 arr   12 coll   7 to   0 succ 0.632 arr/h   52.7 std 0.52 518s
+[ 205] steps 1,108,160 stage 2 rew +0.083 arr   17 coll   6 to   0 succ 0.739 arr/h   74.7 std 0.52 536s
+[ 210] steps 1,149,120 stage 2 rew +0.116 arr   20 coll   2 to   0 succ 0.909 arr/h   87.9 std 0.52 554s
+[ 215] steps 1,190,080 stage 2 rew +0.067 arr   12 coll  13 to   0 succ 0.480 arr/h   52.7 std 0.51 574s
+[ 220] steps 1,231,040 stage 2 rew +0.117 arr   29 coll   4 to   0 succ 0.879 arr/h  127.4 std 0.51 592s
+[ 225] steps 1,272,000 stage 2 rew +0.084 arr   22 coll  10 to   0 succ 0.688 arr/h   96.7 std 0.51 614s
+[ 230] steps 1,312,960 stage 2 rew +0.109 arr   23 coll   7 to   0 succ 0.767 arr/h  101.1 std 0.51 634s
+[ 235] steps 1,353,920 stage 2 rew +0.102 arr   14 coll   9 to   0 succ 0.609 arr/h   61.5 std 0.50 655s
+[ 240] steps 1,394,880 stage 2 rew +0.110 arr   18 coll   4 to   0 succ 0.818 arr/h   79.1 std 0.50 679s
+[ 245] steps 1,435,840 stage 2 rew +0.097 arr   27 coll   8 to   0 succ 0.771 arr/h  118.7 std 0.50 699s
+[ 250] steps 1,476,800 stage 2 rew +0.054 arr   16 coll  16 to   0 succ 0.500 arr/h   70.3 std 0.50 720s
+[ 255] steps 1,517,760 stage 2 rew +0.089 arr   19 coll  10 to   0 succ 0.655 arr/h   83.5 std 0.50 741s
+[ 260] steps 1,558,720 stage 2 rew +0.116 arr   16 coll   3 to   0 succ 0.842 arr/h   70.3 std 0.49 762s
+[ 265] steps 1,599,680 stage 2 rew +0.087 arr   16 coll   8 to   0 succ 0.667 arr/h   70.3 std 0.49 785s
+[ 270] steps 1,640,640 stage 2 rew +0.131 arr   11 coll   0 to   0 succ 1.000 arr/h   48.3 std 0.49 804s
+[ 275] steps 1,681,600 stage 2 rew +0.083 arr   24 coll   5 to   1 succ 0.800 arr/h  105.5 std 0.49 820s
+[ 280] steps 1,722,560 stage 2 rew +0.085 arr   16 coll   6 to   4 succ 0.615 arr/h   70.3 std 0.49 842s
+[ 285] steps 1,763,520 stage 2 rew +0.093 arr   15 coll   4 to   0 succ 0.789 arr/h   65.9 std 0.48 860s
+[ 290] steps 1,804,480 stage 2 rew +0.109 arr   16 coll   4 to   0 succ 0.800 arr/h   70.3 std 0.48 880s
+[ 295] steps 1,845,440 stage 2 rew +0.102 arr   13 coll   4 to   0 succ 0.765 arr/h   57.1 std 0.48 900s
+[ 300] steps 1,886,400 stage 2 rew +0.065 arr   10 coll   8 to   1 succ 0.526 arr/h   44.0 std 0.48 921s
+[ 305] steps 1,927,360 stage 2 rew +0.051 arr    6 coll  14 to   0 succ 0.300 arr/h   26.4 std 0.47 939s
+[ 310] steps 1,968,320 stage 2 rew +0.057 arr   16 coll  10 to   0 succ 0.615 arr/h   70.3 std 0.47 957s
+[ 315] steps 2,009,280 stage 2 rew +0.064 arr   16 coll   8 to   4 succ 0.571 arr/h   70.3 std 0.47 975s
+[ 320] steps 2,050,240 stage 2 rew +0.059 arr   16 coll  14 to   0 succ 0.533 arr/h   70.3 std 0.47 994s
+[ 325] steps 2,091,200 stage 2 rew +0.081 arr   17 coll   8 to   1 succ 0.654 arr/h   74.7 std 0.47 1016s
+[ 330] steps 2,132,160 stage 2 rew +0.084 arr   10 coll   8 to   0 succ 0.556 arr/h   44.0 std 0.47 1035s
+[ 335] steps 2,173,120 stage 2 rew +0.076 arr   12 coll   8 to   0 succ 0.600 arr/h   52.7 std 0.47 1055s
+[ 340] steps 2,214,080 stage 2 rew +0.067 arr   12 coll   9 to   0 succ 0.571 arr/h   52.7 std 0.46 1078s
+[ 345] steps 2,255,040 stage 2 rew +0.069 arr   15 coll   8 to   0 succ 0.652 arr/h   65.9 std 0.46 1098s
+[ 350] steps 2,296,000 stage 2 rew +0.086 arr   15 coll   6 to   3 succ 0.625 arr/h   65.9 std 0.46 1116s
+[ 355] steps 2,336,960 stage 2 rew +0.094 arr   17 coll   8 to   0 succ 0.680 arr/h   74.7 std 0.46 1139s
+[ 360] steps 2,377,920 stage 2 rew +0.076 arr   15 coll   8 to   0 succ 0.652 arr/h   65.9 std 0.45 1158s
+[ 365] steps 2,418,880 stage 2 rew +0.055 arr   10 coll  16 to   0 succ 0.385 arr/h   44.0 std 0.45 1181s
+[ 370] steps 2,459,840 stage 2 rew +0.058 arr   18 coll  16 to   0 succ 0.529 arr/h   79.1 std 0.45 1204s
+[ 375] steps 2,500,800 stage 2 rew +0.078 arr   10 coll   6 to   0 succ 0.625 arr/h   44.0 std 0.45 1225s
+[ 380] steps 2,541,760 stage 2 rew +0.094 arr   22 coll   6 to   1 succ 0.759 arr/h   96.7 std 0.45 1243s
+[ 385] steps 2,582,720 stage 2 rew +0.059 arr   18 coll  11 to   2 succ 0.581 arr/h   79.1 std 0.44 1261s
+[ 390] steps 2,623,680 stage 2 rew +0.081 arr   18 coll   8 to   0 succ 0.692 arr/h   79.1 std 0.44 1280s
+[ 395] steps 2,664,640 stage 2 rew +0.083 arr   16 coll   7 to   0 succ 0.696 arr/h   70.3 std 0.44 1299s
+[ 400] steps 2,705,600 stage 2 rew +0.079 arr    7 coll   4 to   0 succ 0.636 arr/h   30.8 std 0.43 1318s
+[ 405] steps 2,746,560 stage 2 rew +0.079 arr   21 coll   7 to   0 succ 0.750 arr/h   92.3 std 0.43 1340s
+[ 410] steps 2,787,520 stage 2 rew +0.082 arr   11 coll   4 to   0 succ 0.733 arr/h   48.3 std 0.43 1361s
+[ 415] steps 2,828,480 stage 2 rew +0.076 arr   13 coll   7 to   0 succ 0.650 arr/h   57.1 std 0.43 1381s
+[ 420] steps 2,869,440 stage 2 rew +0.072 arr   19 coll  11 to   0 succ 0.633 arr/h   83.5 std 0.43 1401s
+[ 425] steps 2,910,400 stage 2 rew +0.099 arr   11 coll   2 to   2 succ 0.733 arr/h   48.3 std 0.42 1420s
+[ 430] steps 2,951,360 stage 2 rew +0.085 arr   14 coll   5 to   2 succ 0.667 arr/h   61.5 std 0.42 1440s
+[ 435] steps 2,992,320 stage 2 rew +0.084 arr   18 coll   9 to   0 succ 0.667 arr/h   79.1 std 0.42 1458s
+[ 440] steps 3,033,280 stage 2 rew +0.052 arr   16 coll  13 to   0 succ 0.552 arr/h   70.3 std 0.42 1478s
+[ 445] steps 3,074,240 stage 2 rew +0.062 arr   14 coll   7 to   0 succ 0.667 arr/h   61.5 std 0.42 1495s
+[ 450] steps 3,115,200 stage 2 rew +0.058 arr   20 coll   9 to   0 succ 0.690 arr/h   87.9 std 0.41 1513s
+[ 455] steps 3,156,160 stage 2 rew +0.064 arr   14 coll   6 to   3 succ 0.609 arr/h   61.5 std 0.41 1531s
+[ 460] steps 3,197,120 stage 2 rew +0.045 arr   18 coll  14 to   1 succ 0.545 arr/h   79.1 std 0.41 1552s
+[ 465] steps 3,238,080 stage 2 rew +0.079 arr   18 coll   7 to   1 succ 0.692 arr/h   79.1 std 0.41 1573s
+[ 470] steps 3,279,040 stage 2 rew +0.108 arr   16 coll   3 to   0 succ 0.842 arr/h   70.3 std 0.41 1590s
+[ 475] steps 3,320,000 stage 2 rew +0.090 arr   21 coll   2 to   3 succ 0.808 arr/h   92.3 std 0.41 1607s
+[ 480] steps 3,360,960 stage 2 rew +0.080 arr   16 coll   8 to   0 succ 0.667 arr/h   70.3 std 0.40 1626s
+[ 485] steps 3,401,920 stage 2 rew +0.070 arr   20 coll   9 to   1 succ 0.667 arr/h   87.9 std 0.40 1644s
+[ 490] steps 3,442,880 stage 2 rew +0.109 arr   22 coll   2 to   0 succ 0.917 arr/h   96.7 std 0.40 1664s
+[ 495] steps 3,483,840 stage 2 rew +0.099 arr   20 coll   7 to   0 succ 0.741 arr/h   87.9 std 0.40 1682s
+[ 500] steps 3,524,800 stage 2 rew +0.099 arr   19 coll   5 to   0 succ 0.792 arr/h   83.5 std 0.40 1702s
+[ 505] steps 3,565,760 stage 2 rew +0.098 arr   15 coll   7 to   0 succ 0.682 arr/h   65.9 std 0.40 1722s
+[ 510] steps 3,606,720 stage 2 rew +0.084 arr   13 coll   8 to   0 succ 0.619 arr/h   57.1 std 0.40 1743s
+[ 515] steps 3,647,680 stage 2 rew +0.086 arr   14 coll   4 to   0 succ 0.778 arr/h   61.5 std 0.39 1766s
+[ 520] steps 3,688,640 stage 2 rew +0.122 arr   23 coll   0 to   0 succ 1.000 arr/h  101.1 std 0.39 1785s
+[ 525] steps 3,729,600 stage 2 rew +0.090 arr   15 coll   6 to   1 succ 0.682 arr/h   65.9 std 0.39 1805s
+[ 530] steps 3,770,560 stage 2 rew +0.069 arr   17 coll   6 to   0 succ 0.739 arr/h   74.7 std 0.39 1824s
+[ 535] steps 3,811,520 stage 2 rew +0.062 arr   15 coll   5 to   2 succ 0.682 arr/h   65.9 std 0.39 1842s
+[ 540] steps 3,852,480 stage 2 rew +0.112 arr   18 coll   3 to   0 succ 0.857 arr/h   79.1 std 0.38 1861s
+[ 545] steps 3,893,440 stage 2 rew +0.063 arr   13 coll   3 to   1 succ 0.765 arr/h   57.1 std 0.38 1879s
+[ 550] steps 3,934,400 stage 2 rew +0.059 arr    8 coll   2 to   3 succ 0.615 arr/h   35.2 std 0.38 1899s
+[ 555] steps 3,975,360 stage 2 rew +0.050 arr    8 coll   8 to   2 succ 0.444 arr/h   35.2 std 0.38 1916s
+[ 560] steps 4,016,320 stage 2 rew +0.050 arr   12 coll   7 to   1 succ 0.600 arr/h   52.7 std 0.38 1937s
+[ 565] steps 4,057,280 stage 2 rew +0.049 arr   14 coll  14 to   0 succ 0.500 arr/h   61.5 std 0.38 1960s
+[ 570] steps 4,098,240 stage 2 rew +0.067 arr   21 coll  13 to   0 succ 0.618 arr/h   92.3 std 0.38 1990s
+[ 575] steps 4,139,200 stage 2 rew +0.099 arr   11 coll   5 to   0 succ 0.688 arr/h   48.3 std 0.38 2013s
+[ 580] steps 4,180,160 stage 2 rew +0.079 arr   13 coll   6 to   1 succ 0.650 arr/h   57.1 std 0.37 2036s
+[ 585] steps 4,221,120 stage 2 rew +0.074 arr   13 coll   5 to   1 succ 0.684 arr/h   57.1 std 0.37 2055s
+[ 590] steps 4,262,080 stage 2 rew +0.071 arr   14 coll   5 to   5 succ 0.583 arr/h   61.5 std 0.37 2075s
+[ 595] steps 4,303,040 stage 2 rew +0.089 arr   20 coll   5 to   3 succ 0.714 arr/h   87.9 std 0.37 2097s
+[ 600] steps 4,344,000 stage 2 rew +0.087 arr   14 coll   7 to   0 succ 0.667 arr/h   61.5 std 0.37 2118s
+[ 605] steps 4,384,960 stage 2 rew +0.052 arr   19 coll  12 to   1 succ 0.594 arr/h   83.5 std 0.37 2140s
+[ 610] steps 4,425,920 stage 2 rew +0.104 arr   25 coll   6 to   0 succ 0.806 arr/h  109.9 std 0.37 2160s
+[ 615] steps 4,466,880 stage 2 rew +0.069 arr   13 coll  10 to   2 succ 0.520 arr/h   57.1 std 0.37 2180s
+[ 620] steps 4,507,840 stage 2 rew +0.075 arr   14 coll   9 to   0 succ 0.609 arr/h   61.5 std 0.36 2203s
+[ 625] steps 4,548,800 stage 2 rew +0.087 arr   14 coll   0 to   5 succ 0.737 arr/h   61.5 std 0.36 2227s
+[ 630] steps 4,589,760 stage 2 rew +0.071 arr   10 coll   1 to   4 succ 0.667 arr/h   44.0 std 0.36 2247s
+[ 635] steps 4,630,720 stage 2 rew +0.119 arr   21 coll   2 to   0 succ 0.913 arr/h   92.3 std 0.36 2267s
+[ 640] steps 4,671,680 stage 2 rew +0.076 arr   14 coll   7 to   0 succ 0.667 arr/h   61.5 std 0.36 2289s
+[ 645] steps 4,712,640 stage 2 rew +0.087 arr   10 coll  10 to   0 succ 0.500 arr/h   44.0 std 0.35 2309s
+[ 650] steps 4,753,600 stage 2 rew +0.069 arr    7 coll   7 to   3 succ 0.412 arr/h   30.8 std 0.35 2330s
+[ 655] steps 4,794,560 stage 2 rew +0.069 arr   14 coll   2 to   8 succ 0.583 arr/h   61.5 std 0.35 2350s
+[ 660] steps 4,835,520 stage 2 rew +0.071 arr    6 coll   1 to   1 succ 0.750 arr/h   26.4 std 0.35 2366s
+[ 665] steps 4,876,480 stage 2 rew +0.039 arr   18 coll  10 to   1 succ 0.621 arr/h   79.1 std 0.35 2385s
+[ 670] steps 4,917,440 stage 2 rew +0.080 arr   15 coll  10 to   0 succ 0.600 arr/h   65.9 std 0.35 2406s
+[ 675] steps 4,958,400 stage 2 rew +0.091 arr   14 coll   7 to   0 succ 0.667 arr/h   61.5 std 0.35 2430s
+[ 680] steps 4,999,360 stage 2 rew +0.099 arr   10 coll   6 to   0 succ 0.625 arr/h   44.0 std 0.35 2451s
+[ 685] steps 5,040,320 stage 2 rew +0.060 arr   12 coll  15 to   1 succ 0.429 arr/h   52.7 std 0.35 2467s
+[ 690] steps 5,081,280 stage 2 rew +0.082 arr   14 coll  10 to   0 succ 0.583 arr/h   61.5 std 0.35 2488s
+[ 695] steps 5,122,240 stage 2 rew +0.106 arr   19 coll   6 to   0 succ 0.760 arr/h   83.5 std 0.35 2511s
+[ 700] steps 5,163,200 stage 2 rew +0.097 arr   21 coll   6 to   0 succ 0.778 arr/h   92.3 std 0.35 2531s
+[ 705] steps 5,204,160 stage 2 rew +0.104 arr   11 coll   5 to   0 succ 0.688 arr/h   48.3 std 0.35 2550s
+[ 710] steps 5,245,120 stage 2 rew +0.104 arr   13 coll   6 to   0 succ 0.684 arr/h   57.1 std 0.34 2570s
+[ 715] steps 5,286,080 stage 2 rew +0.084 arr    8 coll   8 to   0 succ 0.500 arr/h   35.2 std 0.34 2592s
+[ 720] steps 5,327,040 stage 2 rew +0.084 arr   22 coll  12 to   0 succ 0.647 arr/h   96.7 std 0.34 2613s
+[ 725] steps 5,368,000 stage 2 rew +0.105 arr   20 coll   8 to   0 succ 0.714 arr/h   87.9 std 0.34 2633s
+[ 730] steps 5,408,960 stage 2 rew +0.105 arr   15 coll   5 to   0 succ 0.750 arr/h   65.9 std 0.34 2656s
+[ 735] steps 5,449,920 stage 2 rew +0.085 arr   11 coll   2 to   0 succ 0.846 arr/h   48.3 std 0.34 2675s
+[ 740] steps 5,490,880 stage 2 rew +0.104 arr   10 coll   4 to   0 succ 0.714 arr/h   44.0 std 0.34 2696s
+[ 745] steps 5,531,840 stage 2 rew +0.080 arr   12 coll   4 to   3 succ 0.632 arr/h   52.7 std 0.34 2714s
+[ 750] steps 5,572,800 stage 2 rew +0.091 arr   13 coll   4 to   0 succ 0.765 arr/h   57.1 std 0.34 2734s
+[ 755] steps 5,613,760 stage 2 rew +0.078 arr   13 coll   2 to   3 succ 0.722 arr/h   57.1 std 0.34 2754s
+[ 760] steps 5,654,720 stage 2 rew +0.086 arr   21 coll   4 to   3 succ 0.750 arr/h   92.3 std 0.33 2775s
+[ 765] steps 5,695,680 stage 2 rew +0.080 arr   18 coll   9 to   1 succ 0.643 arr/h   79.1 std 0.33 2797s
+[ 770] steps 5,736,640 stage 2 rew +0.089 arr   13 coll   6 to   1 succ 0.650 arr/h   57.1 std 0.33 2817s
+[ 775] steps 5,777,600 stage 2 rew +0.117 arr   18 coll   2 to   0 succ 0.900 arr/h   79.1 std 0.33 2840s
+[ 780] steps 5,818,560 stage 2 rew +0.102 arr   12 coll   0 to   1 succ 0.923 arr/h   52.7 std 0.33 2860s
+[ 785] steps 5,859,520 stage 2 rew +0.113 arr   13 coll   1 to   1 succ 0.867 arr/h   57.1 std 0.33 2879s
+[ 790] steps 5,900,480 stage 2 rew +0.109 arr   24 coll   2 to   0 succ 0.923 arr/h  105.5 std 0.33 2900s
+[ 795] steps 5,941,440 stage 2 rew +0.089 arr   12 coll   5 to   0 succ 0.706 arr/h   52.7 std 0.33 2918s
+[ 800] steps 5,982,400 stage 2 rew +0.072 arr   16 coll   8 to   0 succ 0.667 arr/h   70.3 std 0.33 2938s
+[ 805] steps 6,023,360 stage 2 rew +0.105 arr   20 coll   2 to   0 succ 0.909 arr/h   87.9 std 0.32 2959s
+[ 810] steps 6,064,320 stage 2 rew +0.105 arr   20 coll   7 to   0 succ 0.741 arr/h   87.9 std 0.32 2981s
+[ 815] steps 6,105,280 stage 2 rew +0.106 arr   21 coll   6 to   0 succ 0.778 arr/h   92.3 std 0.32 3000s
+[ 820] steps 6,146,240 stage 2 rew +0.097 arr   16 coll   5 to   1 succ 0.727 arr/h   70.3 std 0.32 3023s
+  → 커리큘럼 단계 3 로 진행
+[ 825] steps 6,187,200 stage 3 rew +0.069 arr   13 coll  12 to   0 succ 0.520 arr/h   57.1 std 0.32 3044s
+[ 830] steps 6,228,160 stage 3 rew +0.095 arr   18 coll   8 to   0 succ 0.692 arr/h   79.1 std 0.32 3066s
+[ 835] steps 6,269,120 stage 3 rew +0.078 arr   24 coll  11 to   0 succ 0.686 arr/h  105.5 std 0.31 3089s
+[ 840] steps 6,310,080 stage 3 rew +0.072 arr   18 coll   6 to   0 succ 0.750 arr/h   79.1 std 0.32 3114s
+[ 845] steps 6,351,040 stage 3 rew +0.067 arr   13 coll  10 to   0 succ 0.565 arr/h   57.1 std 0.31 3133s
+[ 850] steps 6,392,000 stage 3 rew +0.074 arr   17 coll  11 to   0 succ 0.607 arr/h   74.7 std 0.31 3156s
+[ 855] steps 6,432,960 stage 3 rew +0.060 arr    8 coll  11 to   0 succ 0.421 arr/h   35.2 std 0.32 3183s
+[ 860] steps 6,473,920 stage 3 rew +0.082 arr   20 coll   7 to   0 succ 0.741 arr/h   87.9 std 0.31 3204s
+[ 865] steps 6,514,880 stage 3 rew +0.066 arr   17 coll   8 to   1 succ 0.654 arr/h   74.7 std 0.31 3225s
+[ 870] steps 6,555,840 stage 3 rew +0.082 arr   16 coll   6 to   0 succ 0.727 arr/h   70.3 std 0.31 3250s
+[ 875] steps 6,596,800 stage 3 rew +0.071 arr   17 coll   9 to   0 succ 0.654 arr/h   74.7 std 0.31 3270s
+[ 880] steps 6,637,760 stage 3 rew +0.074 arr   21 coll  12 to   0 succ 0.636 arr/h   92.3 std 0.31 3294s
+[ 885] steps 6,678,720 stage 3 rew +0.071 arr   14 coll   2 to   3 succ 0.737 arr/h   61.5 std 0.31 3313s
+[ 890] steps 6,719,680 stage 3 rew +0.057 arr    8 coll   3 to   5 succ 0.500 arr/h   35.2 std 0.31 3335s
+[ 895] steps 6,760,640 stage 3 rew +0.065 arr   20 coll   9 to   1 succ 0.667 arr/h   87.9 std 0.31 3354s
+[ 900] steps 6,801,600 stage 3 rew +0.070 arr   14 coll   5 to   0 succ 0.737 arr/h   61.5 std 0.31 3376s
+[ 905] steps 6,842,560 stage 3 rew +0.080 arr   20 coll   8 to   1 succ 0.690 arr/h   87.9 std 0.31 3395s
+[ 910] steps 6,883,520 stage 3 rew +0.074 arr   14 coll   6 to   3 succ 0.609 arr/h   61.5 std 0.31 3418s
+[ 915] steps 6,924,480 stage 3 rew +0.085 arr   17 coll   6 to   0 succ 0.739 arr/h   74.7 std 0.31 3438s
+[ 920] steps 6,965,440 stage 3 rew +0.054 arr   17 coll   9 to   2 succ 0.607 arr/h   74.7 std 0.31 3456s
+[ 925] steps 7,006,400 stage 3 rew +0.069 arr   17 coll   3 to   4 succ 0.708 arr/h   74.7 std 0.31 3482s
+[ 930] steps 7,047,360 stage 3 rew +0.089 arr   14 coll   3 to   0 succ 0.824 arr/h   61.5 std 0.31 3498s
+[ 935] steps 7,088,320 stage 3 rew +0.046 arr    8 coll  10 to   2 succ 0.400 arr/h   35.2 std 0.31 3516s
+[ 940] steps 7,129,280 stage 3 rew +0.077 arr   14 coll   5 to   1 succ 0.700 arr/h   61.5 std 0.31 3535s
+[ 945] steps 7,170,240 stage 3 rew +0.065 arr   11 coll   2 to   4 succ 0.647 arr/h   48.3 std 0.31 3551s
+[ 950] steps 7,211,200 stage 3 rew +0.099 arr   16 coll   2 to   0 succ 0.889 arr/h   70.3 std 0.31 3570s
+[ 955] steps 7,252,160 stage 3 rew +0.085 arr   23 coll   5 to   2 succ 0.767 arr/h  101.1 std 0.31 3588s
+[ 960] steps 7,293,120 stage 3 rew +0.031 arr    9 coll   3 to   8 succ 0.450 arr/h   39.5 std 0.31 3604s
+[ 965] steps 7,334,080 stage 3 rew +0.076 arr   16 coll   1 to   3 succ 0.800 arr/h   70.3 std 0.31 3622s
+[ 970] steps 7,375,040 stage 3 rew +0.026 arr   11 coll  10 to   8 succ 0.379 arr/h   48.3 std 0.31 3638s
+[ 975] steps 7,416,000 stage 3 rew +0.052 arr   11 coll  11 to   0 succ 0.500 arr/h   48.3 std 0.31 3655s
+[ 980] steps 7,456,960 stage 3 rew +0.024 arr    6 coll   6 to   5 succ 0.353 arr/h   26.4 std 0.30 3672s
+[ 985] steps 7,497,920 stage 3 rew +0.095 arr   18 coll   6 to   0 succ 0.750 arr/h   79.1 std 0.31 3691s
+[ 990] steps 7,538,880 stage 3 rew +0.057 arr   17 coll   3 to   2 succ 0.773 arr/h   74.7 std 0.30 3707s
+[ 995] steps 7,579,840 stage 3 rew +0.020 arr   11 coll   5 to  10 succ 0.423 arr/h   48.3 std 0.31 3722s
+[1000] steps 7,620,800 stage 3 rew +0.043 arr   15 coll   7 to   1 succ 0.652 arr/h   65.9 std 0.31 3739s
+[1005] steps 7,661,760 stage 3 rew +0.050 arr   13 coll   8 to   3 succ 0.542 arr/h   57.1 std 0.31 3758s
+[1010] steps 7,702,720 stage 3 rew +0.064 arr    7 coll   8 to   0 succ 0.467 arr/h   30.8 std 0.31 3777s
+[1015] steps 7,743,680 stage 3 rew +0.033 arr   16 coll  10 to   4 succ 0.533 arr/h   70.3 std 0.31 3795s
+[1020] steps 7,784,640 stage 3 rew +0.086 arr   12 coll   9 to   0 succ 0.571 arr/h   52.7 std 0.31 3813s
+[1025] steps 7,825,600 stage 3 rew +0.058 arr   12 coll   6 to   1 succ 0.632 arr/h   52.7 std 0.31 3830s
+[1030] steps 7,866,560 stage 3 rew +0.061 arr   18 coll  13 to   2 succ 0.545 arr/h   79.1 std 0.31 3851s
+[1035] steps 7,907,520 stage 3 rew +0.053 arr   17 coll  10 to   2 succ 0.586 arr/h   74.7 std 0.31 3870s
+[1040] steps 7,948,480 stage 3 rew +0.070 arr   17 coll   7 to   2 succ 0.654 arr/h   74.7 std 0.30 3890s
+[1045] steps 7,989,440 stage 3 rew +0.089 arr   15 coll   4 to   0 succ 0.789 arr/h   65.9 std 0.30 3909s
+[1050] steps 8,030,400 stage 3 rew +0.046 arr   15 coll   5 to   2 succ 0.682 arr/h   65.9 std 0.30 3925s
+[1055] steps 8,071,360 stage 3 rew +0.074 arr   10 coll   7 to   0 succ 0.588 arr/h   44.0 std 0.30 3943s
+[1060] steps 8,112,320 stage 3 rew +0.044 arr   18 coll   7 to   2 succ 0.667 arr/h   79.1 std 0.30 3962s
+[1065] steps 8,153,280 stage 3 rew +0.042 arr   12 coll   7 to   2 succ 0.571 arr/h   52.7 std 0.30 3982s
+[1070] steps 8,194,240 stage 3 rew +0.057 arr   16 coll  11 to   1 succ 0.571 arr/h   70.3 std 0.30 4003s
+[1075] steps 8,235,200 stage 3 rew +0.047 arr   10 coll   8 to   3 succ 0.476 arr/h   44.0 std 0.30 4023s
+[1080] steps 8,276,160 stage 3 rew +0.083 arr   13 coll   5 to   0 succ 0.722 arr/h   57.1 std 0.30 4040s
+[1085] steps 8,317,120 stage 3 rew +0.070 arr   18 coll   4 to   1 succ 0.783 arr/h   79.1 std 0.30 4058s
+[1090] steps 8,358,080 stage 3 rew +0.093 arr   19 coll   2 to   0 succ 0.905 arr/h   83.5 std 0.29 4078s
+[1095] steps 8,399,040 stage 3 rew +0.066 arr   20 coll   9 to   1 succ 0.667 arr/h   87.9 std 0.29 4096s
+[1100] steps 8,440,000 stage 3 rew +0.082 arr   17 coll   8 to   0 succ 0.680 arr/h   74.7 std 0.29 4117s
+[1105] steps 8,480,960 stage 3 rew +0.079 arr   14 coll   6 to   1 succ 0.667 arr/h   61.5 std 0.29 4136s
+[1110] steps 8,521,920 stage 3 rew +0.099 arr   15 coll   4 to   0 succ 0.789 arr/h   65.9 std 0.29 4159s
+[1115] steps 8,562,880 stage 3 rew +0.089 arr   19 coll   8 to   0 succ 0.704 arr/h   83.5 std 0.29 4179s
+[1120] steps 8,603,840 stage 3 rew +0.085 arr   16 coll   6 to   0 succ 0.727 arr/h   70.3 std 0.29 4201s
+[1125] steps 8,644,800 stage 3 rew +0.073 arr   17 coll  10 to   0 succ 0.630 arr/h   74.7 std 0.29 4223s
+[1130] steps 8,685,760 stage 3 rew +0.088 arr   25 coll   8 to   0 succ 0.758 arr/h  109.9 std 0.29 4244s
+[1135] steps 8,726,720 stage 3 rew +0.063 arr   22 coll  10 to   0 succ 0.688 arr/h   96.7 std 0.29 4265s
+[1140] steps 8,767,680 stage 3 rew +0.079 arr   20 coll  11 to   0 succ 0.645 arr/h   87.9 std 0.29 4287s
+[1145] steps 8,808,640 stage 3 rew +0.099 arr   18 coll   1 to   1 succ 0.900 arr/h   79.1 std 0.29 4308s
+[1150] steps 8,849,600 stage 3 rew +0.080 arr   16 coll   9 to   0 succ 0.640 arr/h   70.3 std 0.29 4329s
+[1155] steps 8,890,560 stage 3 rew +0.081 arr   27 coll   8 to   0 succ 0.771 arr/h  118.7 std 0.28 4351s
+[1160] steps 8,931,520 stage 3 rew +0.060 arr   13 coll  12 to   0 succ 0.520 arr/h   57.1 std 0.28 4371s
+[1165] steps 8,972,480 stage 3 rew +0.068 arr   23 coll  13 to   0 succ 0.639 arr/h  101.1 std 0.28 4390s
+[1170] steps 9,013,440 stage 3 rew +0.106 arr   22 coll   4 to   0 succ 0.846 arr/h   96.7 std 0.28 4414s
+[1175] steps 9,054,400 stage 3 rew +0.093 arr   13 coll   6 to   0 succ 0.684 arr/h   57.1 std 0.28 4433s
+[1180] steps 9,095,360 stage 3 rew +0.075 arr   17 coll   8 to   0 succ 0.680 arr/h   74.7 std 0.28 4457s
+[1185] steps 9,136,320 stage 3 rew +0.078 arr   12 coll  10 to   0 succ 0.545 arr/h   52.7 std 0.28 4475s
+[1190] steps 9,177,280 stage 3 rew +0.074 arr   18 coll   6 to   2 succ 0.692 arr/h   79.1 std 0.28 4494s
+[1195] steps 9,218,240 stage 3 rew +0.067 arr    9 coll   8 to   1 succ 0.500 arr/h   39.5 std 0.28 4515s
+[1200] steps 9,259,200 stage 3 rew +0.083 arr   23 coll   8 to   1 succ 0.719 arr/h  101.1 std 0.28 4536s
+[1205] steps 9,300,160 stage 3 rew +0.117 arr   13 coll   2 to   0 succ 0.867 arr/h   57.1 std 0.28 4559s
+[1210] steps 9,341,120 stage 3 rew +0.068 arr   11 coll  12 to   0 succ 0.478 arr/h   48.3 std 0.27 4581s
+[1215] steps 9,382,080 stage 3 rew +0.069 arr   25 coll  12 to   0 succ 0.676 arr/h  109.9 std 0.27 4600s
+[1220] steps 9,423,040 stage 3 rew +0.113 arr   16 coll   4 to   0 succ 0.800 arr/h   70.3 std 0.27 4622s
+[1225] steps 9,464,000 stage 3 rew +0.113 arr   24 coll   1 to   1 succ 0.923 arr/h  105.5 std 0.27 4642s
+[1230] steps 9,504,960 stage 3 rew +0.045 arr   13 coll  14 to   0 succ 0.481 arr/h   57.1 std 0.27 4664s
+[1235] steps 9,545,920 stage 3 rew +0.081 arr   19 coll   8 to   0 succ 0.704 arr/h   83.5 std 0.27 4687s
+[1240] steps 9,586,880 stage 3 rew +0.037 arr   23 coll  17 to   0 succ 0.575 arr/h  101.1 std 0.27 4710s
+[1245] steps 9,627,840 stage 3 rew +0.074 arr   16 coll  10 to   1 succ 0.593 arr/h   70.3 std 0.27 4731s
+[1250] steps 9,668,800 stage 3 rew +0.090 arr   23 coll   8 to   0 succ 0.742 arr/h  101.1 std 0.27 4754s
+[1255] steps 9,709,760 stage 3 rew +0.103 arr   12 coll   7 to   0 succ 0.632 arr/h   52.7 std 0.27 4776s
+[1260] steps 9,750,720 stage 3 rew +0.082 arr   22 coll  12 to   0 succ 0.647 arr/h   96.7 std 0.27 4799s
+[1265] steps 9,791,680 stage 3 rew +0.060 arr   12 coll   8 to   2 succ 0.545 arr/h   52.7 std 0.27 4828s
+[1270] steps 9,832,640 stage 3 rew +0.075 arr   19 coll  10 to   1 succ 0.633 arr/h   83.5 std 0.27 4848s
+[1275] steps 9,873,600 stage 3 rew +0.076 arr   17 coll   9 to   0 succ 0.654 arr/h   74.7 std 0.27 4871s
+[1280] steps 9,914,560 stage 3 rew +0.063 arr   14 coll  12 to   0 succ 0.538 arr/h   61.5 std 0.27 4894s
+[1285] steps 9,955,520 stage 3 rew +0.046 arr   11 coll  15 to   0 succ 0.423 arr/h   48.3 std 0.27 4915s
+[1290] steps 9,996,480 stage 3 rew +0.094 arr   16 coll   7 to   0 succ 0.696 arr/h   70.3 std 0.27 4938s
+[1295] steps 10,037,440 stage 3 rew +0.065 arr   17 coll  13 to   0 succ 0.567 arr/h   74.7 std 0.26 4958s
+[1300] steps 10,078,400 stage 3 rew +0.051 arr   24 coll  13 to   0 succ 0.649 arr/h  105.5 std 0.26 4981s
+[1305] steps 10,119,360 stage 3 rew +0.032 arr   11 coll  14 to   4 succ 0.379 arr/h   48.3 std 0.26 4999s
+[1310] steps 10,160,320 stage 3 rew +0.028 arr   13 coll   9 to   5 succ 0.481 arr/h   57.1 std 0.26 5021s
+[1315] steps 10,201,280 stage 3 rew +0.046 arr   19 coll  17 to   0 succ 0.528 arr/h   83.5 std 0.26 5043s
+[1320] steps 10,242,240 stage 3 rew +0.033 arr   13 coll  11 to   4 succ 0.464 arr/h   57.1 std 0.26 5063s
+[1325] steps 10,283,200 stage 3 rew +0.065 arr   13 coll   8 to   0 succ 0.619 arr/h   57.1 std 0.26 5084s
+[1330] steps 10,324,160 stage 3 rew +0.064 arr   14 coll  11 to   0 succ 0.560 arr/h   61.5 std 0.26 5106s
+[1335] steps 10,365,120 stage 3 rew +0.094 arr   24 coll   6 to   0 succ 0.800 arr/h  105.5 std 0.26 5126s
+[1340] steps 10,406,080 stage 3 rew +0.087 arr   20 coll   8 to   1 succ 0.690 arr/h   87.9 std 0.26 5150s
+[1345] steps 10,447,040 stage 3 rew +0.074 arr   16 coll   8 to   3 succ 0.593 arr/h   70.3 std 0.26 5173s
+[1350] steps 10,488,000 stage 3 rew +0.081 arr   23 coll  11 to   0 succ 0.676 arr/h  101.1 std 0.26 5196s
+[1355] steps 10,528,960 stage 3 rew +0.100 arr   16 coll   3 to   0 succ 0.842 arr/h   70.3 std 0.26 5218s
+[1360] steps 10,569,920 stage 3 rew +0.111 arr   17 coll   7 to   0 succ 0.708 arr/h   74.7 std 0.26 5242s
+[1365] steps 10,610,880 stage 3 rew +0.081 arr   17 coll   7 to   2 succ 0.654 arr/h   74.7 std 0.26 5263s
+[1370] steps 10,651,840 stage 3 rew +0.054 arr   16 coll  14 to   1 succ 0.516 arr/h   70.3 std 0.26 5286s
+[1375] steps 10,692,800 stage 3 rew +0.086 arr   17 coll   8 to   0 succ 0.680 arr/h   74.7 std 0.26 5308s
+[1380] steps 10,733,760 stage 3 rew +0.090 arr   23 coll  10 to   0 succ 0.697 arr/h  101.1 std 0.26 5328s
+[1385] steps 10,774,720 stage 3 rew +0.075 arr   15 coll  11 to   0 succ 0.577 arr/h   65.9 std 0.26 5351s
+[1390] steps 10,815,680 stage 3 rew +0.083 arr   22 coll  12 to   0 succ 0.647 arr/h   96.7 std 0.26 5376s
+[1395] steps 10,856,640 stage 3 rew +0.101 arr   18 coll   9 to   0 succ 0.667 arr/h   79.1 std 0.25 5398s
+[1400] steps 10,897,600 stage 3 rew +0.097 arr   21 coll   8 to   0 succ 0.724 arr/h   92.3 std 0.26 5422s
+[1405] steps 10,938,560 stage 3 rew +0.112 arr   20 coll   3 to   0 succ 0.870 arr/h   87.9 std 0.25 5444s
+[1410] steps 10,979,520 stage 3 rew +0.107 arr   17 coll   5 to   0 succ 0.773 arr/h   74.7 std 0.25 5468s
+[1415] steps 11,020,480 stage 3 rew +0.064 arr   16 coll  15 to   0 succ 0.516 arr/h   70.3 std 0.25 5490s
+[1420] steps 11,061,440 stage 3 rew +0.097 arr   25 coll   9 to   0 succ 0.735 arr/h  109.9 std 0.25 5516s
+[1425] steps 11,102,400 stage 3 rew +0.095 arr   20 coll   9 to   0 succ 0.690 arr/h   87.9 std 0.25 5541s
+[1430] steps 11,143,360 stage 3 rew +0.073 arr   10 coll  12 to   0 succ 0.455 arr/h   44.0 std 0.25 5566s
+[1435] steps 11,184,320 stage 3 rew +0.073 arr   12 coll  11 to   0 succ 0.522 arr/h   52.7 std 0.25 5589s
+[1440] steps 11,225,280 stage 3 rew +0.071 arr   18 coll  13 to   0 succ 0.581 arr/h   79.1 std 0.25 5614s
+[1445] steps 11,266,240 stage 3 rew +0.055 arr   17 coll  17 to   0 succ 0.500 arr/h   74.7 std 0.25 5637s
+[1450] steps 11,307,200 stage 3 rew +0.076 arr   19 coll  11 to   0 succ 0.633 arr/h   83.5 std 0.25 5661s
+[1455] steps 11,348,160 stage 3 rew +0.065 arr   14 coll  12 to   0 succ 0.538 arr/h   61.5 std 0.25 5688s
+[1460] steps 11,389,120 stage 3 rew +0.065 arr   17 coll  15 to   0 succ 0.531 arr/h   74.7 std 0.25 5712s
+[1465] steps 11,430,080 stage 3 rew +0.094 arr   12 coll   4 to   0 succ 0.750 arr/h   52.7 std 0.25 5738s
+[1470] steps 11,471,040 stage 3 rew +0.082 arr   23 coll   9 to   0 succ 0.719 arr/h  101.1 std 0.24 5759s
+[1475] steps 11,512,000 stage 3 rew +0.101 arr   19 coll   5 to   0 succ 0.792 arr/h   83.5 std 0.25 5781s
+[1480] steps 11,552,960 stage 3 rew +0.077 arr   14 coll  11 to   0 succ 0.560 arr/h   61.5 std 0.25 5801s
+[1485] steps 11,593,920 stage 3 rew +0.062 arr   21 coll  15 to   0 succ 0.583 arr/h   92.3 std 0.24 5828s
+[1490] steps 11,634,880 stage 3 rew +0.109 arr   25 coll   4 to   0 succ 0.862 arr/h  109.9 std 0.24 5850s
+[1495] steps 11,675,840 stage 3 rew +0.078 arr   21 coll  11 to   0 succ 0.656 arr/h   92.3 std 0.24 5870s
+[1500] steps 11,716,800 stage 3 rew +0.070 arr   15 coll   9 to   0 succ 0.625 arr/h   65.9 std 0.24 5892s
+[1505] steps 11,757,760 stage 3 rew +0.081 arr   18 coll   8 to   0 succ 0.692 arr/h   79.1 std 0.24 5911s
+[1510] steps 11,798,720 stage 3 rew +0.067 arr   19 coll   9 to   0 succ 0.679 arr/h   83.5 std 0.24 5932s
+[1515] steps 11,839,680 stage 3 rew +0.083 arr   21 coll   9 to   0 succ 0.700 arr/h   92.3 std 0.24 5954s
+[1520] steps 11,880,640 stage 3 rew +0.116 arr   22 coll   2 to   0 succ 0.917 arr/h   96.7 std 0.24 5976s
+[1525] steps 11,921,600 stage 3 rew +0.087 arr   17 coll   9 to   0 succ 0.654 arr/h   74.7 std 0.24 6000s
+[1530] steps 11,962,560 stage 3 rew +0.095 arr   25 coll   4 to   1 succ 0.833 arr/h  109.9 std 0.24 6019s
+[1535] steps 12,003,520 stage 3 rew +0.072 arr   14 coll   8 to   0 succ 0.636 arr/h   61.5 std 0.24 6042s
+[1540] steps 12,044,480 stage 3 rew +0.103 arr   16 coll   2 to   0 succ 0.889 arr/h   70.3 std 0.24 6064s
+[1545] steps 12,085,440 stage 3 rew +0.045 arr   18 coll  15 to   0 succ 0.545 arr/h   79.1 std 0.24 6086s
+[1550] steps 12,126,400 stage 3 rew +0.074 arr   15 coll   6 to   2 succ 0.652 arr/h   65.9 std 0.24 6112s
+[1555] steps 12,167,360 stage 3 rew +0.043 arr   21 coll  11 to   2 succ 0.618 arr/h   92.3 std 0.24 6131s
+  → 커리큘럼 단계 4 로 진행
+[1560] steps 12,208,320 stage 4 rew +0.017 arr    9 coll  20 to   0 succ 0.310 arr/h   39.5 std 0.24 6158s
+[1565] steps 12,249,280 stage 4 rew +0.009 arr   18 coll  18 to   0 succ 0.500 arr/h   79.1 std 0.24 6178s
+[1570] steps 12,290,240 stage 4 rew +0.028 arr    8 coll  13 to   0 succ 0.381 arr/h   35.2 std 0.24 6205s
+[1575] steps 12,331,200 stage 4 rew +0.036 arr   14 coll  16 to   0 succ 0.467 arr/h   61.5 std 0.23 6226s
+[1580] steps 12,372,160 stage 4 rew +0.003 arr   16 coll  21 to   1 succ 0.421 arr/h   70.3 std 0.23 6251s
+[1585] steps 12,413,120 stage 4 rew +0.011 arr   10 coll  21 to   0 succ 0.323 arr/h   44.0 std 0.23 6278s
+[1590] steps 12,454,080 stage 4 rew +0.013 arr   18 coll  22 to   0 succ 0.450 arr/h   79.1 std 0.23 6303s
+[1595] steps 12,495,040 stage 4 rew +0.059 arr   19 coll  14 to   0 succ 0.576 arr/h   83.5 std 0.23 6328s
+[1600] steps 12,536,000 stage 4 rew +0.038 arr   19 coll  17 to   0 succ 0.528 arr/h   83.5 std 0.23 6353s
+[1605] steps 12,576,960 stage 4 rew +0.017 arr   10 coll  19 to   0 succ 0.345 arr/h   44.0 std 0.23 6378s
+[1610] steps 12,617,920 stage 4 rew +0.033 arr   17 coll  17 to   0 succ 0.500 arr/h   74.7 std 0.23 6401s
+[1615] steps 12,658,880 stage 4 rew +0.054 arr   11 coll  12 to   0 succ 0.478 arr/h   48.3 std 0.23 6427s
+[1620] steps 12,699,840 stage 4 rew -0.002 arr   15 coll  24 to   0 succ 0.385 arr/h   65.9 std 0.23 6449s
+[1625] steps 12,740,800 stage 4 rew +0.057 arr   19 coll  12 to   0 succ 0.613 arr/h   83.5 std 0.23 6472s
+[1630] steps 12,781,760 stage 4 rew +0.034 arr    8 coll  16 to   0 succ 0.333 arr/h   35.2 std 0.23 6494s
+[1635] steps 12,822,720 stage 4 rew +0.039 arr   14 coll  17 to   0 succ 0.452 arr/h   61.5 std 0.22 6517s
+[1640] steps 12,863,680 stage 4 rew +0.060 arr    7 coll   8 to   0 succ 0.467 arr/h   30.8 std 0.22 6541s
+[1645] steps 12,904,640 stage 4 rew +0.033 arr   14 coll  15 to   0 succ 0.483 arr/h   61.5 std 0.22 6561s
+[1650] steps 12,945,600 stage 4 rew +0.032 arr   22 coll  17 to   0 succ 0.564 arr/h   96.7 std 0.22 6582s
+[1655] steps 12,986,560 stage 4 rew +0.043 arr   20 coll  14 to   1 succ 0.571 arr/h   87.9 std 0.22 6607s
+[1660] steps 13,027,520 stage 4 rew +0.037 arr   23 coll  18 to   0 succ 0.561 arr/h  101.1 std 0.22 6632s
+[1665] steps 13,068,480 stage 4 rew +0.035 arr   15 coll  17 to   0 succ 0.469 arr/h   65.9 std 0.22 6656s
+[1670] steps 13,109,440 stage 4 rew +0.032 arr   17 coll  15 to   0 succ 0.531 arr/h   74.7 std 0.22 6681s
+[1675] steps 13,150,400 stage 4 rew +0.041 arr   19 coll  14 to   0 succ 0.576 arr/h   83.5 std 0.22 6706s
+[1680] steps 13,191,360 stage 4 rew +0.042 arr   19 coll  12 to   0 succ 0.613 arr/h   83.5 std 0.22 6725s
+[1685] steps 13,232,320 stage 4 rew +0.044 arr   16 coll  12 to   1 succ 0.552 arr/h   70.3 std 0.22 6747s
+[1690] steps 13,273,280 stage 4 rew +0.030 arr   14 coll  17 to   0 succ 0.452 arr/h   61.5 std 0.22 6768s
+[1695] steps 13,314,240 stage 4 rew +0.027 arr   12 coll  15 to   0 succ 0.444 arr/h   52.7 std 0.22 6794s
+[1700] steps 13,355,200 stage 4 rew +0.035 arr   16 coll  15 to   0 succ 0.516 arr/h   70.3 std 0.22 6817s
+[1705] steps 13,396,160 stage 4 rew +0.008 arr   11 coll  16 to   2 succ 0.379 arr/h   48.3 std 0.21 6840s
+[1710] steps 13,437,120 stage 4 rew -0.012 arr    7 coll  15 to   2 succ 0.292 arr/h   30.8 std 0.21 6861s
+[1715] steps 13,478,080 stage 4 rew +0.046 arr   19 coll   7 to   2 succ 0.679 arr/h   83.5 std 0.21 6881s
+[1720] steps 13,519,040 stage 4 rew +0.027 arr   20 coll  16 to   0 succ 0.556 arr/h   87.9 std 0.21 6905s
+[1725] steps 13,560,000 stage 4 rew +0.001 arr   14 coll  23 to   0 succ 0.378 arr/h   61.5 std 0.21 6928s
+[1730] steps 13,600,960 stage 4 rew +0.030 arr   17 coll  13 to   0 succ 0.567 arr/h   74.7 std 0.21 6951s
+[1735] steps 13,641,920 stage 4 rew +0.033 arr   12 coll  16 to   0 succ 0.429 arr/h   52.7 std 0.22 6975s
+[1740] steps 13,682,880 stage 4 rew +0.044 arr   13 coll  13 to   0 succ 0.500 arr/h   57.1 std 0.21 6998s
+[1745] steps 13,723,840 stage 4 rew +0.040 arr   22 coll  13 to   1 succ 0.611 arr/h   96.7 std 0.21 7023s
+[1750] steps 13,764,800 stage 4 rew +0.024 arr   11 coll  15 to   0 succ 0.423 arr/h   48.3 std 0.21 7046s
+[1755] steps 13,805,760 stage 4 rew +0.006 arr   19 coll  21 to   0 succ 0.475 arr/h   83.5 std 0.21 7069s
+[1760] steps 13,846,720 stage 4 rew +0.060 arr   14 coll   8 to   0 succ 0.636 arr/h   61.5 std 0.21 7091s
+[1765] steps 13,887,680 stage 4 rew +0.023 arr   17 coll  19 to   0 succ 0.472 arr/h   74.7 std 0.21 7116s
+[1770] steps 13,928,640 stage 4 rew +0.029 arr   15 coll  20 to   0 succ 0.429 arr/h   65.9 std 0.21 7138s
+[1775] steps 13,969,600 stage 4 rew +0.064 arr   16 coll   7 to   0 succ 0.696 arr/h   70.3 std 0.21 7158s
+[1780] steps 14,010,560 stage 4 rew +0.059 arr   17 coll  11 to   0 succ 0.607 arr/h   74.7 std 0.21 7179s
+[1785] steps 14,051,520 stage 4 rew +0.042 arr   15 coll  14 to   1 succ 0.500 arr/h   65.9 std 0.21 7204s
+[1790] steps 14,092,480 stage 4 rew +0.011 arr   16 coll  18 to   2 succ 0.444 arr/h   70.3 std 0.21 7223s
+[1795] steps 14,133,440 stage 4 rew +0.034 arr   14 coll  15 to   0 succ 0.483 arr/h   61.5 std 0.21 7248s
+[1800] steps 14,174,400 stage 4 rew +0.024 arr   15 coll  17 to   1 succ 0.455 arr/h   65.9 std 0.21 7270s
+[1805] steps 14,215,360 stage 4 rew +0.015 arr   11 coll  20 to   0 succ 0.355 arr/h   48.3 std 0.21 7295s
+[1810] steps 14,256,320 stage 4 rew +0.019 arr   14 coll  19 to   1 succ 0.412 arr/h   61.5 std 0.21 7320s
+[1815] steps 14,297,280 stage 4 rew +0.049 arr   12 coll   8 to   1 succ 0.571 arr/h   52.7 std 0.21 7341s
+[1820] steps 14,338,240 stage 4 rew +0.006 arr   16 coll  18 to   0 succ 0.471 arr/h   70.3 std 0.21 7362s
+[1825] steps 14,379,200 stage 4 rew +0.051 arr   18 coll  10 to   0 succ 0.643 arr/h   79.1 std 0.21 7384s
+[1830] steps 14,420,160 stage 4 rew +0.041 arr   14 coll  13 to   0 succ 0.519 arr/h   61.5 std 0.21 7408s
+[1835] steps 14,461,120 stage 4 rew +0.043 arr   18 coll  10 to   1 succ 0.621 arr/h   79.1 std 0.21 7430s
+[1840] steps 14,502,080 stage 4 rew +0.037 arr    8 coll  12 to   0 succ 0.400 arr/h   35.2 std 0.21 7453s
+[1845] steps 14,543,040 stage 4 rew +0.056 arr   14 coll   8 to   3 succ 0.560 arr/h   61.5 std 0.21 7475s
+[1850] steps 14,584,000 stage 4 rew +0.054 arr   12 coll   6 to   3 succ 0.571 arr/h   52.7 std 0.21 7498s
+[1855] steps 14,624,960 stage 4 rew +0.028 arr   23 coll  18 to   3 succ 0.523 arr/h  101.1 std 0.21 7521s
+[1860] steps 14,665,920 stage 4 rew +0.036 arr   16 coll  17 to   1 succ 0.471 arr/h   70.3 std 0.21 7544s
+[1865] steps 14,706,880 stage 4 rew +0.030 arr   16 coll  17 to   0 succ 0.485 arr/h   70.3 std 0.20 7568s
+[1870] steps 14,747,840 stage 4 rew +0.032 arr   14 coll  14 to   2 succ 0.467 arr/h   61.5 std 0.20 7589s
+[1875] steps 14,788,800 stage 4 rew +0.026 arr    9 coll  12 to   1 succ 0.409 arr/h   39.5 std 0.20 7610s
+[1880] steps 14,829,760 stage 4 rew +0.015 arr   11 coll  15 to   2 succ 0.393 arr/h   48.3 std 0.20 7628s
+[1885] steps 14,870,720 stage 4 rew +0.065 arr   21 coll  10 to   1 succ 0.656 arr/h   92.3 std 0.20 7651s
+[1890] steps 14,911,680 stage 4 rew +0.089 arr   14 coll   3 to   2 succ 0.737 arr/h   61.5 std 0.20 7673s
+[1895] steps 14,952,640 stage 4 rew +0.055 arr   18 coll  11 to   0 succ 0.621 arr/h   79.1 std 0.20 7697s
+[1900] steps 14,993,600 stage 4 rew +0.065 arr    8 coll  10 to   0 succ 0.444 arr/h   35.2 std 0.20 7721s
+[1905] steps 15,034,560 stage 4 rew +0.017 arr   21 coll  20 to   2 succ 0.488 arr/h   92.3 std 0.20 7746s
+[1910] steps 15,075,520 stage 4 rew +0.045 arr   12 coll  11 to   0 succ 0.522 arr/h   52.7 std 0.20 7772s
+[1915] steps 15,116,480 stage 4 rew +0.014 arr   16 coll  19 to   1 succ 0.444 arr/h   70.3 std 0.20 7791s
+[1920] steps 15,157,440 stage 4 rew +0.033 arr   17 coll  16 to   0 succ 0.515 arr/h   74.7 std 0.20 7814s
+[1925] steps 15,198,400 stage 4 rew +0.032 arr   11 coll  13 to   2 succ 0.423 arr/h   48.3 std 0.20 7841s
+[1930] steps 15,239,360 stage 4 rew +0.019 arr   16 coll  14 to   2 succ 0.500 arr/h   70.3 std 0.20 7862s
+[1935] steps 15,280,320 stage 4 rew +0.051 arr   15 coll  13 to   0 succ 0.536 arr/h   65.9 std 0.20 7882s
+[1940] steps 15,321,280 stage 4 rew +0.006 arr   14 coll  18 to   2 succ 0.412 arr/h   61.5 std 0.20 7901s
+[1945] steps 15,362,240 stage 4 rew +0.046 arr   16 coll  11 to   0 succ 0.593 arr/h   70.3 std 0.20 7924s
+[1950] steps 15,403,200 stage 4 rew +0.040 arr   14 coll  14 to   0 succ 0.500 arr/h   61.5 std 0.20 7947s
+[1955] steps 15,444,160 stage 4 rew +0.032 arr   19 coll   9 to   2 succ 0.633 arr/h   83.5 std 0.20 7969s
+[1960] steps 15,485,120 stage 4 rew +0.069 arr   17 coll   6 to   2 succ 0.680 arr/h   74.7 std 0.20 7991s
+[1965] steps 15,526,080 stage 4 rew +0.048 arr   15 coll  14 to   0 succ 0.517 arr/h   65.9 std 0.20 8014s
+[1970] steps 15,567,040 stage 4 rew +0.030 arr   13 coll  17 to   0 succ 0.433 arr/h   57.1 std 0.19 8036s
+[1975] steps 15,608,000 stage 4 rew +0.032 arr   12 coll  15 to   1 succ 0.429 arr/h   52.7 std 0.19 8055s
+[1980] steps 15,648,960 stage 4 rew +0.051 arr   15 coll   8 to   0 succ 0.652 arr/h   65.9 std 0.19 8077s
+[1985] steps 15,689,920 stage 4 rew +0.033 arr   15 coll  13 to   1 succ 0.517 arr/h   65.9 std 0.19 8096s
+[1990] steps 15,730,880 stage 4 rew +0.015 arr   10 coll  17 to   3 succ 0.333 arr/h   44.0 std 0.19 8112s
+[1995] steps 15,771,840 stage 4 rew +0.021 arr   16 coll  17 to   0 succ 0.485 arr/h   70.3 std 0.19 8133s
+[2000] steps 15,812,800 stage 4 rew +0.018 arr   12 coll  10 to   4 succ 0.462 arr/h   52.7 std 0.19 8153s
+[2005] steps 15,853,760 stage 4 rew +0.037 arr   14 coll   9 to   0 succ 0.609 arr/h   61.5 std 0.19 8170s
+[2010] steps 15,894,720 stage 4 rew +0.016 arr    8 coll  10 to   5 succ 0.348 arr/h   35.2 std 0.19 8191s
+[2015] steps 15,935,680 stage 4 rew +0.013 arr   12 coll   8 to   2 succ 0.545 arr/h   52.7 std 0.19 8208s
+[2020] steps 15,976,640 stage 4 rew +0.026 arr   13 coll   7 to   5 succ 0.520 arr/h   57.1 std 0.19 8224s
+[2025] steps 16,017,600 stage 4 rew +0.020 arr   11 coll   8 to   3 succ 0.500 arr/h   48.3 std 0.19 8241s
+[2030] steps 16,058,560 stage 4 rew +0.034 arr   15 coll   8 to   1 succ 0.625 arr/h   65.9 std 0.19 8258s
+[2035] steps 16,099,520 stage 4 rew +0.034 arr   23 coll  12 to   1 succ 0.639 arr/h  101.1 std 0.19 8276s
+[2040] steps 16,140,480 stage 4 rew +0.077 arr   14 coll   4 to   0 succ 0.778 arr/h   61.5 std 0.19 8294s
+[2045] steps 16,181,440 stage 4 rew +0.032 arr   14 coll   5 to   7 succ 0.538 arr/h   61.5 std 0.19 8311s
+[2050] steps 16,222,400 stage 4 rew -0.019 arr    5 coll   7 to   7 succ 0.263 arr/h   22.0 std 0.19 8331s
+[2055] steps 16,263,360 stage 4 rew +0.038 arr   11 coll   4 to   3 succ 0.611 arr/h   48.3 std 0.19 8348s
+[2060] steps 16,304,320 stage 4 rew -0.022 arr    8 coll  12 to  11 succ 0.258 arr/h   35.2 std 0.19 8366s
+[2065] steps 16,345,280 stage 4 rew +0.030 arr   11 coll   4 to   5 succ 0.550 arr/h   48.3 std 0.19 8385s
+[2070] steps 16,386,240 stage 4 rew +0.007 arr   10 coll   7 to   5 succ 0.455 arr/h   44.0 std 0.19 8400s
+[2075] steps 16,427,200 stage 4 rew +0.071 arr   13 coll   6 to   0 succ 0.684 arr/h   57.1 std 0.19 8417s
+[2080] steps 16,468,160 stage 4 rew +0.025 arr   17 coll   7 to   2 succ 0.654 arr/h   74.7 std 0.18 8434s
+[2085] steps 16,509,120 stage 4 rew +0.016 arr   13 coll   7 to   7 succ 0.481 arr/h   57.1 std 0.18 8448s
+[2090] steps 16,550,080 stage 4 rew +0.034 arr   13 coll   6 to   7 succ 0.500 arr/h   57.1 std 0.18 8467s
+[2095] steps 16,591,040 stage 4 rew +0.021 arr   12 coll   5 to   6 succ 0.522 arr/h   52.7 std 0.18 8488s
+[2100] steps 16,632,000 stage 4 rew +0.043 arr   12 coll   9 to   0 succ 0.571 arr/h   52.7 std 0.18 8504s
+[2105] steps 16,672,960 stage 4 rew +0.043 arr   16 coll   8 to   5 succ 0.552 arr/h   70.3 std 0.18 8523s
+[2110] steps 16,713,920 stage 4 rew +0.058 arr   11 coll   7 to   0 succ 0.611 arr/h   48.3 std 0.18 8542s
+[2115] steps 16,754,880 stage 4 rew +0.027 arr   15 coll  10 to   3 succ 0.536 arr/h   65.9 std 0.18 8559s
+[2120] steps 16,795,840 stage 4 rew +0.015 arr    8 coll   4 to   8 succ 0.400 arr/h   35.2 std 0.18 8577s
+[2125] steps 16,836,800 stage 4 rew +0.022 arr   12 coll   5 to   3 succ 0.600 arr/h   52.7 std 0.18 8595s
+[2130] steps 16,877,760 stage 4 rew +0.010 arr   10 coll   7 to   6 succ 0.435 arr/h   44.0 std 0.18 8612s
+[2135] steps 16,918,720 stage 4 rew +0.057 arr   13 coll   7 to   0 succ 0.650 arr/h   57.1 std 0.18 8634s
+[2140] steps 16,959,680 stage 4 rew -0.006 arr    5 coll   9 to   4 succ 0.278 arr/h   22.0 std 0.18 8651s
+[2145] steps 17,000,640 stage 4 rew +0.061 arr   13 coll   7 to   0 succ 0.650 arr/h   57.1 std 0.18 8672s
+[2150] steps 17,041,600 stage 4 rew +0.043 arr   19 coll   5 to   3 succ 0.704 arr/h   83.5 std 0.18 8690s
+[2155] steps 17,082,560 stage 4 rew +0.027 arr   11 coll   5 to   6 succ 0.500 arr/h   48.3 std 0.18 8706s
+[2160] steps 17,123,520 stage 4 rew +0.039 arr   13 coll   5 to   5 succ 0.565 arr/h   57.1 std 0.18 8725s
+[2165] steps 17,164,480 stage 4 rew +0.024 arr    9 coll   5 to   6 succ 0.450 arr/h   39.5 std 0.18 8743s
+[2170] steps 17,205,440 stage 4 rew +0.055 arr   14 coll   6 to   0 succ 0.700 arr/h   61.5 std 0.18 8760s
+[2175] steps 17,246,400 stage 4 rew +0.019 arr   11 coll   6 to   4 succ 0.524 arr/h   48.3 std 0.18 8776s
+[2180] steps 17,287,360 stage 4 rew +0.052 arr    8 coll   5 to   0 succ 0.615 arr/h   35.2 std 0.18 8794s
+[2185] steps 17,328,320 stage 4 rew +0.056 arr   14 coll   5 to   5 succ 0.583 arr/h   61.5 std 0.18 8811s
+[2190] steps 17,369,280 stage 4 rew +0.018 arr   12 coll  11 to   4 succ 0.444 arr/h   52.7 std 0.18 8830s
+[2195] steps 17,410,240 stage 4 rew +0.026 arr   11 coll   7 to   7 succ 0.440 arr/h   48.3 std 0.18 8846s
+[2200] steps 17,451,200 stage 4 rew +0.018 arr   21 coll  10 to   2 succ 0.636 arr/h   92.3 std 0.17 8862s
+[2205] steps 17,492,160 stage 4 rew +0.041 arr   14 coll   9 to   0 succ 0.609 arr/h   61.5 std 0.17 8882s
+[2210] steps 17,533,120 stage 4 rew +0.015 arr   16 coll   9 to   5 succ 0.533 arr/h   70.3 std 0.17 8900s
+[2215] steps 17,574,080 stage 4 rew +0.048 arr    6 coll   7 to   1 succ 0.429 arr/h   26.4 std 0.17 8919s
+[2220] steps 17,615,040 stage 4 rew +0.002 arr   11 coll  13 to   1 succ 0.440 arr/h   48.3 std 0.17 8937s
+[2225] steps 17,656,000 stage 4 rew +0.019 arr   10 coll   6 to  11 succ 0.370 arr/h   44.0 std 0.17 8955s
+[2230] steps 17,696,960 stage 4 rew +0.014 arr   12 coll  10 to   2 succ 0.500 arr/h   52.7 std 0.17 8970s
+[2235] steps 17,737,920 stage 4 rew +0.035 arr   13 coll   8 to   4 succ 0.520 arr/h   57.1 std 0.17 8990s
+[2240] steps 17,778,880 stage 4 rew +0.043 arr   12 coll   7 to   0 succ 0.632 arr/h   52.7 std 0.18 9009s
+[2245] steps 17,819,840 stage 4 rew +0.023 arr   10 coll   7 to   6 succ 0.435 arr/h   44.0 std 0.17 9029s
+[2250] steps 17,860,800 stage 4 rew +0.031 arr    4 coll   8 to   0 succ 0.333 arr/h   17.6 std 0.17 9051s
+[2255] steps 17,901,760 stage 4 rew +0.037 arr   14 coll   7 to   5 succ 0.538 arr/h   61.5 std 0.17 9069s
+[2260] steps 17,942,720 stage 4 rew +0.059 arr   10 coll   3 to   5 succ 0.556 arr/h   44.0 std 0.17 9090s
+[2265] steps 17,983,680 stage 4 rew +0.054 arr   17 coll   5 to   2 succ 0.708 arr/h   74.7 std 0.17 9108s
+[2270] steps 18,024,640 stage 4 rew -0.004 arr    7 coll   9 to   4 succ 0.350 arr/h   30.8 std 0.17 9128s
+[2275] steps 18,065,600 stage 4 rew +0.054 arr   13 coll   7 to   0 succ 0.650 arr/h   57.1 std 0.17 9148s
+[2280] steps 18,106,560 stage 4 rew +0.014 arr   10 coll   8 to   9 succ 0.370 arr/h   44.0 std 0.17 9166s
+[2285] steps 18,147,520 stage 4 rew +0.022 arr   13 coll   9 to   1 succ 0.565 arr/h   57.1 std 0.17 9184s
+[2290] steps 18,188,480 stage 4 rew +0.036 arr   12 coll   5 to   3 succ 0.600 arr/h   52.7 std 0.17 9202s
+[2295] steps 18,229,440 stage 4 rew +0.043 arr   15 coll   1 to  10 succ 0.577 arr/h   65.9 std 0.17 9217s
+[2300] steps 18,270,400 stage 4 rew +0.015 arr    9 coll  10 to   7 succ 0.346 arr/h   39.5 std 0.17 9236s
+[2305] steps 18,311,360 stage 4 rew +0.015 arr   12 coll   7 to   3 succ 0.545 arr/h   52.7 std 0.17 9252s
+[2310] steps 18,352,320 stage 4 rew +0.065 arr   11 coll   4 to   0 succ 0.733 arr/h   48.3 std 0.17 9271s
+[2315] steps 18,393,280 stage 4 rew +0.022 arr    9 coll   5 to   8 succ 0.409 arr/h   39.5 std 0.17 9288s
+[2320] steps 18,434,240 stage 4 rew +0.030 arr    7 coll   7 to   5 succ 0.368 arr/h   30.8 std 0.17 9307s
+[2325] steps 18,475,200 stage 4 rew +0.021 arr    7 coll   7 to   6 succ 0.350 arr/h   30.8 std 0.17 9323s
+[2330] steps 18,516,160 stage 4 rew +0.026 arr   13 coll   5 to  12 succ 0.433 arr/h   57.1 std 0.17 9340s
+[2335] steps 18,557,120 stage 4 rew +0.052 arr   13 coll   8 to   2 succ 0.565 arr/h   57.1 std 0.17 9360s
+[2340] steps 18,598,080 stage 4 rew +0.055 arr   18 coll   1 to   1 succ 0.900 arr/h   79.1 std 0.17 9378s
+[2345] steps 18,639,040 stage 4 rew +0.067 arr   12 coll   4 to   0 succ 0.750 arr/h   52.7 std 0.17 9397s
+[2350] steps 18,680,000 stage 4 rew +0.041 arr    8 coll   2 to   8 succ 0.444 arr/h   35.2 std 0.17 9415s
+[2355] steps 18,720,960 stage 4 rew +0.028 arr   11 coll  10 to   2 succ 0.478 arr/h   48.3 std 0.17 9434s
+[2360] steps 18,761,920 stage 4 rew +0.047 arr   12 coll   3 to   2 succ 0.706 arr/h   52.7 std 0.17 9450s
+[2365] steps 18,802,880 stage 4 rew +0.033 arr    8 coll   2 to   9 succ 0.421 arr/h   35.2 std 0.17 9469s
+[2370] steps 18,843,840 stage 4 rew +0.038 arr   11 coll   5 to   2 succ 0.611 arr/h   48.3 std 0.17 9491s
+[2375] steps 18,884,800 stage 4 rew +0.019 arr    4 coll   2 to  11 succ 0.235 arr/h   17.6 std 0.17 9510s
+[2380] steps 18,925,760 stage 4 rew +0.032 arr   11 coll   7 to   0 succ 0.611 arr/h   48.3 std 0.17 9527s
+[2385] steps 18,966,720 stage 4 rew +0.043 arr   19 coll   5 to   3 succ 0.704 arr/h   83.5 std 0.17 9544s
+[2390] steps 19,007,680 stage 4 rew +0.000 arr    8 coll   9 to   7 succ 0.333 arr/h   35.2 std 0.17 9565s
+[2395] steps 19,048,640 stage 4 rew +0.015 arr   13 coll  13 to   2 succ 0.464 arr/h   57.1 std 0.17 9581s
+[2400] steps 19,089,600 stage 4 rew +0.056 arr   10 coll   0 to   6 succ 0.625 arr/h   44.0 std 0.17 9599s
+[2405] steps 19,130,560 stage 4 rew +0.038 arr   14 coll   6 to   3 succ 0.609 arr/h   61.5 std 0.17 9618s
+[2410] steps 19,171,520 stage 4 rew +0.016 arr   10 coll   5 to  12 succ 0.370 arr/h   44.0 std 0.17 9634s
+[2415] steps 19,212,480 stage 4 rew +0.086 arr   13 coll   4 to   0 succ 0.765 arr/h   57.1 std 0.17 9655s
+[2420] steps 19,253,440 stage 4 rew +0.034 arr   12 coll   5 to   4 succ 0.571 arr/h   52.7 std 0.17 9671s
+[2425] steps 19,294,400 stage 4 rew +0.024 arr   14 coll   4 to   7 succ 0.560 arr/h   61.5 std 0.17 9690s
+[2430] steps 19,335,360 stage 4 rew +0.050 arr   18 coll   5 to   4 succ 0.667 arr/h   79.1 std 0.17 9707s
+[2435] steps 19,376,320 stage 4 rew +0.056 arr   13 coll   2 to   5 succ 0.650 arr/h   57.1 std 0.17 9725s
+[2440] steps 19,417,280 stage 4 rew +0.059 arr   11 coll   2 to   0 succ 0.846 arr/h   48.3 std 0.17 9741s
+[2445] steps 19,458,240 stage 4 rew +0.005 arr    9 coll   2 to  13 succ 0.375 arr/h   39.5 std 0.17 9755s
+[2450] steps 19,499,200 stage 4 rew +0.080 arr   19 coll   6 to   0 succ 0.760 arr/h   83.5 std 0.17 9773s
+[2455] steps 19,540,160 stage 4 rew +0.036 arr   15 coll   9 to   2 succ 0.577 arr/h   65.9 std 0.17 9792s
+[2460] steps 19,581,120 stage 4 rew +0.030 arr    8 coll   5 to  12 succ 0.320 arr/h   35.2 std 0.17 9810s
+[2465] steps 19,622,080 stage 4 rew +0.025 arr   10 coll   3 to   7 succ 0.500 arr/h   44.0 std 0.17 9829s
+[2470] steps 19,663,040 stage 4 rew +0.050 arr    9 coll   1 to   4 succ 0.643 arr/h   39.5 std 0.17 9846s
+[2475] steps 19,704,000 stage 4 rew +0.022 arr   11 coll  11 to   0 succ 0.500 arr/h   48.3 std 0.17 9863s
+[2480] steps 19,744,960 stage 4 rew +0.022 arr   10 coll   1 to  11 succ 0.455 arr/h   44.0 std 0.17 9880s
+[2485] steps 19,785,920 stage 4 rew +0.064 arr   16 coll   7 to   0 succ 0.696 arr/h   70.3 std 0.17 9896s
+[2490] steps 19,826,880 stage 4 rew +0.010 arr    6 coll   6 to   8 succ 0.300 arr/h   26.4 std 0.17 9913s
+[2495] steps 19,867,840 stage 4 rew +0.013 arr    7 coll   6 to   7 succ 0.350 arr/h   30.8 std 0.17 9929s
+[2500] steps 19,908,800 stage 4 rew +0.009 arr    9 coll   9 to   6 succ 0.375 arr/h   39.5 std 0.17 9946s
+[2505] steps 19,949,760 stage 4 rew +0.014 arr   12 coll   2 to  15 succ 0.414 arr/h   52.7 std 0.17 9964s
+[2510] steps 19,990,720 stage 4 rew +0.060 arr   14 coll   2 to   0 succ 0.875 arr/h   61.5 std 0.17 9980s
+[2515] steps 20,031,680 stage 4 rew +0.009 arr   10 coll   3 to   8 succ 0.476 arr/h   44.0 std 0.17 9996s
+[2520] steps 20,072,640 stage 4 rew +0.098 arr   14 coll   3 to   0 succ 0.824 arr/h   61.5 std 0.17 10013s
+[2525] steps 20,113,600 stage 4 rew +0.018 arr    8 coll   4 to   5 succ 0.471 arr/h   35.2 std 0.17 10030s
+[2530] steps 20,154,560 stage 4 rew +0.017 arr    8 coll   2 to  16 succ 0.308 arr/h   35.2 std 0.17 10049s
+[2535] steps 20,195,520 stage 4 rew +0.027 arr   10 coll   6 to   5 succ 0.476 arr/h   44.0 std 0.17 10070s
+[2540] steps 20,236,480 stage 4 rew +0.010 arr    7 coll   1 to  10 succ 0.389 arr/h   30.8 std 0.17 10086s
+[2545] steps 20,277,440 stage 4 rew +0.029 arr   13 coll  10 to   0 succ 0.565 arr/h   57.1 std 0.17 10103s
+[2550] steps 20,318,400 stage 4 rew +0.033 arr    9 coll   1 to   8 succ 0.500 arr/h   39.5 std 0.17 10120s
+[2555] steps 20,359,360 stage 4 rew +0.059 arr    8 coll   7 to   0 succ 0.533 arr/h   35.2 std 0.17 10137s
+[2560] steps 20,400,320 stage 4 rew +0.046 arr   11 coll   2 to   6 succ 0.579 arr/h   48.3 std 0.17 10154s
+[2565] steps 20,441,280 stage 4 rew +0.012 arr    8 coll   4 to  10 succ 0.364 arr/h   35.2 std 0.17 10168s
+[2570] steps 20,482,240 stage 4 rew +0.048 arr   16 coll   4 to   4 succ 0.667 arr/h   70.3 std 0.17 10184s
+[2575] steps 20,523,200 stage 4 rew +0.011 arr   11 coll   4 to   5 succ 0.550 arr/h   48.3 std 0.16 10201s
+[2580] steps 20,564,160 stage 4 rew +0.041 arr   13 coll   8 to   0 succ 0.619 arr/h   57.1 std 0.16 10219s
+[2585] steps 20,605,120 stage 4 rew -0.003 arr   11 coll   5 to  16 succ 0.344 arr/h   48.3 std 0.16 10234s
+[2590] steps 20,646,080 stage 4 rew +0.067 arr    6 coll   3 to   1 succ 0.600 arr/h   26.4 std 0.16 10254s
+[2595] steps 20,687,040 stage 4 rew +0.037 arr   17 coll   3 to   6 succ 0.654 arr/h   74.7 std 0.17 10272s
+[2600] steps 20,728,000 stage 4 rew +0.026 arr    8 coll   1 to   7 succ 0.500 arr/h   35.2 std 0.17 10288s
+[2605] steps 20,768,960 stage 4 rew +0.015 arr    9 coll   3 to  12 succ 0.375 arr/h   39.5 std 0.16 10304s
+[2610] steps 20,809,920 stage 4 rew +0.007 arr    8 coll   6 to   7 succ 0.381 arr/h   35.2 std 0.16 10320s
+[2615] steps 20,850,880 stage 4 rew +0.040 arr    9 coll   7 to   0 succ 0.562 arr/h   39.5 std 0.16 10337s
+[2620] steps 20,891,840 stage 4 rew +0.049 arr   18 coll   6 to   2 succ 0.692 arr/h   79.1 std 0.16 10355s
+[2625] steps 20,932,800 stage 4 rew +0.077 arr    9 coll   1 to   2 succ 0.750 arr/h   39.5 std 0.16 10371s
+[2630] steps 20,973,760 stage 4 rew +0.038 arr    9 coll   2 to   6 succ 0.529 arr/h   39.5 std 0.16 10387s
+[2635] steps 21,014,720 stage 4 rew +0.015 arr   11 coll   5 to  12 succ 0.393 arr/h   48.3 std 0.16 10404s
+[2640] steps 21,055,680 stage 4 rew +0.004 arr   11 coll  13 to   4 succ 0.393 arr/h   48.3 std 0.16 10423s
+[2645] steps 21,096,640 stage 4 rew +0.018 arr    8 coll   4 to   8 succ 0.400 arr/h   35.2 std 0.16 10439s
+[2650] steps 21,137,600 stage 4 rew +0.079 arr   14 coll   3 to   0 succ 0.824 arr/h   61.5 std 0.16 10458s
+[2655] steps 21,178,560 stage 4 rew +0.031 arr   11 coll   5 to   5 succ 0.524 arr/h   48.3 std 0.17 10474s
+[2660] steps 21,219,520 stage 4 rew +0.044 arr   11 coll   8 to   2 succ 0.524 arr/h   48.3 std 0.17 10490s
+[2665] steps 21,260,480 stage 4 rew +0.035 arr   19 coll   4 to   3 succ 0.731 arr/h   83.5 std 0.16 10506s
+[2670] steps 21,301,440 stage 4 rew -0.012 arr    8 coll  10 to  13 succ 0.258 arr/h   35.2 std 0.16 10523s
+[2675] steps 21,342,400 stage 4 rew +0.050 arr   15 coll   7 to   2 succ 0.625 arr/h   65.9 std 0.16 10540s
+[2680] steps 21,383,360 stage 4 rew +0.053 arr   14 coll   2 to   5 succ 0.667 arr/h   61.5 std 0.17 10558s
+[2685] steps 21,424,320 stage 4 rew +0.058 arr    8 coll   4 to   0 succ 0.667 arr/h   35.2 std 0.16 10576s
+[2690] steps 21,465,280 stage 4 rew +0.021 arr   13 coll   9 to   4 succ 0.500 arr/h   57.1 std 0.16 10595s
+[2695] steps 21,506,240 stage 4 rew +0.050 arr   15 coll   3 to   6 succ 0.625 arr/h   65.9 std 0.16 10615s
+[2700] steps 21,547,200 stage 4 rew +0.027 arr   11 coll   4 to   2 succ 0.647 arr/h   48.3 std 0.16 10631s
+[2705] steps 21,588,160 stage 4 rew +0.011 arr    9 coll   3 to  11 succ 0.391 arr/h   39.5 std 0.16 10647s
+[2710] steps 21,629,120 stage 4 rew +0.039 arr   13 coll   7 to   1 succ 0.619 arr/h   57.1 std 0.16 10666s
+[2715] steps 21,670,080 stage 4 rew +0.015 arr   13 coll   4 to   5 succ 0.591 arr/h   57.1 std 0.16 10682s
+[2720] steps 21,711,040 stage 4 rew +0.047 arr    8 coll   5 to   0 succ 0.615 arr/h   35.2 std 0.16 10698s
+[2725] steps 21,752,000 stage 4 rew +0.041 arr   13 coll   3 to   9 succ 0.520 arr/h   57.1 std 0.17 10717s
+[2730] steps 21,792,960 stage 4 rew -0.003 arr    4 coll  12 to   2 succ 0.222 arr/h   17.6 std 0.16 10733s
+[2735] steps 21,833,920 stage 4 rew +0.023 arr    9 coll   8 to   4 succ 0.429 arr/h   39.5 std 0.16 10749s
+[2740] steps 21,874,880 stage 4 rew +0.011 arr   13 coll   5 to  12 succ 0.433 arr/h   57.1 std 0.16 10768s
+[2745] steps 21,915,840 stage 4 rew +0.042 arr   10 coll   3 to   3 succ 0.625 arr/h   44.0 std 0.16 10784s
+[2750] steps 21,956,800 stage 4 rew +0.007 arr   11 coll   9 to   5 succ 0.440 arr/h   48.3 std 0.16 10804s
+[2755] steps 21,997,760 stage 4 rew +0.035 arr   14 coll  11 to   0 succ 0.560 arr/h   61.5 std 0.16 10824s
+[2760] steps 22,038,720 stage 4 rew +0.019 arr   10 coll  10 to   5 succ 0.400 arr/h   44.0 std 0.16 10845s
+[2765] steps 22,079,680 stage 4 rew +0.023 arr    9 coll   0 to  13 succ 0.409 arr/h   39.5 std 0.16 10864s
+[2770] steps 22,120,640 stage 4 rew +0.048 arr   10 coll   3 to   2 succ 0.667 arr/h   44.0 std 0.16 10882s
+[2775] steps 22,161,600 stage 4 rew +0.027 arr    7 coll   3 to  11 succ 0.333 arr/h   30.8 std 0.16 10898s
+[2780] steps 22,202,560 stage 4 rew +0.032 arr    7 coll   7 to   3 succ 0.412 arr/h   30.8 std 0.16 10918s
+[2785] steps 22,243,520 stage 4 rew +0.011 arr    6 coll   7 to   6 succ 0.316 arr/h   26.4 std 0.16 10938s
+[2790] steps 22,284,480 stage 4 rew +0.056 arr   10 coll   9 to   0 succ 0.526 arr/h   44.0 std 0.16 10956s
+[2795] steps 22,325,440 stage 4 rew -0.014 arr    7 coll   9 to   8 succ 0.292 arr/h   30.8 std 0.16 10973s
+[2800] steps 22,366,400 stage 4 rew +0.022 arr    8 coll   6 to   7 succ 0.381 arr/h   35.2 std 0.16 10991s
+[2805] steps 22,407,360 stage 4 rew +0.036 arr   14 coll   7 to   4 succ 0.560 arr/h   61.5 std 0.16 11007s
+[2810] steps 22,448,320 stage 4 rew +0.015 arr   10 coll   5 to  11 succ 0.385 arr/h   44.0 std 0.16 11022s
+[2815] steps 22,489,280 stage 4 rew +0.059 arr   15 coll   5 to   0 succ 0.750 arr/h   65.9 std 0.16 11040s
+[2820] steps 22,530,240 stage 4 rew +0.040 arr   13 coll   7 to   1 succ 0.619 arr/h   57.1 std 0.16 11057s
+[2825] steps 22,571,200 stage 4 rew +0.089 arr   10 coll   4 to   0 succ 0.714 arr/h   44.0 std 0.16 11076s
+[2830] steps 22,612,160 stage 4 rew +0.003 arr   11 coll  10 to   5 succ 0.423 arr/h   48.3 std 0.16 11097s
+[2835] steps 22,653,120 stage 4 rew +0.025 arr   13 coll   5 to   6 succ 0.542 arr/h   57.1 std 0.16 11115s
+[2840] steps 22,694,080 stage 4 rew +0.027 arr   12 coll   7 to   6 succ 0.480 arr/h   52.7 std 0.16 11132s
+[2845] steps 22,735,040 stage 4 rew +0.041 arr    7 coll   1 to   6 succ 0.500 arr/h   30.8 std 0.16 11148s
+[2850] steps 22,776,000 stage 4 rew +0.038 arr   10 coll   3 to   0 succ 0.769 arr/h   44.0 std 0.16 11164s
+[2855] steps 22,816,960 stage 4 rew +0.031 arr    8 coll   1 to   8 succ 0.471 arr/h   35.2 std 0.16 11182s
+[2860] steps 22,857,920 stage 4 rew +0.067 arr   15 coll   7 to   0 succ 0.682 arr/h   65.9 std 0.16 11200s
+[2865] steps 22,898,880 stage 4 rew +0.041 arr   12 coll   5 to   2 succ 0.632 arr/h   52.7 std 0.16 11216s
+[2870] steps 22,939,840 stage 4 rew +0.038 arr   16 coll   4 to   5 succ 0.640 arr/h   70.3 std 0.16 11234s
+[2875] steps 22,980,800 stage 4 rew +0.023 arr    9 coll   4 to   5 succ 0.500 arr/h   39.5 std 0.16 11253s
+[2880] steps 23,021,760 stage 4 rew -0.000 arr    7 coll   5 to  10 succ 0.318 arr/h   30.8 std 0.16 11269s
+[2885] steps 23,062,720 stage 4 rew +0.039 arr    9 coll   5 to   0 succ 0.643 arr/h   39.5 std 0.16 11285s
+[2890] steps 23,103,680 stage 4 rew +0.041 arr   11 coll   3 to   4 succ 0.611 arr/h   48.3 std 0.16 11303s
+[2895] steps 23,144,640 stage 4 rew +0.044 arr   12 coll  11 to   0 succ 0.522 arr/h   52.7 std 0.16 11321s
+[2900] steps 23,185,600 stage 4 rew +0.018 arr   17 coll  10 to   4 succ 0.548 arr/h   74.7 std 0.16 11339s
+[2905] steps 23,226,560 stage 4 rew +0.025 arr   15 coll   8 to   3 succ 0.577 arr/h   65.9 std 0.16 11355s
+[2910] steps 23,267,520 stage 4 rew +0.038 arr   23 coll  12 to   4 succ 0.590 arr/h  101.1 std 0.16 11375s
+[2915] steps 23,308,480 stage 4 rew +0.053 arr   15 coll   5 to   6 succ 0.577 arr/h   65.9 std 0.16 11395s
+[2920] steps 23,349,440 stage 4 rew +0.056 arr   15 coll   6 to   0 succ 0.714 arr/h   65.9 std 0.16 11412s
+[2925] steps 23,390,400 stage 4 rew +0.038 arr   15 coll   7 to   2 succ 0.625 arr/h   65.9 std 0.16 11431s
+[2930] steps 23,431,360 stage 4 rew +0.073 arr    8 coll   8 to   0 succ 0.500 arr/h   35.2 std 0.16 11450s
+[2935] steps 23,472,320 stage 4 rew +0.050 arr    8 coll   4 to   2 succ 0.571 arr/h   35.2 std 0.16 11469s
+[2940] steps 23,513,280 stage 4 rew +0.028 arr   11 coll  10 to   4 succ 0.440 arr/h   48.3 std 0.16 11487s
+[2945] steps 23,554,240 stage 4 rew +0.031 arr   15 coll   8 to   3 succ 0.577 arr/h   65.9 std 0.16 11505s
+[2950] steps 23,595,200 stage 4 rew +0.011 arr   15 coll  11 to   5 succ 0.484 arr/h   65.9 std 0.15 11523s
+[2955] steps 23,636,160 stage 4 rew +0.033 arr   12 coll   8 to   0 succ 0.600 arr/h   52.7 std 0.15 11539s
+[2960] steps 23,677,120 stage 4 rew +0.025 arr   10 coll   3 to   9 succ 0.455 arr/h   44.0 std 0.15 11555s
+[2965] steps 23,718,080 stage 4 rew +0.053 arr    8 coll   8 to   1 succ 0.471 arr/h   35.2 std 0.16 11573s
+[2970] steps 23,759,040 stage 4 rew +0.045 arr   11 coll   2 to   8 succ 0.524 arr/h   48.3 std 0.16 11591s
+[2975] steps 23,800,000 stage 4 rew +0.033 arr   12 coll   5 to   6 succ 0.522 arr/h   52.7 std 0.16 11607s
+[2980] steps 23,840,960 stage 4 rew +0.048 arr   16 coll   9 to   3 succ 0.571 arr/h   70.3 std 0.16 11626s
+[2985] steps 23,881,920 stage 4 rew +0.040 arr   13 coll   6 to   6 succ 0.520 arr/h   57.1 std 0.16 11645s
+[2990] steps 23,922,880 stage 4 rew +0.057 arr    8 coll   4 to   0 succ 0.667 arr/h   35.2 std 0.15 11664s
+[2995] steps 23,963,840 stage 4 rew +0.027 arr   14 coll   9 to   9 succ 0.438 arr/h   61.5 std 0.15 11682s
+[3000] steps 24,004,800 stage 4 rew +0.054 arr   11 coll   6 to   2 succ 0.579 arr/h   48.3 std 0.15 11699s
+[3005] steps 24,045,760 stage 4 rew +0.058 arr   13 coll   3 to   0 succ 0.812 arr/h   57.1 std 0.15 11718s
+[3010] steps 24,086,720 stage 4 rew +0.016 arr   10 coll   4 to  11 succ 0.400 arr/h   44.0 std 0.15 11736s
+[3015] steps 24,127,680 stage 4 rew +0.006 arr    8 coll  10 to   9 succ 0.296 arr/h   35.2 std 0.15 11754s
+[3020] steps 24,168,640 stage 4 rew +0.010 arr    7 coll   7 to   3 succ 0.412 arr/h   30.8 std 0.15 11773s
+[3025] steps 24,209,600 stage 4 rew +0.052 arr    4 coll   6 to   0 succ 0.400 arr/h   17.6 std 0.15 11792s
+[3030] steps 24,250,560 stage 4 rew -0.002 arr   10 coll  12 to  10 succ 0.312 arr/h   44.0 std 0.15 11808s
+[3035] steps 24,291,520 stage 4 rew +0.009 arr    4 coll  11 to   4 succ 0.211 arr/h   17.6 std 0.15 11826s
+[3040] steps 24,332,480 stage 4 rew +0.047 arr   13 coll   3 to   2 succ 0.722 arr/h   57.1 std 0.15 11842s
+[3045] steps 24,373,440 stage 4 rew +0.023 arr    7 coll   2 to  12 succ 0.333 arr/h   30.8 std 0.15 11860s
+[3050] steps 24,414,400 stage 4 rew +0.061 arr   12 coll   3 to   3 succ 0.667 arr/h   52.7 std 0.15 11878s
+[3055] steps 24,455,360 stage 4 rew +0.019 arr    9 coll   2 to  10 succ 0.429 arr/h   39.5 std 0.15 11896s
+[3060] steps 24,496,320 stage 4 rew +0.054 arr   11 coll   7 to   0 succ 0.611 arr/h   48.3 std 0.15 11913s
+[3065] steps 24,537,280 stage 4 rew +0.037 arr   10 coll   2 to   7 succ 0.526 arr/h   44.0 std 0.15 11933s
+[3070] steps 24,578,240 stage 4 rew +0.047 arr    8 coll   2 to   3 succ 0.615 arr/h   35.2 std 0.15 11948s
+[3075] steps 24,619,200 stage 4 rew +0.019 arr   10 coll   9 to   3 succ 0.455 arr/h   44.0 std 0.15 11964s
+[3080] steps 24,660,160 stage 4 rew +0.012 arr   14 coll  14 to   2 succ 0.467 arr/h   61.5 std 0.15 11981s
+[3085] steps 24,701,120 stage 4 rew +0.020 arr   11 coll   3 to   4 succ 0.611 arr/h   48.3 std 0.15 11998s
+[3090] steps 24,742,080 stage 4 rew +0.032 arr   13 coll   2 to   6 succ 0.619 arr/h   57.1 std 0.15 12015s
+[3095] steps 24,783,040 stage 4 rew +0.056 arr   12 coll   5 to   0 succ 0.706 arr/h   52.7 std 0.15 12035s
+[3100] steps 24,824,000 stage 4 rew +0.050 arr   14 coll   5 to   1 succ 0.700 arr/h   61.5 std 0.15 12052s
+[3105] steps 24,864,960 stage 4 rew +0.031 arr    5 coll   2 to   4 succ 0.455 arr/h   22.0 std 0.15 12068s
+[3110] steps 24,905,920 stage 4 rew +0.018 arr    8 coll   5 to   4 succ 0.471 arr/h   35.2 std 0.15 12083s
+[3115] steps 24,946,880 stage 4 rew +0.026 arr    6 coll   4 to   7 succ 0.353 arr/h   26.4 std 0.15 12099s
+[3120] steps 24,987,840 stage 4 rew +0.034 arr   13 coll   4 to   5 succ 0.591 arr/h   57.1 std 0.15 12117s
