@@ -1,9 +1,9 @@
 {
  "topic": "wh/v1/amr/AMR01/pose",
  "v": 1,
- "id": "f578d96326838b12",
- "ts": 1794999282.591,
- "t": 3.0,
+ "id": "f8ff5c9587cef71e",
+ "ts": 1795052285.539,
+ "t": 4.0,
  "src": "unity-sim",
  "type": "amr.pose",
  "corr": null,
@@ -13,7 +13,7 @@
   "theta": 3.1416,
   "v": 0.0,
   "w": 0.0,
-  "battery": 77.4,
+  "battery": 77.9,
   "load_kg": null,
   "node": "n_CHW1"
  }

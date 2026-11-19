@@ -114,30 +114,55 @@ namespace Warehouse.Mqtt
 
     public class AmrControl { public string action; public string drive_mode; public string charger; }
 
-    // ── 리프트 · 셔틀 · 버퍼 ───────────────────────────────────────────────
-    public class LiftCmd { public string cmd_id, job_id, action, pallet; public int level; }
+    // ── 랙(통로) · 리프트 · 셔틀 · 버퍼 ────────────────────────────────────
+    /// rack/{rail}/cmd. store = RequestStore(입고 버퍼의 팔레트), retrieve = RequestRetrieve(sku)
+    public class RackCmd
+    {
+        public string cmd_id, job_id, action, pallet, sku;
+        public double? weight_kg;
+    }
+
+    /// rack/{rail}/evt. event: accepted rejected started done failed. channel 은 accepted 부터, slot 은 done 에만.
+    public class RackEvt
+    {
+        public string @event, cmd_id, job_id, action, pallet, sku, channel;
+        public int? slot;            // 1~14 (01 = 통로 쪽 앞칸). 칸 ID 는 WhIds.Slot(channel, slot)
+        public string reason;
+    }
+
+    public class RackState
+    {
+        public int stored, capacity, pending;
+        public bool inbound_free;
+        public int total_stored, total_retrieved;
+        public double? avg_cycle_s;
+    }
+
+    /// channels 원소 = [채널 ID, SKU, 실제 수량, 가상 수량]
+    public class RackInventory
+    {
+        public List<JArray> channels = new List<JArray>();
+        public int stored, capacity;
+        public void Add(string channel, string sku, int count, int virtualCount) =>
+            channels.Add(new JArray(channel, sku, count, virtualCount));
+    }
 
     public class LiftState
     {
-        public string mode; public double level; public string pallet; public string cmd_id; public int queue;
-        public string error;
+        public string status;        // ShuttleRackSystem 상태 문자열 그대로
+        public double height;        // m, 바닥 윗면 기준 (버퍼 0.50, 단 n = 0.40 + 1.45(n-1))
+        public int? level;           // 단에 멈춰 있으면 1~10, 아니면 null
+        public string pallet, owner;
     }
 
-    public class ShuttleCmd
-    {
-        public string cmd_id, job_id, action, pallet, lane, to_lane;
-        public int? pos, to_pos;
-    }
-
-    public class Satellite { public string where; public string lane; public double? pos; }
+    public class Satellite { public string where = "docked"; public string channel; public double? depth_m; }
 
     public class ShuttleState
     {
-        public string mode; public double y; public Satellite satellite = new Satellite();
-        public string pallet; public string cmd_id; public int queue; public double? battery; public string error;
+        public bool busy; public string status; public int level; public double y;
+        public Satellite satellite = new Satellite();
+        public string pallet;
     }
-
-    public class DeviceEvt { public string @event, cmd_id, job_id, pallet, reason; }
 
     public class BufferState { public string[] slots = new string[5]; public bool blocked; }
 
@@ -156,7 +181,7 @@ namespace Warehouse.Mqtt
     // ── 스케줄러 → 시각화용 ───────────────────────────────────────────────
     public class InventorySnapshot
     {
-        public List<JArray> lanes;    // [레인 ID, SKU, 수량]
+        public List<JArray> channels; // [채널 ID, SKU, 수량]
         public int pallets, capacity, held;
     }
 

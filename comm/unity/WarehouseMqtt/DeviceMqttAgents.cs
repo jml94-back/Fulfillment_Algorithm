@@ -1,248 +1,177 @@
-// 리프트·셔틀·버퍼·도크·충전기 ↔ MQTT.
+// 랙(통로)·리프트·셔틀·버퍼·도크·충전기 ↔ MQTT.
 //
-// 리프트 (L1~L3)       구독 lift/{id}/cmd     발행 lift/{id}/state, lift/{id}/evt
-// 셔틀 세트 (MS-R1-LV01) 구독 shuttle/{id}/cmd  발행 shuttle/{id}/state, shuttle/{id}/evt
-// 버퍼 (L1-IN …)        발행 buffer/{id}/state  (슬롯이 바뀔 때 SetSlots 호출)
-// 도크 (IN1 … OUT6)     발행 dock/{id}/state, dock/{id}/evt, (입고) scale/SC-INn/reading
-// 충전기 (CHW1 …)       발행 charger/{id}/state
+// 랙 (R1~R3, ShuttleRackSystem 1개)  구독 rack/{rail}/cmd
+//                                    발행 rack/{rail}/evt, rack/{rail}/state, rack/{rail}/inventory
+//                                         lift/L{n}/state, shuttle/R{n}-Shuttle_L01~10/state, buffer/R{n}-IN|OUT/state
+// 도크 (IN1 … OUT6)                   발행 dock/{id}/state, dock/{id}/evt, (입고) scale/SC-INn/reading
+// 충전기 (CHW1 …)                     발행 charger/{id}/state
 //
-// 명령은 받은 순서(FIFO)로 하나씩 처리한다. 받으면 accepted, 시작 started, 끝나면 done / failed 를
-// corr = 명령 봉투 id 로 보낸다. 장비 움직임(애니메이션)은 코루틴 자리(MoveLift, MoveMother …)에 넣는다.
-using System.Collections;
+// 레인(채널)·칸 선택과 리프트·모셔틀 제어는 ShuttleRackSystem 이 전부 한다 (Warehouse_System_Spec 5.3·7장).
+// 스케줄러는 통로만 골라 store / retrieve 를 요청하고, 이 스크립트는 그 요청을 ShuttleRackSystem API 로 옮기고
+// 결과(accepted/rejected/started/done)를 corr = 명령 봉투 id 로 돌려준다.
+//
+// ShuttleRackSystem 의 RackTask·PalletUnit 타입을 이 패키지가 직접 참조하지 않도록, 씬 쪽에서 IRackSystem 을
+// 구현하는 얇은 연결 스크립트(예: ShuttleRackMqttGlue)를 하나 만들어 rackSystem 칸에 끼운다.
+using System;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 namespace Warehouse.Mqtt
 {
-    public abstract class DeviceAgentBase<TCmd> : MonoBehaviour where TCmd : class
+    /// 통로 1개 (= ShuttleRackSystem 1개) 를 MQTT 쪽에서 보는 창. task 는 RackTask 를 그대로 넘기면 된다.
+    public interface IRackSystem
     {
-        protected WhMqttClient Mq;
-        readonly Queue<(TCmd cmd, string corr)> _queue = new Queue<(TCmd, string)>();
-        protected TCmd Current;
-        protected string CurrentCorr;
-        protected abstract string DeviceId { get; }
-        protected abstract string CmdTopic { get; }
-        protected abstract string EvtTopic { get; }
-        protected abstract string EvtType { get; }
-        protected abstract (string cmdId, string jobId, string pallet, string action) Describe(TCmd c);
-        protected abstract IEnumerator Execute(TCmd c);   // 끝나면 Done() 또는 Fail()
-        protected abstract void PublishState();
-        protected int QueueCount => _queue.Count;
+        // 요청 (ShuttleRackSystem.RequestStore / RequestRetrieve). 실패하면 null.
+        object RequestStore(string palletId);           // 입고 버퍼에 있는 팔레트
+        object RequestRetrieve(string sku);
+        string TaskChannel(object task);                 // 예약한 채널 ID (R1-E07-L03)
+        int? TaskSlot(object task);                      // 실제 칸 번호 1~14 (01 = 통로 쪽 앞칸). 실행 전이면 null
+        string TaskPallet(object task);                  // 팔레트 ID. 출고는 실행 전이면 null
+        event Action<object> TaskStarted;
+        event Action<object> TaskCompleted;
 
-        protected virtual void Start()
-        {
-            Mq = WhMqttClient.Instance;
-            Mq.On(CmdTopic, (env, _) =>
-            {
-                var c = env.Data<TCmd>();
-                var d = Describe(c);
-                if (d.action == "cancel") { Evt("canceled", c, env.id); return; }
-                _queue.Enqueue((c, env.id));
-                Evt("accepted", c, env.id);
-                PublishState();
-            });
-            PublishState();
-        }
+        // 상태 (ShuttleRackSystem 공개 속성)
+        int StoredCount { get; }
+        int Capacity { get; }
+        int PendingTasks { get; }
+        int TotalStored { get; }
+        int TotalRetrieved { get; }
+        float AvgCycleSeconds { get; }                   // 아직 없으면 음수
+        bool InboundFree { get; }
+        /// 채널마다 (채널 ID, SKU, 실제 수량, 가상 수량). SKU 가 배정된 채널만.
+        IEnumerable<(string channel, string sku, int count, int virtualCount)> ChannelSummary();
 
-        protected virtual void Update()
-        {
-            if (Current != null || _queue.Count == 0) return;
-            (Current, CurrentCorr) = _queue.Dequeue();
-            Evt("started", Current, CurrentCorr);
-            StartCoroutine(Execute(Current));
-            PublishState();
-        }
-
-        protected void Done() { Evt("done", Current, CurrentCorr); Current = null; PublishState(); }
-        protected void Fail(string reason) { Evt("failed", Current, CurrentCorr, reason); Current = null; PublishState(); }
-
-        protected void Evt(string ev, TCmd c, string corr, string reason = null)
-        {
-            var d = Describe(c);
-            Mq.Send(EvtType, new DeviceEvt { @event = ev, cmd_id = d.cmdId, job_id = d.jobId, pallet = d.pallet, reason = reason },
-                    EvtTopic, corr);
-        }
-
-        /// 전제 조건이 될 때까지 기다린다 (timeout 초 넘으면 false)
-        protected IEnumerator WaitFor(System.Func<bool> cond, float timeout, System.Action<bool> result)
-        {
-            float t = 0f;
-            while (!cond()) { if ((t += Time.deltaTime) > timeout) { result(false); yield break; } yield return null; }
-            result(true);
-        }
+        // 구동부 (모니터링 전용)
+        (string status, float height, string pallet, string owner) Lift();
+        /// 단(1~10)마다 모셔틀 상태. y = 도면 y(m). 새틀라이트가 레인 안이면 satChannel·satDepth.
+        IEnumerable<(int level, bool busy, string status, float y, string satChannel, float? satDepth, string pallet)> Shuttles();
+        /// 버퍼 5칸 (0 = IN1/OUT1 = 리프트 쪽). ShuttleRackSystem 이 inBuf/outBuf 를 공개하지 않으면 null.
+        string[] InboundBuffer();
+        string[] OutboundBuffer();
     }
 
-    /// 리프트·셔틀이 팔레트를 주고받는 이송점·레인 (씬 쪽 재고 모델이 구현)
-    public interface IRackModel
+    public class RackMqttBridge : MonoBehaviour
     {
-        string BufferSlot(string buffer, int slot);                 // null = 빈 칸
-        void SetBufferSlot(string buffer, int slot, string pallet);
-        string Handoff(int rail, int level, bool inbound);          // 층별 입고/출고 이송점
-        void SetHandoff(int rail, int level, bool inbound, string pallet);
-        string LanePallet(string lane, int pos);
-        void SetLanePallet(string lane, int pos, string pallet);
-    }
+        public string railId = "R1";                     // R1 ~ R3
+        public MonoBehaviour rackSystem;                 // IRackSystem 구현
+        public float statePeriod = 0.5f;                 // 상태 변경 확인 주기 (초)
+        public float inventoryPeriod = 60f;              // rack/{rail}/inventory 주기 (초, 시뮬 시간)
 
-    public class LiftMqttAgent : DeviceAgentBase<LiftCmd>
-    {
-        public string liftId = "L1";
-        public float levelHeight = 1.5f, speed = 1.5f, overhead = 2f, transferSeconds = 5f;
-        public Transform carriage;
-        public MonoBehaviour rackModel;       // IRackModel 구현
-        float _level; string _pallet;
-        IRackModel Rack => (IRackModel)rackModel;
-        int Rail => liftId[1] - '0';
+        IRackSystem Rack => (IRackSystem)rackSystem;
+        WhMqttClient _mq;
+        readonly Dictionary<object, (RackCmd cmd, string corr)> _tasks = new Dictionary<object, (RackCmd, string)>();
+        readonly Dictionary<string, string> _last = new Dictionary<string, string>();   // 토픽 → 마지막으로 보낸 본문
+        float _nextState, _nextInv;
+        bool _invDirty = true;
 
-        protected override string DeviceId => liftId;
-        protected override string CmdTopic => WhTopics.LiftCmd(liftId);
-        protected override string EvtTopic => WhTopics.LiftEvt(liftId);
-        protected override string EvtType => "lift.evt";
-        protected override (string, string, string, string) Describe(LiftCmd c) => (c.cmd_id, c.job_id, c.pallet, c.action);
+        string LiftId => "L" + railId.Substring(1);
 
-        protected override IEnumerator Execute(LiftCmd c)
+        void Start()
         {
-            bool ok = true;
-            string bufIn = liftId + "-IN", bufOut = liftId + "-OUT";
-            if (c.action == "lift_in")
-            {
-                yield return MoveTo(0);
-                yield return WaitFor(() => Rack.BufferSlot(bufIn, 1) == c.pallet, 600f, r => ok = r);
-                if (!ok) { Fail($"{bufIn} 1번 칸에 {c.pallet} 없음"); yield break; }
-                yield return new WaitForSeconds(transferSeconds);
-                Rack.SetBufferSlot(bufIn, 1, null); _pallet = c.pallet;
-                yield return MoveTo(c.level);
-                yield return WaitFor(() => Rack.Handoff(Rail, c.level, true) == null, 600f, r => ok = r);
-                if (!ok) { Fail("입고 이송점 사용 중"); yield break; }
-                yield return new WaitForSeconds(transferSeconds);
-                Rack.SetHandoff(Rail, c.level, true, c.pallet); _pallet = null;
-            }
-            else if (c.action == "lift_out")
-            {
-                yield return MoveTo(c.level);
-                yield return WaitFor(() => Rack.Handoff(Rail, c.level, false) == c.pallet, 600f, r => ok = r);
-                if (!ok) { Fail("출고 이송점에 팔레트 없음"); yield break; }
-                yield return new WaitForSeconds(transferSeconds);
-                Rack.SetHandoff(Rail, c.level, false, null); _pallet = c.pallet;
-                yield return MoveTo(0);
-                yield return WaitFor(() => Rack.BufferSlot(bufOut, 1) == null, 600f, r => ok = r);
-                if (!ok) { Fail($"{bufOut} 1번 칸 사용 중"); yield break; }
-                yield return new WaitForSeconds(transferSeconds);
-                Rack.SetBufferSlot(bufOut, 1, c.pallet); _pallet = null;
-            }
-            Done();
+            _mq = WhMqttClient.Instance;
+            Rack.TaskStarted += t => Evt("started", t);
+            Rack.TaskCompleted += t => { Evt("done", t); _tasks.Remove(t); _invDirty = true; };
+            _mq.On(WhTopics.RackCmd(railId), (env, _) => OnCmd(env.Data<RackCmd>(), env.id));
         }
 
-        IEnumerator MoveTo(int level)
+        void OnCmd(RackCmd c, string corr)
         {
-            float from = _level, dur = overhead + Mathf.Abs(level - from) * levelHeight / speed, t = 0f;
-            while (t < dur)
+            object task = c.action == "store" ? Rack.RequestStore(c.pallet)
+                        : c.action == "retrieve" ? Rack.RequestRetrieve(c.sku) : null;
+            if (task == null)
             {
-                t += Time.deltaTime;
-                _level = Mathf.Lerp(from, level, t / dur);
-                if (carriage) carriage.localPosition = new Vector3(0f, Mathf.Max(0, _level - 1) * levelHeight, 0f);
-                yield return null;
+                string reason = c.action == "store" ? "만재 또는 입고 버퍼에 팔레트 없음" : c.action == "retrieve" ? "재고 없음" : "알 수 없는 action";
+                Send(c, corr, "rejected", null, null, c.pallet, reason);
+                return;
             }
-            _level = level;
-            PublishState();
+            _tasks[task] = (c, corr);
+            Send(c, corr, "accepted", Rack.TaskChannel(task), null, c.pallet ?? Rack.TaskPallet(task), null);
+            _invDirty = true;
         }
 
-        protected override void PublishState() =>
-            Mq.Send("lift.state", new LiftState
-            {
-                mode = Current == null ? "idle" : "transferring", level = Mathf.Round(_level * 100f) / 100f,
-                pallet = _pallet, cmd_id = Current?.cmd_id, queue = QueueCount,
-            }, WhTopics.LiftState(liftId));
-    }
-
-    public class ShuttleMqttAgent : DeviceAgentBase<ShuttleCmd>
-    {
-        public string shuttleId = "MS-R1-LV01";
-        public float motherSpeed = 2f, motherOverhead = 3f, satSpeed = 1f, satTransfer = 4f, slotPitch = 1.3f;
-        public float liftY = 20.4f;                  // 이송점 (도면 y)
-        public Transform mother, satellite;
-        public MonoBehaviour rackModel;
-        float _y; string _pallet, _satLane; float? _satPos;
-        IRackModel Rack => (IRackModel)rackModel;
-        int Rail => shuttleId[4] - '0';
-        int Level => int.Parse(shuttleId.Substring(8, 2));
-
-        protected override string DeviceId => shuttleId;
-        protected override string CmdTopic => WhTopics.ShuttleCmd(shuttleId);
-        protected override string EvtTopic => WhTopics.ShuttleEvt(shuttleId);
-        protected override string EvtType => "shuttle.evt";
-        protected override (string, string, string, string) Describe(ShuttleCmd c) => (c.cmd_id, c.job_id, c.pallet, c.action);
-
-        protected override void Start() { _y = liftY; base.Start(); }
-
-        protected override IEnumerator Execute(ShuttleCmd c)
+        void Evt(string ev, object task)
         {
-            bool ok = true;
-            float laneY = LaneRowY(c.lane);
-            int pos = c.pos ?? 1;
-            if (c.action == "store")
+            if (!_tasks.TryGetValue(task, out var x)) return;     // 시연용 RackDemoDriver 등 MQTT 밖에서 만든 작업
+            Send(x.cmd, x.corr, ev, Rack.TaskChannel(task), ev == "done" ? Rack.TaskSlot(task) : null,
+                 Rack.TaskPallet(task) ?? x.cmd.pallet, null);
+        }
+
+        void Send(RackCmd c, string corr, string ev, string channel, int? slot, string pallet, string reason) =>
+            _mq.Send("rack.evt", new RackEvt
             {
-                yield return WaitFor(() => Rack.Handoff(Rail, Level, true) == c.pallet, 600f, r => ok = r);
-                if (!ok) { Fail("입고 이송점에 팔레트 없음"); yield break; }
-                yield return MoveMother(liftY, satTransfer);
-                Rack.SetHandoff(Rail, Level, true, null); _pallet = c.pallet;
-                yield return MoveMother(laneY, 0f);
-                yield return Satellite(c.lane, pos);
-                if (Rack.LanePallet(c.lane, pos) != null) { Fail($"{c.lane} 위치 {pos} 이미 차 있음"); yield break; }
-                Rack.SetLanePallet(c.lane, pos, c.pallet); _pallet = null;
-                yield return Satellite(null, pos);
+                @event = ev, cmd_id = c.cmd_id, job_id = c.job_id, action = c.action, pallet = pallet, sku = c.sku,
+                channel = channel, slot = slot, reason = reason,
+            }, WhTopics.RackEvt(railId), corr);
+
+        void Update()
+        {
+            if (_mq == null) return;
+            float now = Time.time;
+            if (now >= _nextState) { _nextState = now + statePeriod; PublishStates(); }
+            if (now >= _nextInv || (_invDirty && now >= _nextInv - inventoryPeriod + 5f))
+            {
+                _nextInv = now + inventoryPeriod; _invDirty = false; PublishInventory();
             }
-            else if (c.action == "retrieve")
-            {
-                yield return MoveMother(laneY, 0f);
-                yield return Satellite(c.lane, pos);
-                if (Rack.LanePallet(c.lane, pos) == null) { Fail($"{c.lane} 위치 {pos} 비어 있음"); yield break; }
-                Rack.SetLanePallet(c.lane, pos, null); _pallet = c.pallet;
-                yield return Satellite(null, pos);
-                yield return MoveMother(liftY, 0f);
-                yield return WaitFor(() => Rack.Handoff(Rail, Level, false) == null, 600f, r => ok = r);
-                if (!ok) { Fail("출고 이송점 사용 중"); yield break; }
-                yield return new WaitForSeconds(satTransfer);
-                Rack.SetHandoff(Rail, Level, false, c.pallet); _pallet = null;
-            }
-            else { Fail($"{c.action} 미구현"); yield break; }
-            Done();
         }
 
-        /// 레인 ID 의 줄 번호 → 도면 y (unity/d4_layout.json 의 lanes[].center_z 와 같은 식)
-        static float LaneRowY(string lane)
+        /// 바뀐 것만 보낸다 (전부 retain 이라 늦게 붙은 구독자도 마지막 값을 받는다)
+        void SendIfChanged(string type, object body, string topic)
         {
-            if (string.IsNullOrEmpty(lane)) return 20.4f;
-            int row = int.Parse(lane.Substring(lane.Length - 2));
-            return 31.4f + (row - 0.5f) * 1.4f;
+            string key = Json.Encode(new Envelope { type = type, data = Newtonsoft.Json.Linq.JObject.FromObject(body, Json.Serializer) });
+            if (_last.TryGetValue(topic, out var prev) && prev == key) return;
+            _last[topic] = key;
+            _mq.Send(type, body, topic);
         }
 
-        IEnumerator MoveMother(float y, float extra)
+        void PublishStates()
         {
-            float from = _y, dur = motherOverhead + Mathf.Abs(y - from) / motherSpeed + extra, t = 0f;
-            while (t < dur)
+            var r = Rack;
+            SendIfChanged("rack.state", new RackState
             {
-                t += Time.deltaTime;
-                _y = Mathf.Lerp(from, y, Mathf.Clamp01(t / dur));
-                if (mother) { var p = mother.position; mother.position = new Vector3(p.x, p.y, _y); }
-                yield return null;
-            }
-            PublishState();
+                stored = r.StoredCount, capacity = r.Capacity, pending = r.PendingTasks, inbound_free = r.InboundFree,
+                total_stored = r.TotalStored, total_retrieved = r.TotalRetrieved,
+                avg_cycle_s = r.AvgCycleSeconds < 0 ? (double?)null : Math.Round(r.AvgCycleSeconds, 1),
+            }, WhTopics.RackState(railId));
+
+            var lift = r.Lift();
+            SendIfChanged("lift.state", new LiftState
+            {
+                status = lift.status, height = Math.Round(lift.height, 2), level = LevelAt(lift.height),
+                pallet = lift.pallet, owner = lift.owner,
+            }, WhTopics.LiftState(LiftId));
+
+            foreach (var s in r.Shuttles())
+                SendIfChanged("shuttle.state", new ShuttleState
+                {
+                    busy = s.busy, status = s.status, level = s.level, y = Math.Round(s.y, 2), pallet = s.pallet,
+                    satellite = new Satellite
+                    {
+                        where = s.satChannel != null ? "in_lane" : "docked", channel = s.satChannel,
+                        depth_m = s.satDepth.HasValue ? Math.Round(s.satDepth.Value, 2) : (double?)null,
+                    },
+                }, WhTopics.ShuttleState(WhIds.Shuttle(railId, s.level)));
+
+            var inb = r.InboundBuffer();
+            if (inb != null) SendIfChanged("buffer.state", new BufferState { slots = inb }, WhTopics.BufferState(railId + "-IN"));
+            var outb = r.OutboundBuffer();
+            if (outb != null) SendIfChanged("buffer.state", new BufferState { slots = outb }, WhTopics.BufferState(railId + "-OUT"));
         }
 
-        IEnumerator Satellite(string lane, int pos)
+        void PublishInventory()
         {
-            _satLane = lane; _satPos = lane == null ? (float?)null : pos;
-            PublishState();
-            yield return new WaitForSeconds(satTransfer + (pos - 0.5f) * slotPitch / satSpeed);
+            var inv = new RackInventory { stored = Rack.StoredCount, capacity = Rack.Capacity };
+            foreach (var c in Rack.ChannelSummary()) inv.Add(c.channel, c.sku, c.count, c.virtualCount);
+            _mq.Send("rack.inventory", inv, WhTopics.RackInventory(railId));
         }
 
-        protected override void PublishState() =>
-            Mq.Send("shuttle.state", new ShuttleState
-            {
-                mode = Current == null ? "idle" : _satLane != null ? "in_lane" : "moving", y = Mathf.Round(_y * 100f) / 100f,
-                satellite = new Satellite { where = _satLane != null ? "in_lane" : "docked", lane = _satLane, pos = _satPos },
-                pallet = _pallet, cmd_id = Current?.cmd_id, queue = QueueCount,
-            }, WhTopics.ShuttleState(shuttleId));
+        /// 리프트 높이가 어느 단 레일 높이(0.40 + 1.45(n-1))와 같으면 그 단(1~10), 아니면 null
+        static int? LevelAt(float h)
+        {
+            float n = (h - WhIds.RailTop0) / WhIds.LevelHeight;
+            int k = Mathf.RoundToInt(n);
+            return Mathf.Abs(n - k) * WhIds.LevelHeight < 0.02f && k >= 0 && k < 10 ? k + 1 : (int?)null;
+        }
     }
 
     /// 버퍼·도크·충전기처럼 상태만 내보내는 설비: 씬 스크립트가 값이 바뀔 때 호출한다.

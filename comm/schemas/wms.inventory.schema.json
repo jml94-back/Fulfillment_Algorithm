@@ -61,29 +61,29 @@
     },
     "pallet": {
      "type": "string",
-     "pattern": "^P\\d{8}$"
+     "pattern": "^(P\\d{8}|R[1-3]-\\d{6})$"
     },
     "sku": {
      "type": "string"
     },
-    "lane": {
+    "channel": {
      "anyOf": [
       {
        "type": "string",
-       "pattern": "^R([1-3])-([WE])-LV(0[1-9]|10)-N(0[1-9]|[12][0-9]|3[0-3])$"
+       "pattern": "^R([1-3])-([WE])(0[1-9]|[12][0-9]|3[0-3])-L(0[1-9]|10)$"
       },
       {
        "type": "null"
       }
      ]
     },
-    "pos": {
+    "slot": {
      "anyOf": [
       {
        "type": "integer",
        "minimum": 1,
        "maximum": 14,
-       "description": "레인 안 위치, 1 = 레일 쪽 입·출구"
+       "description": "채널 안 칸, 1 = 통로 쪽 맨 앞, 14 = 가장 안쪽"
       },
       {
        "type": "null"
@@ -117,8 +117,8 @@
     "event",
     "pallet",
     "sku",
-    "lane",
-    "pos",
+    "channel",
+    "slot",
     "weight_kg",
     "job_id"
    ],

@@ -1,21 +1,21 @@
 {
  "topic": "wh/v1/ctrl/evt",
  "v": 1,
- "id": "c5280a33aa73cd62",
- "ts": 1794999290.91,
- "t": 251.98,
+ "id": "49033e7ce397d4ee",
+ "ts": 1795052290.881,
+ "t": 215.612,
  "src": "scheduler",
  "type": "ctrl.evt",
- "corr": "388c97551904e166",
+ "corr": "7c2e382e70d2e48a",
  "data": {
   "event": "report",
-  "text": "완료 3건, 진행 8건, 보류 0건, 실패 0건, 평균 리드타임 211.4초",
+  "text": "완료 3건, 진행 8건, 보류 0건, 실패 0건, 평균 리드타임 168.1초",
   "data": {
    "jobs_done": 3,
    "jobs_open": 8,
    "held": 0,
    "failed": 0,
-   "mean_lead_s": 211.4
+   "mean_lead_s": 168.1
   }
  }
 }

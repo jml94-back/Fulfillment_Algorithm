@@ -1,18 +1,17 @@
 {
  "topic": "wh/v1/lift/L1/state",
  "v": 1,
- "id": "5265b4ec90aa7a07",
- "ts": 1794999282.576,
+ "id": "187801d59a1724a2",
+ "ts": 1795052285.503,
  "t": 0.0,
  "src": "unity-sim",
  "type": "lift.state",
  "corr": null,
  "data": {
-  "mode": "idle",
-  "level": 0.0,
+  "status": "대기",
+  "height": 0.5,
+  "level": null,
   "pallet": null,
-  "cmd_id": null,
-  "queue": 0,
-  "error": null
+  "owner": null
  }
 }

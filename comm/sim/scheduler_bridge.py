@@ -4,15 +4,17 @@
 
 하는 일
 1. 입고: scale/+/reading 을 받으면 팔레트 작업(job)을 만든다. 송장 무게 ±5% 초과 → 보류(QC-IN으로 운반).
-   정상 → 레인 배정 → AMR 미션(계량대 → 리프트 입고 버퍼) → lift_in → 셔틀 store → 재고 stored.
-2. 출고: wms/order(outbound) 를 받으면 SKU별로 꺼낼 레인을 고르고 셔틀 retrieve → lift_out
-   → AMR 미션(리프트 출고 버퍼 → 출고 하차대) → 재고 shipped.
+   정상 → 통로(R1~R3) 선택 → AMR 미션(계량대 → 그 통로 입고 버퍼 R?-IN) → rack/R?/cmd store
+   → 랙(Unity ShuttleRackSystem)이 채널·칸을 정해 넣고 rack/R?/evt done → 재고 stored.
+2. 출고: wms/order(outbound) 를 받으면 SKU별로 꺼낼 통로를 고르고 rack/R?/cmd retrieve
+   → 랙이 채널·맨 앞 팔레트를 정해 출고 버퍼 R?-OUT 으로 → AMR 미션(R?-OUT → 출고 하차대) → 재고 shipped.
+   레인·칸 선택, 리프트·모셔틀 제어는 Unity 랙 몫이다 (2026-11-19 Unity 명세 5.1). 통로 간 배분은 이쪽(WMS) 몫.
 3. AMR 배정: 가장 가까운 유휴 AMR. 경로는 nav 그래프 최단 경로, 노드별 시간 예약표로 겹치면 출발을 늦춘다.
    배터리 30% 미만이면 빈 충전기로 보낸다.
 4. 상태 공유: wms/job, wms/inventory/evt, wms/inventory/snapshot, traffic/reservations, fleet/kpi.
 5. 관제 명령(ctrl/cmd): pause_all, resume_all, request_report, release_hold.
 
-레인 배정·출고 레인 선택·AMR 배정은 Planner 클래스 하나에 모았다.
+통로 선택(입고)·통로 선택(출고)·AMR 배정은 Planner 클래스 하나에 모았다.
 알고리즘 스레드의 D4 구현(warehouse/d4)이 나오면 Planner 를 그쪽 함수로 바꾸면 MQTT 쪽은 그대로 쓴다.
 """
 from __future__ import annotations
@@ -49,10 +51,9 @@ class Job:
     order_id: str | None = None
     dock: str | None = None
     status: str = "planned"
-    lane: str | None = None
-    pos: int | None = None
-    lift: str | None = None
-    shuttle: str | None = None
+    rail: str | None = None
+    channel: str | None = None
+    slot: int | None = None
     amr: str | None = None
     weight: float | None = None
     eta: float | None = None
@@ -78,71 +79,24 @@ class AmrView:
 
 
 class Planner:
-    """알고리즘 교체 지점. 기본 구현은 간단한 규칙."""
+    """알고리즘 교체 지점. 기본 구현은 간단한 규칙.
 
-    def __init__(self, lanes: dict[str, list], skus_heavy: set[str] | None = None) -> None:
-        self.lanes = lanes              # 레인 → [(pallet, sku) | None] * 14 (index 0 = pos 1)
-        self.reserved_in: dict[str, int] = defaultdict(int)
-        self.reserved_out: dict[str, int] = defaultdict(int)
-        self.reserved_sku: dict[str, str] = {}      # 들어올 예정 팔레트의 SKU (아직 비어 있는 레인도 SKU 전용)
+    stock = {통로: {SKU: 꺼낼 수 있는 수(예약 반영)}} (Unity 랙의 rack/+/inventory 와 rack/+/evt 로 맞춘다).
+    load = {통로: 진행 중 작업 수}."""
 
-    def lane_sku(self, lane: str) -> str | None:
-        for s in self.lanes.get(lane, []):
-            if s:
-                return s[1]
-        return self.reserved_sku.get(lane) if self.reserved_in.get(lane) else None
+    def __init__(self, lanes: dict | None = None, skus_heavy: set[str] | None = None) -> None:
+        pass
 
-    def count(self, lane: str) -> int:
-        return sum(1 for s in self.lanes.get(lane, []) if s)
+    def choose_rail(self, sku: str, weight: float, load: dict[str, int], stock: dict[str, dict[str, int]]) -> str:
+        """입고 통로: 같은 SKU 가 이미 있는 통로 우선(채널 보충), 그다음 작업이 적은 통로."""
+        return min(ids.RAILS, key=lambda r: (0 if stock.get(r, {}).get(sku) else 1, load.get(r, 0), r))
 
-    def assign_lane(self, sku: str, weight: float, lift_load: dict[str, int]) -> tuple[str, int]:
-        """같은 SKU 레인에 빈 자리가 있으면 거기, 없으면 빈 레인 중 리프트에 가깝고(줄 번호 작음) 무거우면 아래층.
-        레인은 안쪽(14)부터 채운다: 다음 위치 = 14 - (현재 수 + 들어올 예정 수)."""
-        best = None
-        for lane, slots in self.lanes.items():
-            n = self.count(lane) + self.reserved_in[lane]
-            if self.lane_sku(lane) == sku and n < ids.DEPTH and self.reserved_out[lane] == 0:
-                r, _, lv, row = ids.parse_lane(lane)
-                score = (0, row + lv, lift_load.get(f"L{r}", 0))
-                if best is None or score < best[0]:
-                    best = (score, lane, ids.DEPTH - n)
-        if best:
-            self.reserved_in[best[1]] += 1
-            self.reserved_sku[best[1]] = sku
-            return best[1], best[2]
-        for r, side, lv, row in itertools.product(range(1, 4), "WE", range(1, 11), range(1, ids.ROWS + 1)):
-            lane = ids.lane_id(r, side, lv, row)
-            if self.count(lane) or self.reserved_in.get(lane):
-                continue
-            lv_cost = lv * (2.0 if weight > 800 else 0.5)
-            score = (1, row + lv_cost + 3 * lift_load.get(f"L{r}", 0), r)
-            if best is None or score < best[0]:
-                best = (score, lane, ids.DEPTH)
-        if not best:
-            raise RuntimeError("빈 레인 없음")
-        self.reserved_in[best[1]] += 1
-        self.reserved_sku[best[1]] = sku
-        self.lanes.setdefault(best[1], [None] * ids.DEPTH)
-        return best[1], best[2]
-
-    def pick_lane(self, sku: str, lift_load: dict[str, int]) -> tuple[str, int, str] | None:
-        """출고: 그 SKU가 있는 레인 중 남은 수가 가장 적은 레인(레인을 빨리 비움)의 맨 앞 팔레트."""
-        cands = []
-        for lane, slots in self.lanes.items():
-            if self.lane_sku(lane) != sku or self.reserved_in[lane]:
-                continue
-            avail = self.count(lane) - self.reserved_out[lane]
-            if avail <= 0:
-                continue
-            r = ids.parse_lane(lane)[0]
-            cands.append(((avail, lift_load.get(f"L{r}", 0)), lane))
+    def pick_rail(self, sku: str, load: dict[str, int], stock: dict[str, dict[str, int]]) -> str | None:
+        """출고 통로: 그 SKU 재고가 있는 통로 중 작업이 적은 곳, 같으면 재고가 많은 곳."""
+        cands = [r for r in ids.RAILS if stock.get(r, {}).get(sku, 0) > 0]
         if not cands:
             return None
-        lane = min(cands)[1]
-        occupied = [i for i, s in enumerate(self.lanes[lane]) if s]
-        idx = occupied[self.reserved_out[lane]]           # 앞에서부터 차례로
-        self.reserved_out[lane] += 1
-        return lane, idx + 1, self.lanes[lane][idx][0]
+        return min(cands, key=lambda r: (load.get(r, 0), -stock[r][sku], r))
 
     def choose_amr(self, amrs: list[AmrView], src_stop: str) -> AmrView | None:
         free = [a for a in amrs if a.mission is None and a.busy_job is None and a.battery >= BATTERY_LOW
@@ -153,7 +107,7 @@ class Planner:
 
 
 class Scheduler:
-    def __init__(self, host: str, port: int, *, validate: bool = False, seed: int = 0, initial_fill: int = 40,
+    def __init__(self, host: str, port: int, *, validate: bool = False, seed: int = 0,
                  client_id: str = "scheduler", planner: Planner | None = None) -> None:
         self.c = WhClient(client_id, "scheduler", host, port, validate=validate, persistent=True)
         self.rng = random.Random(seed)
@@ -162,26 +116,25 @@ class Scheduler:
         self.jobs_by_pallet: dict[str, Job] = {}
         self.amrs = {a: AmrView(a) for a in ids.AMRS}
         self.missions: dict[str, tuple[str, str]] = {}      # mission_id → (amr, job_id | "charge")
-        self.dev_cmds: dict[str, str] = {}                   # cmd_id → job_id
+        self.rack_cmds: dict[str, str] = {}                  # rack.cmd cmd_id → job_id
         self.reservations: list[dict] = []
         self.chargers: dict[str, str | None] = {c: None for c in ids.CHARGERS}
-        self.lane_pallets: dict[str, list] = {}
-        self.planner = planner or Planner(self.lane_pallets)
-        self.planner.lanes = self.lane_pallets
+        self.stock: dict[str, dict[str, int]] = {r: {} for r in ids.RAILS}        # 통로 → SKU → 수 (예약 반영)
+        self.channels: dict[str, list] = {r: [] for r in ids.RAILS}            # 통로 → [[채널, SKU, 수, 가상 수]]
+        self.planner = planner or Planner()
         self.held: list[str] = []
         self.paused = False
         self._ids = itertools.count(1)
         self._evt_ids = itertools.count(1)
         self.done_log: list[Job] = []
-        self._seed_inventory(initial_fill)
         c = self.c
         c.on("scale.reading", self._on_scale)
         c.on("wms.order", self._on_order)
         c.on("amr.state", self._on_amr_state)
         c.on("amr.pose", self._on_amr_pose)
         c.on("amr.evt", self._on_amr_evt)
-        c.on("lift.evt", self._on_dev_evt)
-        c.on("shuttle.evt", self._on_dev_evt)
+        c.on("rack.evt", self._on_rack_evt)
+        c.on("rack.inventory", self._on_rack_inventory)
         c.on("charger.state", self._on_charger)
         c.on("ctrl.cmd", self._on_ctrl)
         c.on("sys.online", self._on_online)
@@ -189,22 +142,6 @@ class Scheduler:
 
     def now(self) -> float:
         return self.c.now() or 0.0
-
-    def _seed_inventory(self, n_lanes: int) -> None:
-        """시작 재고 (시뮬레이션용): SKU 20종을 n_lanes 개 레인에 4~14개씩."""
-        n = itertools.count(90_000_000)
-        for k in range(n_lanes):
-            r, side, lv, row = self.rng.randint(1, 3), self.rng.choice("WE"), self.rng.randint(1, 10), \
-                self.rng.randint(1, ids.ROWS)
-            lane = ids.lane_id(r, side, lv, row)
-            if lane in self.lane_pallets:
-                continue
-            sku = f"SKU{self.rng.randint(1, 20):03d}"
-            cnt = self.rng.randint(4, ids.DEPTH)
-            slots = [None] * ids.DEPTH
-            for i in range(cnt):
-                slots[ids.DEPTH - 1 - i] = (ids.pallet_id(next(n)), sku)
-            self.lane_pallets[lane] = slots
 
     # ── 시작 ────────────────────────────────────────────────────────────────
     def start(self) -> "Scheduler":
@@ -268,9 +205,7 @@ class Scheduler:
                 j.reason = f"무게 불일치: 실측 {d['weight_kg']:.0f} kg / 송장 {decl:.0f} kg"
                 self._inv("held", j, weight=d["weight_kg"])
             else:
-                lift_load = self._lift_load()
-                j.lane, j.pos = self.planner.assign_lane(j.sku, j.weight or 0, lift_load)
-                j.lift, j.shuttle = ids.lift_for_lane(j.lane), ids.shuttle_for_lane(j.lane)
+                j.rail = self.planner.choose_rail(j.sku, j.weight or 0, self._rail_load(), self.stock)
                 j.status = "waiting"
             self._job_msg(j)
 
@@ -282,16 +217,15 @@ class Scheduler:
             for ln in o["lines"]:
                 for _ in range(ln["qty"]):
                     j = self._new_job("outbound", ln["sku"], None, order_id=o["order_id"], dock=o["dock"])
-                    got = self.planner.pick_lane(ln["sku"], self._lift_load())
-                    if not got:
+                    rail = self.planner.pick_rail(ln["sku"], self._rail_load(), self.stock)
+                    if not rail:
                         j.status, j.reason = "failed", "재고 없음"
                         self._job_msg(j)
                         continue
-                    j.lane, j.pos, j.pallet = got
-                    j.lift, j.shuttle = ids.lift_for_lane(j.lane), ids.shuttle_for_lane(j.lane)
-                    self.jobs_by_pallet[j.pallet] = j
-                    j.stage, j.status = "retrieve", "shuttling"
-                    self._dev_cmd("shuttle.cmd", j.shuttle, j, "retrieve", lane=j.lane, pos=j.pos)
+                    j.rail = rail
+                    self.stock[rail][j.sku] -= 1                    # 랙이 수락하기 전까지 임시로 빼 둔다
+                    j.stage, j.status = "retrieve", "in_rack"
+                    self._rack_cmd(j, "retrieve")
                     self._job_msg(j)
 
     def _on_amr_evt(self, env: Envelope, p: dict) -> None:
@@ -314,8 +248,8 @@ class Scheduler:
             j = self.jobs[job_id]
             if ev == "mission_done":
                 if j.stage == "to_lift":
-                    j.stage, j.status = "lift_in", "lifting"
-                    self._dev_cmd("lift.cmd", j.lift, j, "lift_in", level=ids.parse_lane(j.lane)[2])
+                    j.stage, j.status = "store", "in_rack"          # 팔레트가 IN5 에 놓임 (= AcceptInbound)
+                    self._rack_cmd(j, "store")
                 elif j.stage == "to_dock":
                     j.status, j.stage, j.done_t = "done", "done", self.now()
                     self._inv("shipped", j)
@@ -331,40 +265,45 @@ class Scheduler:
                 j.amr = None
                 self._job_msg(j)
 
-    def _on_dev_evt(self, env: Envelope, p: dict) -> None:
+    def _on_rack_inventory(self, env: Envelope, p: dict) -> None:
+        """Unity 랙의 채널별 재고(가상 수량 포함)로 통로별 SKU 재고를 맞춘다."""
+        with self.lock:
+            st: dict[str, int] = defaultdict(int)
+            for ch, sku, _n, virtual in env.data["channels"]:
+                st[sku] += virtual
+            self.stock[p["rail"]] = dict(st)
+            self.channels[p["rail"]] = env.data["channels"]
+
+    def _on_rack_evt(self, env: Envelope, p: dict) -> None:
         d = env.data
         with self.lock:
-            job_id = self.dev_cmds.get(d["cmd_id"])
+            job_id = self.rack_cmds.get(d["cmd_id"])
             if not job_id or job_id not in self.jobs:
                 return
             j = self.jobs[job_id]
-            if d["event"] == "failed":
-                j.status, j.reason = "failed", d["reason"]
-                self._job_msg(j)
-                return
-            if d["event"] != "done":
-                return
-            if j.stage == "lift_in":
-                # 레인 안 위치는 셔틀에 넣으라고 보내는 순간 정한다: 보류·지연으로 도착 순서가 바뀌어도
-                # 항상 이미 들어간(또는 들어갈) 팔레트 바로 앞 칸 → 세틀라이트가 팔레트를 넘어가지 않음
-                j.pos = self._next_store_pos(j.lane)
-                j.stage, j.status = "store", "shuttling"
-                self._dev_cmd("shuttle.cmd", j.shuttle, j, "store", lane=j.lane, pos=j.pos)
-            elif j.stage == "store":
-                slots = self.lane_pallets.setdefault(j.lane, [None] * ids.DEPTH)
-                slots[j.pos - 1] = (j.pallet, j.sku)
-                self.planner.reserved_in[j.lane] -= 1
-                j.status, j.stage, j.done_t = "done", "done", self.now()
-                self._inv("stored", j)
-                self.done_log.append(j)
-            elif j.stage == "retrieve":
-                self.lane_pallets[j.lane][j.pos - 1] = None
-                self.planner.reserved_out[j.lane] -= 1
-                self._inv("retrieved", j)
-                j.stage, j.status = "lift_out", "lifting"
-                self._dev_cmd("lift.cmd", j.lift, j, "lift_out", level=ids.parse_lane(j.lane)[2])
-            elif j.stage == "lift_out":
-                j.stage, j.status = "at_buffer", "waiting"
+            ev, rail = d["event"], p["rail"]
+            if ev == "accepted":
+                j.channel = d["channel"]
+                if d["action"] == "store":
+                    self.stock[rail][j.sku] = self.stock[rail].get(j.sku, 0) + 1
+            elif ev == "rejected" or ev == "failed":
+                if d["action"] == "retrieve" and ev == "rejected":
+                    self.stock[rail][j.sku] = self.stock[rail].get(j.sku, 0) + 1
+                j.status, j.reason = "failed", f"랙 {rail}: {d['reason']}"
+            elif ev == "started":
+                if d["action"] == "store":
+                    j.stage = "storing"                              # 리프트가 IN1 에서 가져감
+            elif ev == "done":
+                j.slot = d["slot"]
+                if d["action"] == "store":
+                    j.status, j.stage, j.done_t = "done", "done", self.now()
+                    self._inv("stored", j)
+                    self.done_log.append(j)
+                else:
+                    j.pallet = d["pallet"]
+                    self.jobs_by_pallet[j.pallet] = j
+                    self._inv("retrieved", j)
+                    j.stage, j.status = "at_buffer", "waiting"      # OUT1 에 놓임 → 컨베이어로 OUT5
             self._job_msg(j)
 
     def _on_online(self, env: Envelope, p: dict) -> None:
@@ -378,12 +317,6 @@ class Scheduler:
                                                     "charger": None}, a.id)
             self.c.send("ctrl.evt", {"event": "warning", "text": f"RL 정책 {p['client']} 끊김: scripted 주행으로 전환",
                                      "data": {"client": p["client"]}})
-
-    def _next_store_pos(self, lane: str) -> int:
-        slots = self.lane_pallets.get(lane, [None] * ids.DEPTH)
-        taken = [i + 1 for i, x in enumerate(slots) if x]
-        taken += [j.pos for j in self.jobs.values() if j.lane == lane and j.stage == "store" and j.pos]
-        return min(taken, default=ids.DEPTH + 1) - 1
 
     def _on_ctrl(self, env: Envelope, _p) -> None:
         d = env.data
@@ -403,8 +336,7 @@ class Scheduler:
                 j = self.jobs.get(jid)
                 if j and j.stage == "at_qc":
                     self.held.remove(jid)
-                    j.lane, j.pos = self.planner.assign_lane(j.sku, j.weight or 0, self._lift_load())
-                    j.lift, j.shuttle = ids.lift_for_lane(j.lane), ids.shuttle_for_lane(j.lane)
+                    j.rail = self.planner.choose_rail(j.sku, j.weight or 0, self._rail_load(), self.stock)
                     j.stage, j.status, j.reason = "at_qc_ready", "waiting", None
                     self._inv("released", j, weight=j.weight)
                     self._job_msg(j)
@@ -417,32 +349,33 @@ class Scheduler:
                             corr=env.id)
 
     # ── 배차 ────────────────────────────────────────────────────────────────
-    def _lift_load(self) -> dict[str, int]:
+    def _rail_load(self) -> dict[str, int]:
         load: dict[str, int] = defaultdict(int)
         for j in self.jobs.values():
-            if j.lift and j.status not in ("done", "failed", "held"):
-                load[j.lift] += 1
+            if j.rail and j.status not in ("done", "failed", "held"):
+                load[j.rail] += 1
         return load
 
-    def _buffer_count(self, lift: str) -> int:
-        return sum(1 for j in self.jobs.values() if j.lift == lift and j.stage in ("to_lift", "lift_in"))
+    def _buffer_count(self, rail: str) -> int:
+        """입고 버퍼 5칸에 있거나 가는 중인 팔레트 수 (리프트가 가져가기 전까지)."""
+        return sum(1 for j in self.jobs.values() if j.rail == rail and j.stage in ("to_lift", "store"))
 
     def dispatch(self) -> None:
         # 1) 출고 버퍼에 나온 팔레트를 먼저 (리프트를 막지 않게)
         order = sorted(self.jobs.values(), key=lambda j: (j.stage != "at_buffer", j.created))
         for j in order:
             if j.stage == "at_buffer":
-                self._send_amr(j, f"{j.lift}-OUT", f"DP-{j.dock}", "to_dock")
+                self._send_amr(j, f"{j.rail}-OUT", f"DP-{j.dock}", "to_dock")
             elif j.stage == "at_scale" and j.status == "waiting":
-                if self._buffer_count(j.lift) >= 5:
+                if self._buffer_count(j.rail) >= 5:
                     continue
-                self._send_amr(j, f"SC-{j.dock}", f"{j.lift}-IN", "to_lift")
+                self._send_amr(j, f"SC-{j.dock}", f"{j.rail}-IN", "to_lift")
             elif j.stage == "to_qc" and j.amr is None:
                 self._send_amr(j, f"SC-{j.dock}", "QC-IN", "to_qc")
             elif j.stage == "at_qc_ready":
-                if self._buffer_count(j.lift) >= 5:
+                if self._buffer_count(j.rail) >= 5:
                     continue
-                self._send_amr(j, "QC-IN", f"{j.lift}-IN", "to_lift")
+                self._send_amr(j, "QC-IN", f"{j.rail}-IN", "to_lift")
         # 2) 배터리 부족 AMR은 충전
         for a in self.amrs.values():
             if a.mission is None and a.busy_job is None and a.battery < BATTERY_LOW and a.mode == "idle":
@@ -525,15 +458,12 @@ class Scheduler:
                                              "items": self.reservations[:500]})
 
     # ── 장비 명령 · 발행 ───────────────────────────────────────────────────
-    def _dev_cmd(self, key: str, dev: str, j: Job, action: str, **kw) -> None:
+    def _rack_cmd(self, j: Job, action: str) -> None:
         cid = f"C{next(self._ids):05d}"
-        self.dev_cmds[cid] = j.job_id
-        data = {"cmd_id": cid, "job_id": j.job_id, "action": action, "pallet": j.pallet}
-        if key == "shuttle.cmd":
-            data.update({"lane": kw["lane"], "pos": kw["pos"], "to_lane": None, "to_pos": None})
-        else:
-            data["level"] = kw["level"]
-        self.c.send(key, data, dev)
+        self.rack_cmds[cid] = j.job_id
+        self.c.send("rack.cmd", {"cmd_id": cid, "job_id": j.job_id, "action": action,
+                                 "pallet": j.pallet if action == "store" else None, "sku": j.sku,
+                                 "weight_kg": j.weight if action == "store" else None}, j.rail)
 
     def _new_job(self, kind: str, sku: str, pallet: str | None, **kw) -> Job:
         j = Job(f"J{next(self._ids):05d}", kind, sku, pallet, self.now(), **kw)
@@ -544,20 +474,19 @@ class Scheduler:
 
     def _job_msg(self, j: Job) -> None:
         self.c.send("wms.job", {"job_id": j.job_id, "order_id": j.order_id, "kind": j.kind, "status": j.status,
-                                "pallet": j.pallet, "sku": j.sku, "dock": j.dock, "lane": j.lane, "pos": j.pos,
-                                "lift": j.lift, "shuttle": j.shuttle, "amr": j.amr, "eta": j.eta,
+                                "pallet": j.pallet, "sku": j.sku, "dock": j.dock, "rail": j.rail,
+                                "channel": j.channel, "slot": j.slot, "amr": j.amr, "eta": j.eta,
                                 "created": round(j.created, 2), "reason": j.reason})
 
     def _inv(self, event: str, j: Job, weight: float | None = None) -> None:
         self.c.send("wms.inventory", {"event_id": f"E{next(self._evt_ids):06d}", "event": event, "pallet": j.pallet,
-                                      "sku": j.sku, "lane": j.lane if event in ("stored", "retrieved") else None,
-                                      "pos": j.pos if event in ("stored", "retrieved") else None,
+                                      "sku": j.sku, "channel": j.channel if event in ("stored", "retrieved") else None,
+                                      "slot": j.slot if event in ("stored", "retrieved") else None,
                                       "weight_kg": weight, "job_id": j.job_id})
 
     def publish_snapshot(self) -> None:
-        lanes = [[ln, self.planner.lane_sku(ln), self.planner.count(ln)] for ln in sorted(self.lane_pallets)
-                 if self.planner.count(ln)]
-        self.c.send("wms.snapshot", {"lanes": lanes, "pallets": sum(x[2] for x in lanes),
+        chs = sorted([ch, sku, n] for r in ids.RAILS for ch, sku, n, _v in self.channels[r] if n)
+        self.c.send("wms.snapshot", {"channels": chs, "pallets": sum(x[2] for x in chs),
                                      "capacity": 1980 * ids.DEPTH, "held": len(self.held)})
 
     def summary(self) -> dict:

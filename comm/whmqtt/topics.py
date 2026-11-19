@@ -15,7 +15,7 @@ ROOT = "wh/v1"
 # 역할(클라이언트) 이름: envelope 의 src 앞부분과 브로커 ACL 사용자명으로 쓴다.
 ROLES = {
     "unity": "Unity 시뮬레이션 (Mac mini M4). 장비 물리·센서의 원본. 실제 현장에서는 각 장비 컨트롤러가 이 자리를 맡는다.",
-    "scheduler": "적재·출고 알고리즘 (Python). 작업 생성, 레인 배정, AMR·리프트·셔틀 지시, 시간 예약 경로.",
+    "scheduler": "적재·출고 알고리즘 (Python, WMS 역할). 작업 생성, 통로(랙) 선택·배분, 랙에 보관·출고 요청, AMR 배정·시간 예약 경로.",
     "rl": "AMR 주행 정책 추론 (RTX 4060 노트북). 미션 경로를 받아 속도 명령을 낸다.",
     "control": "중앙 관제 (NPU, Qwen + LangGraph). 상태 요약, 운영 명령, 주문 투입.",
     "sensor": "온도 센서·카메라 (자리만 예약, 비상 대응은 현재 범위 밖).",
@@ -77,22 +77,23 @@ _LIST = [
     _t("amr.cmd.control", "amr/{amr}/cmd/control", "scheduler control", "unity rl", 1, False, "명령 시",
        "일시정지·재개·미션 취소·주행 모드(scripted/rl) 변경·충전 보내기.", expiry_s=30),
 
-    # ── 리프트 · 버퍼 · 셔틀 ────────────────────────────────────────────────
+    # ── 랙 (통로 1개 = Unity ShuttleRackSystem 1개) · 리프트 · 버퍼 · 셔틀 ──────────
+    # 레인 배정·칸 선택·리프트·모셔틀 제어는 Unity 랙이 전부 맡는다. 스케줄러는 통로를 고르고 요청만 보낸다.
+    _t("rack.cmd", "rack/{rail}/cmd", "scheduler", "unity", 1, False, "작업 시",
+       "store: 입고 버퍼에 놓인 팔레트 보관 요청 (= ShuttleRackSystem.RequestStore). "
+       "retrieve: SKU 1개 출고 요청 (= RequestRetrieve). 레인·칸은 랙이 정한다.", expiry_s=60),
+    _t("rack.evt", "rack/{rail}/evt", "unity", "scheduler control monitor", 1, False, "사건 시",
+       "요청 수락(채널 예약)·거절(만재·재고 없음)·시작·완료(채널·칸·팔레트)·실패. corr = rack.cmd 봉투 id."),
+    _t("rack.state", "rack/{rail}/state", "unity", "scheduler control monitor", 1, True, "변경 시",
+       "보관 수·용량·대기 작업·입고 버퍼 끝칸 비었는지(InboundFree)·누적 입출고·평균 사이클."),
+    _t("rack.inventory", "rack/{rail}/inventory", "unity", "scheduler monitor", 1, True, "시작 시 + 60초마다",
+       "채널별 SKU·수량(가상 수량 포함) 전체. 시작 재고(PrefillRandom)와 재접속 때 스케줄러가 재고를 맞춘다."),
     _t("lift.state", "lift/{lift}/state", "unity", "scheduler monitor", 1, True, "변경 시",
-       "리프트 높이(층), 모드, 실은 팔레트, 진행 중 명령."),
-    _t("lift.cmd", "lift/{lift}/cmd", "scheduler", "unity", 1, False, "작업 시",
-       "lift_in: 입고 버퍼 1번 칸 → n층 셔틀 이송점. lift_out: n층 셔틀 이송점 → 출고 버퍼 1번 칸.", expiry_s=60),
-    _t("lift.evt", "lift/{lift}/evt", "unity", "scheduler monitor", 1, False, "사건 시",
-       "명령 수락·거부·시작·완료·실패."),
+       "리프트 높이(m)·상태 문자열·실은 팔레트·점유 작업. 리프트는 랙이 움직이는 구동부라 명령 토픽이 없다."),
     _t("buffer.state", "buffer/{buffer}/state", "unity", "scheduler monitor", 1, True, "변경 시",
-       "리프트 입·출고 컨베이어 5칸의 팔레트 (0번 원소 = 1번 칸 = 리프트 바로 옆)."),
-    _t("shuttle.state", "shuttle/{shuttle}/state", "unity", "scheduler monitor", 1, True, "변경 시 (이동 중 2 Hz)",
-       "모셔틀 레일 위치와 세틀라이트 상태(모셔틀에 탑재 / 레인 안). 셔틀 세트 1개 = 토픽 1개."),
-    _t("shuttle.cmd", "shuttle/{shuttle}/cmd", "scheduler", "unity", 1, False, "작업 시",
-       "store: 이송점의 팔레트를 레인 pos 에 넣기. retrieve: 레인 pos 의 팔레트를 이송점으로. relocate: 레인 간 이동.",
-       expiry_s=60),
-    _t("shuttle.evt", "shuttle/{shuttle}/evt", "unity", "scheduler monitor", 1, False, "사건 시",
-       "명령 수락·거부·시작·완료·실패."),
+       "리프트 입·출고 컨베이어 5칸의 팔레트 (0번 원소 = IN1/OUT1 = 리프트 쪽, 4번 = IN5/OUT5 = AMR 쪽)."),
+    _t("shuttle.state", "shuttle/{shuttle}/state", "unity", "scheduler monitor", 1, True, "변경 시",
+       "모셔틀 바쁨·상태 문자열·통로 방향 위치·새틀라이트 위치. 모셔틀도 랙이 움직이는 구동부라 명령 토픽이 없다."),
 
     # ── 도크 · 계량 · 충전 ─────────────────────────────────────────────────
     _t("dock.state", "dock/{dock}/state", "unity", "scheduler control monitor", 1, True, "변경 시",
@@ -108,11 +109,11 @@ _LIST = [
     _t("wms.order", "wms/order", "control", "scheduler monitor", 1, False, "주문 시",
        "입고 예정(ASN, 팔레트·송장 무게) 또는 출고 주문(SKU·수량). 관제나 테스트 스크립트가 넣는다."),
     _t("wms.job", "wms/job", "scheduler", "control monitor unity", 1, False, "작업 상태 변경 시",
-       "팔레트 1개 단위 작업의 계획·진행 상태(레인·리프트·셔틀·AMR 배정, 예상 완료)."),
+       "팔레트 1개 단위 작업의 계획·진행 상태(통로·채널·칸·AMR 배정, 예상 완료)."),
     _t("wms.inventory", "wms/inventory/evt", "scheduler", "control monitor unity", 1, False, "재고 변경 시",
        "입고 접수·보류·해제·적재·출고 인출·선적·조정. event_id 로 중복 수신을 걸러낸다."),
-    _t("wms.snapshot", "wms/inventory/snapshot", "scheduler", "control monitor unity", 1, True, "60초마다 + 시작 시",
-       "레인별 SKU·수량 전체 목록. 새로 붙은 Unity·관제가 재고를 한 번에 맞춘다."),
+    _t("wms.snapshot", "wms/inventory/snapshot", "scheduler", "control monitor", 1, True, "60초마다 + 시작 시",
+       "3통로 채널별 SKU·수량을 합친 전체 목록 (원본은 Unity 랙의 rack/+/inventory). 관제가 재고를 한 번에 본다."),
     _t("traffic.reservations", "traffic/reservations", "scheduler", "rl unity monitor", 1, True, "변경 시",
        "AMR별 경유 노드 시간 예약표(t_start~t_end). 통로 방향을 고정하지 않고 시간으로 나눠 쓴다."),
     _t("fleet.kpi", "fleet/kpi", "scheduler", "control monitor", 0, True, "10초마다",

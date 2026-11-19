@@ -2,7 +2,7 @@
  "root": "wh/v1",
  "roles": {
   "unity": "Unity 시뮬레이션 (Mac mini M4). 장비 물리·센서의 원본. 실제 현장에서는 각 장비 컨트롤러가 이 자리를 맡는다.",
-  "scheduler": "적재·출고 알고리즘 (Python). 작업 생성, 레인 배정, AMR·리프트·셔틀 지시, 시간 예약 경로.",
+  "scheduler": "적재·출고 알고리즘 (Python, WMS 역할). 작업 생성, 통로(랙) 선택·배분, 랙에 보관·출고 요청, AMR 배정·시간 예약 경로.",
   "rl": "AMR 주행 정책 추론 (RTX 4060 노트북). 미션 경로를 받아 속도 명령을 낸다.",
   "control": "중앙 관제 (NPU, Qwen + LangGraph). 상태 요약, 운영 명령, 주문 투입.",
   "sensor": "온도 센서·카메라 (자리만 예약, 비상 대응은 현재 범위 밖).",
@@ -11,15 +11,18 @@
  "id_patterns": {
   "amr": "^AMR0[1-9]$",
   "lift": "^L[1-3]$",
-  "shuttle": "^MS-R([1-3])-LV(0[1-9]|10)$",
-  "lane": "^R([1-3])-([WE])-LV(0[1-9]|10)-N(0[1-9]|[12][0-9]|3[0-3])$",
+  "rail": "^R[1-3]$",
+  "shuttle": "^R([1-3])-Shuttle_L(0[1-9]|10)$",
+  "channel": "^R([1-3])-([WE])(0[1-9]|[12][0-9]|3[0-3])-L(0[1-9]|10)$",
+  "slot": "^R([1-3])-([WE])(0[1-9]|[12][0-9]|3[0-3])-L(0[1-9]|10)-(0[1-9]|1[0-4])$",
   "dock": "^(IN|OUT)[1-6]$",
-  "buffer": "^L[1-3]-(IN|OUT)$",
+  "buffer": "^R[1-3]-(IN|OUT)$",
   "charger": "^CH[WE][1-3]$",
   "scale": "^SC-IN[1-6]$",
   "drop": "^DP-OUT[1-6]$",
-  "point": "^(IN[1-6]|DP-OUT[1-6]|L[1-3]-(IN|OUT)|CH[WE][1-3])$",
-  "pallet": "^P\\d{8}$"
+  "stop": "^(SC-IN[1-6]|DP-OUT[1-6]|R[1-3]-(IN|OUT)|CH[WE][1-3]|QC-(IN|OUT)|WAIT[1-4])$",
+  "pallet": "^(P\\d{8}|R[1-3]-\\d{6})$",
+  "lane": "^R([1-3])-([WE])(0[1-9]|[12][0-9]|3[0-3])-L(0[1-9]|10)$"
  },
  "topics": [
   {
@@ -234,6 +237,91 @@
    "topic": "wh/v1/amr/{amr}/cmd/control"
   },
   {
+   "key": "rack.cmd",
+   "pattern": "rack/{rail}/cmd",
+   "pub": [
+    "scheduler"
+   ],
+   "sub": [
+    "unity"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "작업 시",
+   "desc": "store: 입고 버퍼에 놓인 팔레트 보관 요청 (= ShuttleRackSystem.RequestStore). retrieve: SKU 1개 출고 요청 (= RequestRetrieve). 레인·칸은 랙이 정한다.",
+   "expiry_s": 60,
+   "reserved": false,
+   "params": [
+    "rail"
+   ],
+   "topic": "wh/v1/rack/{rail}/cmd"
+  },
+  {
+   "key": "rack.evt",
+   "pattern": "rack/{rail}/evt",
+   "pub": [
+    "unity"
+   ],
+   "sub": [
+    "scheduler",
+    "control",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": false,
+   "rate": "사건 시",
+   "desc": "요청 수락(채널 예약)·거절(만재·재고 없음)·시작·완료(채널·칸·팔레트)·실패. corr = rack.cmd 봉투 id.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [
+    "rail"
+   ],
+   "topic": "wh/v1/rack/{rail}/evt"
+  },
+  {
+   "key": "rack.state",
+   "pattern": "rack/{rail}/state",
+   "pub": [
+    "unity"
+   ],
+   "sub": [
+    "scheduler",
+    "control",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": true,
+   "rate": "변경 시",
+   "desc": "보관 수·용량·대기 작업·입고 버퍼 끝칸 비었는지(InboundFree)·누적 입출고·평균 사이클.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [
+    "rail"
+   ],
+   "topic": "wh/v1/rack/{rail}/state"
+  },
+  {
+   "key": "rack.inventory",
+   "pattern": "rack/{rail}/inventory",
+   "pub": [
+    "unity"
+   ],
+   "sub": [
+    "scheduler",
+    "monitor"
+   ],
+   "qos": 1,
+   "retain": true,
+   "rate": "시작 시 + 60초마다",
+   "desc": "채널별 SKU·수량(가상 수량 포함) 전체. 시작 재고(PrefillRandom)와 재접속 때 스케줄러가 재고를 맞춘다.",
+   "expiry_s": null,
+   "reserved": false,
+   "params": [
+    "rail"
+   ],
+   "topic": "wh/v1/rack/{rail}/inventory"
+  },
+  {
    "key": "lift.state",
    "pattern": "lift/{lift}/state",
    "pub": [
@@ -246,54 +334,13 @@
    "qos": 1,
    "retain": true,
    "rate": "변경 시",
-   "desc": "리프트 높이(층), 모드, 실은 팔레트, 진행 중 명령.",
+   "desc": "리프트 높이(m)·상태 문자열·실은 팔레트·점유 작업. 리프트는 랙이 움직이는 구동부라 명령 토픽이 없다.",
    "expiry_s": null,
    "reserved": false,
    "params": [
     "lift"
    ],
    "topic": "wh/v1/lift/{lift}/state"
-  },
-  {
-   "key": "lift.cmd",
-   "pattern": "lift/{lift}/cmd",
-   "pub": [
-    "scheduler"
-   ],
-   "sub": [
-    "unity"
-   ],
-   "qos": 1,
-   "retain": false,
-   "rate": "작업 시",
-   "desc": "lift_in: 입고 버퍼 1번 칸 → n층 셔틀 이송점. lift_out: n층 셔틀 이송점 → 출고 버퍼 1번 칸.",
-   "expiry_s": 60,
-   "reserved": false,
-   "params": [
-    "lift"
-   ],
-   "topic": "wh/v1/lift/{lift}/cmd"
-  },
-  {
-   "key": "lift.evt",
-   "pattern": "lift/{lift}/evt",
-   "pub": [
-    "unity"
-   ],
-   "sub": [
-    "scheduler",
-    "monitor"
-   ],
-   "qos": 1,
-   "retain": false,
-   "rate": "사건 시",
-   "desc": "명령 수락·거부·시작·완료·실패.",
-   "expiry_s": null,
-   "reserved": false,
-   "params": [
-    "lift"
-   ],
-   "topic": "wh/v1/lift/{lift}/evt"
   },
   {
    "key": "buffer.state",
@@ -308,7 +355,7 @@
    "qos": 1,
    "retain": true,
    "rate": "변경 시",
-   "desc": "리프트 입·출고 컨베이어 5칸의 팔레트 (0번 원소 = 1번 칸 = 리프트 바로 옆).",
+   "desc": "리프트 입·출고 컨베이어 5칸의 팔레트 (0번 원소 = IN1/OUT1 = 리프트 쪽, 4번 = IN5/OUT5 = AMR 쪽).",
    "expiry_s": null,
    "reserved": false,
    "params": [
@@ -328,55 +375,14 @@
    ],
    "qos": 1,
    "retain": true,
-   "rate": "변경 시 (이동 중 2 Hz)",
-   "desc": "모셔틀 레일 위치와 세틀라이트 상태(모셔틀에 탑재 / 레인 안). 셔틀 세트 1개 = 토픽 1개.",
+   "rate": "변경 시",
+   "desc": "모셔틀 바쁨·상태 문자열·통로 방향 위치·새틀라이트 위치. 모셔틀도 랙이 움직이는 구동부라 명령 토픽이 없다.",
    "expiry_s": null,
    "reserved": false,
    "params": [
     "shuttle"
    ],
    "topic": "wh/v1/shuttle/{shuttle}/state"
-  },
-  {
-   "key": "shuttle.cmd",
-   "pattern": "shuttle/{shuttle}/cmd",
-   "pub": [
-    "scheduler"
-   ],
-   "sub": [
-    "unity"
-   ],
-   "qos": 1,
-   "retain": false,
-   "rate": "작업 시",
-   "desc": "store: 이송점의 팔레트를 레인 pos 에 넣기. retrieve: 레인 pos 의 팔레트를 이송점으로. relocate: 레인 간 이동.",
-   "expiry_s": 60,
-   "reserved": false,
-   "params": [
-    "shuttle"
-   ],
-   "topic": "wh/v1/shuttle/{shuttle}/cmd"
-  },
-  {
-   "key": "shuttle.evt",
-   "pattern": "shuttle/{shuttle}/evt",
-   "pub": [
-    "unity"
-   ],
-   "sub": [
-    "scheduler",
-    "monitor"
-   ],
-   "qos": 1,
-   "retain": false,
-   "rate": "사건 시",
-   "desc": "명령 수락·거부·시작·완료·실패.",
-   "expiry_s": null,
-   "reserved": false,
-   "params": [
-    "shuttle"
-   ],
-   "topic": "wh/v1/shuttle/{shuttle}/evt"
   },
   {
    "key": "dock.state",
@@ -496,7 +502,7 @@
    "qos": 1,
    "retain": false,
    "rate": "작업 상태 변경 시",
-   "desc": "팔레트 1개 단위 작업의 계획·진행 상태(레인·리프트·셔틀·AMR 배정, 예상 완료).",
+   "desc": "팔레트 1개 단위 작업의 계획·진행 상태(통로·채널·칸·AMR 배정, 예상 완료).",
    "expiry_s": null,
    "reserved": false,
    "params": [],
@@ -530,13 +536,12 @@
    ],
    "sub": [
     "control",
-    "monitor",
-    "unity"
+    "monitor"
    ],
    "qos": 1,
    "retain": true,
    "rate": "60초마다 + 시작 시",
-   "desc": "레인별 SKU·수량 전체 목록. 새로 붙은 Unity·관제가 재고를 한 번에 맞춘다.",
+   "desc": "3통로 채널별 SKU·수량을 합친 전체 목록 (원본은 Unity 랙의 rack/+/inventory). 관제가 재고를 한 번에 본다.",
    "expiry_s": null,
    "reserved": false,
    "params": [],
@@ -689,12 +694,10 @@
    "wh/v1/amr/+/cmd/control",
    "wh/v1/amr/+/cmd/mission",
    "wh/v1/amr/+/cmd/vel",
-   "wh/v1/lift/+/cmd",
-   "wh/v1/shuttle/+/cmd",
+   "wh/v1/rack/+/cmd",
    "wh/v1/sim/control",
    "wh/v1/traffic/reservations",
    "wh/v1/wms/inventory/evt",
-   "wh/v1/wms/inventory/snapshot",
    "wh/v1/wms/job"
   ],
   "scheduler": [
@@ -706,10 +709,11 @@
    "wh/v1/ctrl/cmd",
    "wh/v1/dock/+/evt",
    "wh/v1/dock/+/state",
-   "wh/v1/lift/+/evt",
    "wh/v1/lift/+/state",
+   "wh/v1/rack/+/evt",
+   "wh/v1/rack/+/inventory",
+   "wh/v1/rack/+/state",
    "wh/v1/scale/+/reading",
-   "wh/v1/shuttle/+/evt",
    "wh/v1/shuttle/+/state",
    "wh/v1/sim/clock",
    "wh/v1/sys/+/online",
@@ -729,6 +733,8 @@
    "wh/v1/ctrl/evt",
    "wh/v1/dock/+/state",
    "wh/v1/fleet/kpi",
+   "wh/v1/rack/+/evt",
+   "wh/v1/rack/+/state",
    "wh/v1/sim/clock",
    "wh/v1/sys/+/online",
    "wh/v1/wms/inventory/evt",
@@ -746,10 +752,11 @@
    "wh/v1/dock/+/evt",
    "wh/v1/dock/+/state",
    "wh/v1/fleet/kpi",
-   "wh/v1/lift/+/evt",
    "wh/v1/lift/+/state",
+   "wh/v1/rack/+/evt",
+   "wh/v1/rack/+/inventory",
+   "wh/v1/rack/+/state",
    "wh/v1/scale/+/reading",
-   "wh/v1/shuttle/+/evt",
    "wh/v1/shuttle/+/state",
    "wh/v1/sim/clock",
    "wh/v1/sys/+/online",

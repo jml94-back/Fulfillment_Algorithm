@@ -32,7 +32,7 @@ def test_cs_messages_match_schema_and_roundtrip(broker, tmp_path):
     try:
         assert p.stdout.readline().strip() == "READY"
         rows = [json.loads(x) for x in out.read_text().splitlines()]
-        assert len(rows) == 15
+        assert len(rows) == 16
         for d in rows:
             schemas.validate(d)
         c = WhClient("py-sched-cs", "scheduler", host, port, validate=True)

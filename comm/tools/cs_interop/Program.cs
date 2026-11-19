@@ -12,6 +12,8 @@ using Warehouse.Mqtt;
 
 class P
 {
+    static RackInventory Inv() { var i = new RackInventory { stored = 25, capacity = 9240 }; i.Add("R1-W16-L01", "SKU019", 11, 12); i.Add("R1-E02-L04", "SKU003", 14, 14); return i; }
+
     static async Task<int> Main(string[] a)
     {
         var msgs = new List<(string type, object body)>
@@ -22,10 +24,14 @@ class P
             ("amr.scan2d", new AmrScan2d { angle_min = 0, angle_inc = 0.0872665, range_max = 10, ranges = new float[72] }),
             ("amr.state", new AmrState { mode = "idle", drive_mode = "scripted", battery = 88.2 }),
             ("amr.evt", new AmrEvt { @event = "mission_done", mission_id = "M00001" }),
-            ("lift.state", new LiftState { mode = "idle", level = 0, queue = 0 }),
-            ("lift.evt", new DeviceEvt { @event = "done", cmd_id = "C00001", job_id = "J1", pallet = "P00000001" }),
-            ("shuttle.state", new ShuttleState { mode = "idle", y = 20.4, satellite = new Satellite { where = "docked" }, queue = 0 }),
-            ("shuttle.evt", new DeviceEvt { @event = "accepted", cmd_id = "C00002" }),
+            ("rack.evt", new RackEvt { @event = "done", cmd_id = "C00001", job_id = "J1", action = "store", pallet = "P00000001",
+                                       sku = "SKU101", channel = WhIds.Channel("R2", 'E', 7, 3), slot = 14 }),
+            ("rack.state", new RackState { stored = 117, capacity = 9240, pending = 2, inbound_free = true, avg_cycle_s = 61.5 }),
+            ("rack.inventory", Inv()),
+            ("lift.state", new LiftState { status = "대기", height = 0.5, level = null }),
+            ("shuttle.state", new ShuttleState { busy = true, status = "레인 진입", level = 3, y = 40.2,
+                                                 satellite = new Satellite { where = "in_lane", channel = "R1-W07-L03", depth_m = 9.125 },
+                                                 pallet = "R1-000123" }),
             ("buffer.state", new BufferState { slots = new string[] { "P00000001", null, null, null, null } }),
             ("dock.state", new DockState { status = "unloading", truck = "TRK-1", order_id = "ASN-1", pallets_total = 4, pallets_done = 1 }),
             ("dock.evt", new DockEvt { @event = "pallet_unloaded", truck = "TRK-1", order_id = "ASN-1", pallet = "P00000001", station = "SC-IN2" }),

@@ -31,10 +31,10 @@ def test_contacts_reachable(L):
 
 def test_ids(L):
     assert L.amr_id(0) == "AMR01"
-    assert L.lane_id(L.lanes[0]) == "R1-W-LV01-N01"
-    assert L.shuttle_id(2, 9) == "MS-R3-LV10"
+    assert L.lane_id(L.lanes[0]) == "R1-W01-L01"
+    assert L.shuttle_id(2, 9) == "R3-Shuttle_L10"
     names = {v[0] for v in L.contacts.values()}
-    assert {"IN1", "OUT6", "L2-IN", "L3-OUT", "QC-IN", "CHW1", "CHE3"} <= names
+    assert {"IN1", "OUT6", "R2-IN", "R3-OUT", "QC-IN", "CHW1", "CHE3"} <= names
 
 
 def _storage(L, **kw):
@@ -80,3 +80,25 @@ def test_mismatch_goes_to_hold():
     sim = D4Sim(SimConfig(hours=1, in_per_h=60, out_per_h=0, mismatch=1.0, seed=1))
     m = sim.run()
     assert m["in_per_h"] == 0 and m["held"] > 0
+
+
+def test_unity_timing():
+    """장비 시간 = Unity 명세 4.4 표 (리프트 평균 6.0 / 최대 10.5, 모셔틀 최대 24.3, 새틀라이트 최대 16.4 s)."""
+    from warehouse.d4.storage import lift_time, mother_time, sat_distance, trap_time, SAT_V, SAT_A
+    avg = sum(lift_time(lv) for lv in range(10)) / 10
+    assert abs(avg - 6.0) < .1 and abs(lift_time(9) - 10.5) < .05
+    assert abs(mother_time(L_XFER, 32.1 + 32 * 1.4) - 24.3) < .05
+    assert abs(sat_distance(13) - 17.875) < 1e-9
+    assert abs(trap_time(sat_distance(13), SAT_V, SAT_A) - 16.4) < .05
+
+
+L_XFER = 22.4
+
+
+def test_unity_slotting_cost(L):
+    """Unity 비용식: 빈 레인 중 리프트·모셔틀 시간이 가장 짧은 레인 = 1단 1번 줄."""
+    st = _storage(L, slotting="unity")
+    s = st.choose_lane("A", 600, {})
+    assert (s.lane.level, s.lane.row) == (0, 0)
+    st.reserve_in(s, "A")
+    assert st.choose_lane("A", 600, {}) is s          # 같은 SKU 레인 먼저

@@ -27,7 +27,7 @@
    "minLength": 1
   },
   "type": {
-   "const": "lift.evt"
+   "const": "rack.cmd"
   },
   "corr": {
    "anyOf": [
@@ -42,19 +42,10 @@
   "data": {
    "type": "object",
    "properties": {
-    "event": {
-     "type": "string",
-     "enum": [
-      "accepted",
-      "rejected",
-      "started",
-      "done",
-      "failed",
-      "canceled"
-     ]
-    },
     "cmd_id": {
-     "type": "string"
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 64
     },
     "job_id": {
      "anyOf": [
@@ -66,21 +57,33 @@
       }
      ]
     },
+    "action": {
+     "type": "string",
+     "enum": [
+      "store",
+      "retrieve"
+     ]
+    },
     "pallet": {
      "anyOf": [
       {
        "type": "string",
-       "pattern": "^P\\d{8}$"
+       "pattern": "^(P\\d{8}|R[1-3]-\\d{6})$",
+       "description": "store: 입고 버퍼에 놓인 팔레트. retrieve: null (랙이 맨 앞 팔레트를 고른다)"
       },
       {
        "type": "null"
       }
      ]
     },
-    "reason": {
+    "sku": {
+     "type": "string"
+    },
+    "weight_kg": {
      "anyOf": [
       {
-       "type": "string"
+       "type": "number",
+       "minimum": 0
       },
       {
        "type": "null"
@@ -89,11 +92,12 @@
     }
    },
    "required": [
-    "event",
     "cmd_id",
     "job_id",
+    "action",
     "pallet",
-    "reason"
+    "sku",
+    "weight_kg"
    ],
    "additionalProperties": false
   }
@@ -109,6 +113,6 @@
   "data"
  ],
  "additionalProperties": false,
- "$id": "lift.evt.schema.json",
- "title": "lift.evt"
+ "$id": "rack.cmd.schema.json",
+ "title": "rack.cmd"
 }

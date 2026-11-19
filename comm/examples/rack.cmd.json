@@ -1,0 +1,18 @@
+{
+ "topic": "wh/v1/rack/R1/cmd",
+ "v": 1,
+ "id": "37f78f12fcf2da70",
+ "ts": 1795052285.674,
+ "t": 6.514,
+ "src": "scheduler",
+ "type": "rack.cmd",
+ "corr": null,
+ "data": {
+  "cmd_id": "C00002",
+  "job_id": "J00001",
+  "action": "retrieve",
+  "pallet": null,
+  "sku": "SKU005",
+  "weight_kg": null
+ }
+}

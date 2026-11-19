@@ -1,0 +1,21 @@
+{
+ "topic": "wh/v1/rack/R1/evt",
+ "v": 1,
+ "id": "c430200abbf3ea1d",
+ "ts": 1795052285.738,
+ "t": 8.0,
+ "src": "unity-sim",
+ "type": "rack.evt",
+ "corr": "37f78f12fcf2da70",
+ "data": {
+  "event": "accepted",
+  "cmd_id": "C00002",
+  "job_id": "J00001",
+  "action": "retrieve",
+  "pallet": null,
+  "sku": "SKU005",
+  "channel": "R1-E07-L08",
+  "slot": null,
+  "reason": null
+ }
+}

@@ -1,0 +1,19 @@
+{
+ "topic": "wh/v1/rack/R1/state",
+ "v": 1,
+ "id": "08224f588a82db1e",
+ "ts": 1795052285.502,
+ "t": 0.0,
+ "src": "unity-sim",
+ "type": "rack.state",
+ "corr": null,
+ "data": {
+  "stored": 117,
+  "capacity": 9240,
+  "pending": 0,
+  "inbound_free": true,
+  "total_stored": 0,
+  "total_retrieved": 0,
+  "avg_cycle_s": null
+ }
+}

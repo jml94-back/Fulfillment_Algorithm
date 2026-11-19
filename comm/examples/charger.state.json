@@ -1,8 +1,8 @@
 {
  "topic": "wh/v1/charger/CHW1/state",
  "v": 1,
- "id": "5c5eda070460b402",
- "ts": 1794999282.589,
+ "id": "2b46ec23680c0927",
+ "ts": 1795052285.532,
  "t": 0.0,
  "src": "unity-sim",
  "type": "charger.state",
