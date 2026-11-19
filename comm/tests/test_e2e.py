@@ -109,16 +109,8 @@ def test_rl_dropout_falls_back_to_scripted(broker):
 
 
 def test_demo_with_algorithm_planner(broker, tmp_path, monkeypatch):
-    """알고리즘 스레드의 D4Planner(warehouse/d4/comm_planner.py)를 끼워도 끝까지 돈다."""
-    import sys
-    from pathlib import Path
-
-    import pytest
-    algo = Path(__file__).resolve().parents[2]
-    if not (algo / "warehouse" / "d4" / "comm_planner.py").exists():
-        pytest.skip("warehouse/d4/comm_planner.py 없음")
-    monkeypatch.syspath_prepend(str(algo))
-    from warehouse.d4.comm_planner import D4Planner
+    """알고리즘 스레드의 D4Planner(comm/adapters/d4_planner.py)를 끼워도 끝까지 돈다."""
+    from adapters.d4_planner import D4Planner
 
     import sim.run_demo as rd
     from sim.scheduler_bridge import Scheduler

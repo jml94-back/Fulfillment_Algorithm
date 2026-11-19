@@ -6,7 +6,7 @@ Unity 시뮬레이션, 적재·출고 알고리즘(스케줄러), AMR 강화학�
 끝에서 끝까지 데모가 실제 브로커 위에서 돌아갑니다.
 
 ```
-pip install paho-mqtt jsonschema matplotlib pytest     # + mosquitto (brew install mosquitto)
+pip install -r requirements.txt pytest       # paho-mqtt, jsonschema + 알고리즘 코어 의존성 (+ brew install mosquitto)
 python -m sim.run_demo -v          # 브로커를 띄우고 입고 7·출고 4 팔레트를 처리 (약 25초)
 python -m pytest -q tests          # 18개 (브로커·ACL·Unity C# 상호 운용·알고리즘 Planner 포함)
 ```
@@ -382,7 +382,7 @@ C# DTO 로 만든 메시지 16종이 Python 스키마를 **전부 통과**, C# �
 | `choose_amr(amrs, src)` | 가장 가까운 유휴 AMR | 할당(헝가리안 등) |
 
 `stock` 은 Unity 가 retain 으로 내보내는 `rack/{rail}/inventory` 와 `rack/{rail}/evt` 로 맞춥니다 (시작 재고 `PrefillRandom` 포함).
-알고리즘 스레드의 규칙도 붙어 있습니다: `Scheduler(host, port, planner=D4Planner())` (`warehouse/d4/comm_planner.py`).
+알고리즘 스레드의 규칙도 붙어 있습니다: `Scheduler(host, port, planner=D4Planner())` (`adapters/d4_planner.py`).
 이 조합으로도 데모 11/11 완료, 스키마 위반 0건입니다 (`tests/test_e2e.py::test_demo_with_algorithm_planner`).
 
 가상 장비(`sim/rack_model.py`)는 Unity `ShuttleRackSystem` 규칙을 흉내 냅니다: 같은 SKU 채널 → 빈 채널 중

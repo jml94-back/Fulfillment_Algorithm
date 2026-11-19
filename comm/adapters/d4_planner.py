@@ -1,7 +1,10 @@
 """MQTT 스케줄러(comm/sim/scheduler_bridge.py)에 D4 알고리즘을 끼우는 어댑터.
 
-    from warehouse.d4.comm_planner import D4Planner
-    Scheduler(host, port, planner=D4Planner())          # comm/ 를 PYTHONPATH 에 넣고 실행
+    from adapters.d4_planner import D4Planner           # comm/ 에서 실행
+    Scheduler(host, port, planner=D4Planner())
+
+의존 방향은 comm → 알고리즘 코어(warehouse/) 한쪽뿐이다. 코어는 이 파일을 모른다.
+(예전 위치: warehouse/d4/comm_planner.py)
 
 Unity 구현(2026-11-19 팀원 명세)에서는 레인(채널)·칸 선택과 리프트·모셔틀 제어를 통로마다
 ShuttleRackSystem 이 맡는다. 그래서 MQTT 쪽 알고리즘이 정하는 것은 "어느 통로(R1~R3)로 보내고 어느 통로에서
@@ -13,7 +16,7 @@ choose_amr 는 스케줄러 기본(가장 가까운 놀고 있는 AMR)을 쓴다
 """
 from __future__ import annotations
 
-from sim.scheduler_bridge import Planner        # comm/ 안의 패키지
+from sim.scheduler_bridge import Planner
 from whmqtt import ids
 
 

@@ -6,7 +6,7 @@ Unity(ML-Agents) 본 환경을 만들기 전에 같은 관측·행동·보상으
 학습이 되는지, 고전 방식(A* + DWA)과 비교해 어디가 낫고 어디가 모자란지를 먼저 확인했습니다.
 
 ```
-pip install numpy torch gymnasium pettingzoo matplotlib
+pip install -r rl/requirements.txt
 python -m rl.mappo --steps 25e6 --stage-max-steps 6e6 --out rl/out/run_mappo                 # MAPPO
 python -m rl.mappo --steps 25e6 --stage-max-steps 6e6 --critic local --out rl/out/run_ippo   # IPPO (비교)
 python -m rl.evaluate --ckpt "RL MAPPO=rl/out/run_mappo/last.pt" --ckpt "RL IPPO=rl/out/run_ippo/last.pt" \

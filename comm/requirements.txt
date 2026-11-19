@@ -1,0 +1,6 @@
+# MQTT 통신 (comm/). 코어 위에 얹는 선택 의존성이다.
+# comm/adapters/ 가 알고리즘 코어를 import 하므로 코어 의존성도 함께 설치한다.
+# comm/ 을 별도 저장소로 떼어 내면 아래 -r 줄을 코어 패키지 설치로 바꾸면 된다.
+-r ../requirements.txt
+paho-mqtt>=2.0
+jsonschema
