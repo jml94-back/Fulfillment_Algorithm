@@ -52,16 +52,9 @@ SELECT w.pallet_id, 'inbound_weight', 'hold', w.weighing_id,
        format('무게 불일치: 실측 %s kg / 송장 %s kg', w.weight_kg, w.declared_kg), 'auto'
   FROM weighing w WHERE abs(w.deviation_pct) > 5;
 
--- 4) P1 적재 작업: 레인 R1-W01-L01 배정, 가장 안쪽 칸 14
-INSERT INTO lane_sku_assignment (lane_id, sku_id, reason)
-SELECT l.lane_id, s.sku_id, 'new_lane' FROM lane l, sku s
- WHERE l.lane_code = 'R1-W01-L01' AND s.sku_code = 'SKU101';
-
-INSERT INTO job (job_code, kind, status, order_line_id, pallet_id, sku_id, dock_code, to_slot_id, lift_id, shuttle_id, amr_id)
-SELECT 'J00009', 'inbound', 'amr_assigned', p.inbound_line_id, p.pallet_id, p.sku_id, 'IN2',
-       (SELECT slot_id FROM lane_slot WHERE slot_code = 'R1-W01-L01-14'),
-       (SELECT equipment_id FROM equipment WHERE equipment_code = 'L1'),
-       (SELECT equipment_id FROM equipment WHERE equipment_code = 'R1-Shuttle_L01'),
+-- 4) P1 적재 작업: 스케줄러는 통로 R1 만 정함 (채널·칸은 랙이 결정)
+INSERT INTO job (job_code, kind, status, order_line_id, pallet_id, sku_id, dock_code, rail_no, amr_id)
+SELECT 'J00009', 'inbound', 'amr_assigned', p.inbound_line_id, p.pallet_id, p.sku_id, 'IN2', 1,
        (SELECT equipment_id FROM equipment WHERE equipment_code = 'AMR01')
   FROM pallet p WHERE p.pallet_code = 'P00000001';
 
@@ -87,19 +80,21 @@ DO $$ BEGIN
 EXCEPTION WHEN exclusion_violation THEN RAISE NOTICE 'OK  경로 노드 시간 겹침 거부';
 END $$;
 
--- 리프트·셔틀 명령
-INSERT INTO device_command (cmd_code, equipment_id, job_id, action, level_no, slot_id, pallet_id, status)
-SELECT c.code, e.equipment_id, j.job_id, c.act::command_action, c.lv, c.slot, j.pallet_id, 'done'
-  FROM job j,
-       (VALUES ('C00017', 'L1', 'lift_in', 1, NULL::int),
-               ('C00018', 'R1-Shuttle_L01', 'store', NULL, (SELECT slot_id FROM wh.lane_slot WHERE slot_code = 'R1-W01-L01-14')))
-         c(code, eq, act, lv, slot)
-  JOIN equipment e ON e.equipment_code = c.eq
- WHERE j.job_code = 'J00009';
+-- 랙 명령: 통로 R1 에 store → 랙이 채널 R1-W01-L01 수락(accepted) → 칸 14 완료(done)
+INSERT INTO channel_sku_assignment (channel_id, sku_id, reason)
+SELECT c.channel_id, s.sku_id, 'new_channel' FROM channel c, sku s
+ WHERE c.channel_code = 'R1-W01-L01' AND s.sku_code = 'SKU101';
+INSERT INTO rack_command (cmd_code, rail_no, job_id, action, sku_id, pallet_id, weight_kg, channel_id, slot_id, status, accepted_at, finished_at)
+SELECT 'C00017', 1, j.job_id, 'store', j.sku_id, j.pallet_id, 648.3,
+       (SELECT channel_id FROM channel WHERE channel_code = 'R1-W01-L01'),
+       (SELECT slot_id FROM channel_slot WHERE slot_code = 'R1-W01-L01-14'), 'done', now(), now()
+  FROM job j WHERE j.job_code = 'J00009';
+UPDATE job SET status = 'in_rack', to_slot_id = (SELECT slot_id FROM channel_slot WHERE slot_code = 'R1-W01-L01-14')
+ WHERE job_code = 'J00009';
 
 -- 5) 레인에 넣기 → 트리거가 SKU·하중 검사
 UPDATE pallet SET current_location_id = NULL,
-       current_slot_id = (SELECT slot_id FROM lane_slot WHERE slot_code = 'R1-W01-L01-14'),
+       current_slot_id = (SELECT slot_id FROM channel_slot WHERE slot_code = 'R1-W01-L01-14'),
        status = 'stored', stored_at = now()
  WHERE pallet_code = 'P00000001';
 UPDATE job SET status = 'done', finished_at = now() WHERE job_code = 'J00009';
@@ -111,20 +106,20 @@ SELECT 'E000012', 'stored', p.pallet_id, p.sku_id, p.current_slot_id, j.job_id, 
 INSERT INTO pallet (pallet_code, sku_id, declared_weight_kg)
 SELECT 'P00000099', sku_id, 900 FROM sku WHERE sku_code = 'SKU202';
 DO $$ BEGIN
-    UPDATE wh.pallet SET current_slot_id = (SELECT slot_id FROM wh.lane_slot WHERE slot_code = 'R1-W01-L01-13')
+    UPDATE wh.pallet SET current_slot_id = (SELECT slot_id FROM wh.channel_slot WHERE slot_code = 'R1-W01-L01-13')
      WHERE pallet_code = 'P00000099';
-    RAISE EXCEPTION 'TEST FAIL: mixed sku lane accepted';
+    RAISE EXCEPTION 'TEST FAIL: mixed sku channel accepted';
 EXCEPTION WHEN raise_exception THEN
     IF SQLERRM LIKE 'TEST FAIL%' THEN RAISE; END IF;
     RAISE NOTICE 'OK  레인 SKU 혼합 거부: %', SQLERRM;
 END $$;
 
 -- 단 허용 하중 초과(7단 1,000 kg 에 1,100 kg)는 거부
-INSERT INTO lane_sku_assignment (lane_id, sku_id)
-SELECT l.lane_id, s.sku_id FROM lane l, sku s WHERE l.lane_code = 'R2-E07-L07' AND s.sku_code = 'SKU202';
+INSERT INTO channel_sku_assignment (channel_id, sku_id)
+SELECT l.channel_id, s.sku_id FROM channel l, sku s WHERE l.channel_code = 'R2-E07-L07' AND s.sku_code = 'SKU202';
 UPDATE pallet SET measured_weight_kg = 1100 WHERE pallet_code = 'P00000099';
 DO $$ BEGIN
-    UPDATE wh.pallet SET current_slot_id = (SELECT slot_id FROM wh.lane_slot WHERE slot_code = 'R2-E07-L07-14')
+    UPDATE wh.pallet SET current_slot_id = (SELECT slot_id FROM wh.channel_slot WHERE slot_code = 'R2-E07-L07-14')
      WHERE pallet_code = 'P00000099';
     RAISE EXCEPTION 'TEST FAIL: overweight pallet accepted';
 EXCEPTION WHEN raise_exception THEN
@@ -134,8 +129,8 @@ END $$;
 
 -- 한 레인에 열린 SKU 배정은 하나
 DO $$ BEGIN
-    INSERT INTO wh.lane_sku_assignment (lane_id, sku_id)
-    SELECT l.lane_id, s.sku_id FROM wh.lane l, wh.sku s WHERE l.lane_code = 'R1-W01-L01' AND s.sku_code = 'SKU202';
+    INSERT INTO wh.channel_sku_assignment (channel_id, sku_id)
+    SELECT l.channel_id, s.sku_id FROM wh.channel l, wh.sku s WHERE l.channel_code = 'R1-W01-L01' AND s.sku_code = 'SKU202';
     RAISE EXCEPTION 'TEST FAIL: second open assignment accepted';
 EXCEPTION WHEN unique_violation THEN RAISE NOTICE 'OK  레인 이중 배정 거부';
 END $$;
@@ -165,7 +160,7 @@ SELECT 'E-amr-1', 'M00011', 'wh/v1/amr/AMR01/evt', 'amr.evt', 'unity', now(), 11
 
 -- 결과 확인
 SELECT * FROM v_capacity;
-SELECT lane_code, sku_code, pallets, free_slots FROM v_lane_stock WHERE pallets > 0 OR sku_code IS NOT NULL ORDER BY lane_code;
+SELECT channel_code, sku_code, pallets, free_slots FROM v_channel_stock WHERE pallets > 0 OR sku_code IS NOT NULL ORDER BY channel_code;
 SELECT * FROM v_sku_stock ORDER BY sku_code;
 SELECT p.pallet_code, p.status, w.weight_kg, w.deviation_pct, i.result
   FROM pallet p LEFT JOIN weighing w USING (pallet_id) LEFT JOIN inspection i USING (pallet_id)

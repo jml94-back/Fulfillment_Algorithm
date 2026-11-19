@@ -5,8 +5,9 @@
 -- 근거
 --   - 보관 구조·적재 규칙 : warehouse/d4/layout.py, warehouse/d4/storage.py
 --   - 메시지 필드·상태 값 : comm/schemas/*.schema.json (wms.order, wms.job, wms.inventory,
---                           scale.reading, amr.*, lift.*, shuttle.*, dock.*, charger.state)
+--                           scale.reading, amr.*, rack.*, dock.*, charger.state)
 --   - Unity 쪽 이름 규칙  : Warehouse_System_Spec.md 6.3장 (채널 R2-E07-L03, 칸 R2-E07-L03-14)
+--   - 랙 연동            : comm/schemas/rack.*.schema.json (스케줄러는 통로만, 채널·칸은 Unity가 결정)
 --
 -- 단위: 길이 m, 무게 kg, 배터리 %, 시각 timestamptz(실제 시각) + sim_t(시뮬레이션 초, MQTT t)
 -- 좌표: 도면 좌표 (x 동, y 북, z 위), 원점 = 창고 바닥 남서쪽 안쪽 모서리
@@ -24,19 +25,19 @@ SET search_path = wh, public;
 CREATE TYPE flow_dir        AS ENUM ('inbound', 'outbound');
 CREATE TYPE location_kind   AS ENUM (
     'dock_door', 'weigh_station', 'drop_stand', 'stage_slot', 'reserve_area',
-    'buffer', 'buffer_slot', 'lift_handoff', 'qc_area', 'charger_spot', 'wait_spot', 'facility');
+    'buffer', 'buffer_slot', 'qc_area', 'charger_spot', 'wait_spot', 'facility');
 CREATE TYPE equipment_kind  AS ENUM ('amr', 'lift', 'mother_shuttle', 'charger');
 CREATE TYPE order_status    AS ENUM ('planned', 'in_progress', 'done', 'canceled');
 CREATE TYPE visit_status    AS ENUM ('scheduled', 'arrived', 'docked', 'unloading', 'loading', 'departed', 'canceled');
 CREATE TYPE pallet_status   AS ENUM (                -- Unity PalletUnit.state 를 세분화
     'expected', 'received', 'held', 'queued', 'in_transit', 'stored', 'picking', 'staged', 'shipped', 'rejected');
-CREATE TYPE job_kind        AS ENUM ('inbound', 'outbound', 'relocate');
+CREATE TYPE job_kind        AS ENUM ('inbound', 'outbound', 'relocate');   -- relocate = 채널 정리 (DB 확장, MQTT엔 아직 없음)
 CREATE TYPE job_status      AS ENUM (               -- wms.job.status
-    'planned', 'waiting', 'amr_assigned', 'lifting', 'shuttling', 'done', 'held', 'failed', 'canceled');
+    'planned', 'waiting', 'amr_assigned', 'in_rack', 'done', 'held', 'failed', 'canceled');
 CREATE TYPE mission_status  AS ENUM ('created', 'sent', 'accepted', 'rejected', 'running', 'done', 'failed', 'canceled');
 CREATE TYPE step_action     AS ENUM ('move', 'pick', 'drop', 'charge', 'wait');
-CREATE TYPE command_action  AS ENUM ('lift_in', 'lift_out', 'store', 'retrieve', 'relocate', 'cancel');
-CREATE TYPE command_status  AS ENUM ('sent', 'accepted', 'rejected', 'started', 'done', 'failed', 'canceled');
+CREATE TYPE command_action  AS ENUM ('store', 'retrieve');                    -- rack.cmd.action
+CREATE TYPE command_status  AS ENUM ('sent', 'accepted', 'rejected', 'started', 'done', 'failed');  -- sent + rack.evt.event
 CREATE TYPE inspection_kind AS ENUM ('inbound_weight', 'inbound_visual', 'outbound_pack');
 CREATE TYPE inspection_result AS ENUM ('pass', 'hold', 'released', 'rejected');
 CREATE TYPE inventory_event AS ENUM (               -- wms.inventory.event
@@ -62,32 +63,32 @@ CREATE TABLE rail (
     y_start         numeric(6,2) NOT NULL,           -- 리프트 쪽 끝
     y_end           numeric(6,2) NOT NULL,
     rows_per_side   smallint NOT NULL DEFAULT 33,
-    lane_depth      smallint NOT NULL DEFAULT 14
+    channel_depth      smallint NOT NULL DEFAULT 14
 );
 
 -- 레인(채널) = 통로·면·줄·단. SKU 1종 전용, 입구 하나(선입후출)
-CREATE TABLE lane (
-    lane_id         serial PRIMARY KEY,
+CREATE TABLE channel (
+    channel_id         serial PRIMARY KEY,
     rail_no         smallint NOT NULL REFERENCES rail,
     side            char(1) NOT NULL CHECK (side IN ('W', 'E')),   -- 서쪽 면 / 동쪽 면
     row_no          smallint NOT NULL CHECK (row_no BETWEEN 1 AND 99),   -- 01 = 리프트에 가장 가까운 줄
     level_no        smallint NOT NULL REFERENCES storage_level,
-    lane_code       text GENERATED ALWAYS AS (
+    channel_code       text GENERATED ALWAYS AS (
                         'R' || rail_no::text || '-' || side || lpad(row_no::text, 2, '0')
                         || '-L' || lpad(level_no::text, 2, '0')) STORED,          -- 예: R2-E07-L03
     center_y        numeric(6,2),                    -- 레인 중심 y (도면)
     is_blocked      boolean NOT NULL DEFAULT false,  -- 정비·고장으로 사용 중지
     UNIQUE (rail_no, side, row_no, level_no),
-    UNIQUE (lane_code)
+    UNIQUE (channel_code)
 );
 
 -- 칸(셀). 01 = 통로 쪽 입구, 14 = 가장 안쪽. 안쪽부터 채움
-CREATE TABLE lane_slot (
+CREATE TABLE channel_slot (
     slot_id         serial PRIMARY KEY,
-    lane_id         int NOT NULL REFERENCES lane ON DELETE CASCADE,
+    channel_id         int NOT NULL REFERENCES channel ON DELETE CASCADE,
     slot_no         smallint NOT NULL CHECK (slot_no BETWEEN 1 AND 30),
-    slot_code       text NOT NULL UNIQUE,            -- 예: R2-E07-L03-14 (시드에서 lane_code||'-'||칸)
-    UNIQUE (lane_id, slot_no)
+    slot_code       text NOT NULL UNIQUE,            -- 예: R2-E07-L03-14 (시드에서 channel_code||'-'||칸)
+    UNIQUE (channel_id, slot_no)
 );
 
 -- 도크. 입고 IN1~6 / 출고 OUT1~6
@@ -197,14 +198,15 @@ CREATE TABLE order_line (
 -- 팔레트. 현재 위치는 랙 칸(current_slot_id) 또는 바닥 위치(current_location_id) 중 하나
 CREATE TABLE pallet (
     pallet_id           bigserial PRIMARY KEY,
-    pallet_code         text NOT NULL UNIQUE,        -- P00000001 (MQTT) / R1-000123 (Unity) — ID 규칙 확정 후 CHECK 추가
+    pallet_code         text NOT NULL UNIQUE CHECK (pallet_code ~ '^(P[0-9]{8}|R[1-3]-[0-9]{6})$'),
+                                                     -- P00000001 (입고 송장) / R1-000123 (랙 시작 재고)
     sku_id              int NOT NULL REFERENCES sku,
     status              pallet_status NOT NULL DEFAULT 'expected',
     declared_weight_kg  numeric(7,1) CHECK (declared_weight_kg >= 0),   -- 송장 무게
     measured_weight_kg  numeric(7,1) CHECK (measured_weight_kg >= 0),   -- 계량대 실측 (마지막 측정)
     inbound_line_id     int REFERENCES order_line,
     outbound_line_id    int REFERENCES order_line,
-    current_slot_id     int UNIQUE REFERENCES lane_slot,                -- 한 칸에 팔레트 하나
+    current_slot_id     int UNIQUE REFERENCES channel_slot,                -- 한 칸에 팔레트 하나
     current_location_id int REFERENCES location,
     carried_by_id       int REFERENCES equipment,                       -- AMR·리프트·모셔틀 위에 있을 때
     received_at         timestamptz,
@@ -217,17 +219,17 @@ CREATE INDEX ix_pallet_sku_status ON pallet (sku_id, status);
 CREATE INDEX ix_pallet_location   ON pallet (current_location_id) WHERE current_location_id IS NOT NULL;
 
 -- 레인 SKU 배정 이력. 레인당 열린 배정(released_at IS NULL)은 하나
-CREATE TABLE lane_sku_assignment (
+CREATE TABLE channel_sku_assignment (
     assignment_id   serial PRIMARY KEY,
-    lane_id         int NOT NULL REFERENCES lane,
+    channel_id         int NOT NULL REFERENCES channel,
     sku_id          int NOT NULL REFERENCES sku,
     assigned_at     timestamptz NOT NULL DEFAULT now(),
     released_at     timestamptz,                     -- 레인이 비고 예약도 0 이 되면 해제
-    reason          text,                            -- 'new_lane' / 'consolidate' ...
+    reason          text,                            -- 'new_channel' / 'consolidate' ...
     CHECK (released_at IS NULL OR released_at >= assigned_at)
 );
-CREATE UNIQUE INDEX uq_lane_open_assignment ON lane_sku_assignment (lane_id) WHERE released_at IS NULL;
-CREATE INDEX ix_assignment_sku_open ON lane_sku_assignment (sku_id) WHERE released_at IS NULL;
+CREATE UNIQUE INDEX uq_channel_open_assignment ON channel_sku_assignment (channel_id) WHERE released_at IS NULL;
+CREATE INDEX ix_assignment_sku_open ON channel_sku_assignment (sku_id) WHERE released_at IS NULL;
 
 -- 계량 (scale.reading). 오차 %는 계산 열
 CREATE TABLE weighing (
@@ -261,7 +263,7 @@ CREATE TABLE inspection (
 CREATE INDEX ix_inspection_open ON inspection (pallet_id) WHERE result = 'hold' AND resolved_at IS NULL;
 
 -- =============================================================================
--- 3. 작업·명령 (wms.job, amr.cmd.mission, lift.cmd, shuttle.cmd)
+-- 3. 작업·명령 (wms.job, amr.cmd.mission, rack.cmd)
 -- =============================================================================
 
 -- 팔레트 1개 단위 작업
@@ -274,10 +276,9 @@ CREATE TABLE job (
     pallet_id       bigint REFERENCES pallet,
     sku_id          int NOT NULL REFERENCES sku,
     dock_code       text REFERENCES dock,
-    from_slot_id    int REFERENCES lane_slot,        -- 출고·재배치: 꺼낼 칸
-    to_slot_id      int REFERENCES lane_slot,        -- 입고·재배치: 넣을 칸
-    lift_id         int REFERENCES equipment,
-    shuttle_id      int REFERENCES equipment,
+    rail_no         smallint REFERENCES rail,        -- 스케줄러가 고른 통로 (wms.job.rail)
+    from_slot_id    int REFERENCES channel_slot,     -- 출고: 랙이 꺼낸 칸 (rack.evt done 후 기록)
+    to_slot_id      int REFERENCES channel_slot,     -- 입고: 랙이 넣은 칸 (rack.evt done 후 기록)
     amr_id          int REFERENCES equipment,
     priority        smallint NOT NULL DEFAULT 5,
     reason          text,                            -- held / failed 사유
@@ -323,24 +324,27 @@ CREATE TABLE mission_step (
     PRIMARY KEY (mission_id, seq)
 );
 
--- 리프트·모셔틀 명령 (cmd_id = 봉투 id). 장비별 FIFO
-CREATE TABLE device_command (
+-- 랙 명령 (rack/{rail}/cmd · evt). 스케줄러는 통로와 SKU만 정하고,
+-- 채널·칸·리프트·모셔틀은 Unity ShuttleRackSystem 이 정해 evt 로 알려 준다
+CREATE TABLE rack_command (
     command_id      bigserial PRIMARY KEY,
-    cmd_code        text NOT NULL UNIQUE,            -- C00017
-    equipment_id    int NOT NULL REFERENCES equipment,
+    cmd_code        text NOT NULL UNIQUE,            -- C00002 (봉투 id)
+    rail_no         smallint NOT NULL REFERENCES rail,
     job_id          bigint REFERENCES job,
-    action          command_action NOT NULL,
-    level_no        smallint REFERENCES storage_level, -- lift_in / lift_out 목적 단
-    slot_id         int REFERENCES lane_slot,          -- store / retrieve 칸
-    pallet_id       bigint REFERENCES pallet,
+    action          command_action NOT NULL,         -- store / retrieve
+    sku_id          int NOT NULL REFERENCES sku,
+    pallet_id       bigint REFERENCES pallet,        -- store: 버퍼의 팔레트, retrieve: 랙이 고른 팔레트 (done 후)
+    weight_kg       numeric(7,1),
+    channel_id      int REFERENCES channel,          -- accepted 때 랙이 알려 준 채널
+    slot_id         int REFERENCES channel_slot,     -- done 때 랙이 알려 준 칸
     status          command_status NOT NULL DEFAULT 'sent',
-    reason          text,
+    reason          text,                            -- rejected / failed 사유 (만재, 재고 없음 ...)
     sent_at         timestamptz NOT NULL DEFAULT now(),
     accepted_at     timestamptz,
     started_at      timestamptz,
     finished_at     timestamptz
 );
-CREATE INDEX ix_command_queue ON device_command (equipment_id, sent_at)
+CREATE INDEX ix_rack_command_open ON rack_command (rail_no, sent_at)
     WHERE status IN ('sent', 'accepted', 'started');
 
 -- AMR 통로 노드 시간 예약 (traffic/reservations). 같은 노드를 같은 시간에 두 대가 못 씀
@@ -378,14 +382,14 @@ CREATE TABLE equipment_status_log (
     equipment_id    int NOT NULL REFERENCES equipment,
     ts              timestamptz NOT NULL DEFAULT now(),
     sim_t           numeric(12,3),
-    mode            text NOT NULL,                   -- idle / moving / charging / in_lane / error ...
+    mode            text NOT NULL,                   -- idle / moving / charging / in_channel / error ...
     battery_pct     numeric(5,2) CHECK (battery_pct BETWEEN 0 AND 100),
     x               numeric(6,2),
     y               numeric(6,2),
     level_no        smallint,                        -- 리프트 현재 단
     pallet_id       bigint REFERENCES pallet,
     mission_id      bigint REFERENCES amr_mission,
-    satellite       jsonb,                           -- 모셔틀: {"where":"in_lane","lane":...,"pos":...}
+    satellite       jsonb,                           -- 모셔틀: {"where":"in_channel","channel":...,"pos":...}
     error           text
 );
 CREATE INDEX ix_status_equipment_ts ON equipment_status_log (equipment_id, ts DESC);
@@ -397,7 +401,7 @@ CREATE TABLE inventory_txn (
     event           inventory_event NOT NULL,
     pallet_id       bigint NOT NULL REFERENCES pallet,
     sku_id          int NOT NULL REFERENCES sku,
-    slot_id         int REFERENCES lane_slot,
+    slot_id         int REFERENCES channel_slot,
     location_id     int REFERENCES location,
     job_id          bigint REFERENCES job,
     qty_delta       smallint NOT NULL DEFAULT 0 CHECK (qty_delta BETWEEN -1 AND 1),  -- 창고 재고 +1 / -1
@@ -433,7 +437,7 @@ CREATE INDEX ix_event_payload ON event_log USING gin (payload jsonb_path_ops);
 -- =============================================================================
 CREATE FUNCTION check_pallet_slot() RETURNS trigger LANGUAGE plpgsql AS $$
 DECLARE
-    v_lane      int;
+    v_channel      int;
     v_level_max numeric;
     v_sku       int;
     v_weight    numeric;
@@ -441,14 +445,14 @@ BEGIN
     IF NEW.current_slot_id IS NULL OR NEW.current_slot_id IS NOT DISTINCT FROM OLD.current_slot_id THEN
         RETURN NEW;
     END IF;
-    SELECT s.lane_id, lv.max_load_kg INTO v_lane, v_level_max
-      FROM lane_slot s JOIN lane l USING (lane_id) JOIN storage_level lv USING (level_no)
+    SELECT s.channel_id, lv.max_load_kg INTO v_channel, v_level_max
+      FROM channel_slot s JOIN channel l USING (channel_id) JOIN storage_level lv USING (level_no)
      WHERE s.slot_id = NEW.current_slot_id;
 
-    SELECT sku_id INTO v_sku FROM lane_sku_assignment
-     WHERE lane_id = v_lane AND released_at IS NULL;
+    SELECT sku_id INTO v_sku FROM channel_sku_assignment
+     WHERE channel_id = v_channel AND released_at IS NULL;
     IF v_sku IS NULL OR v_sku <> NEW.sku_id THEN
-        RAISE EXCEPTION 'lane % is not assigned to sku % (assigned: %)', v_lane, NEW.sku_id, v_sku;
+        RAISE EXCEPTION 'channel % is not assigned to sku % (assigned: %)', v_channel, NEW.sku_id, v_sku;
     END IF;
 
     v_weight := coalesce(NEW.measured_weight_kg, NEW.declared_weight_kg);
@@ -467,24 +471,24 @@ CREATE TRIGGER trg_pallet_slot
 -- =============================================================================
 
 -- 레인별 현재 SKU와 재고 (wms.inventory.snapshot 의 [레인, SKU, 개수])
-CREATE VIEW v_lane_stock AS
-SELECT l.lane_id, l.lane_code, l.rail_no, l.side, l.row_no, l.level_no,
+CREATE VIEW v_channel_stock AS
+SELECT l.channel_id, l.channel_code, l.rail_no, l.side, l.row_no, l.level_no,
        sk.sku_code,
        count(p.pallet_id)                    AS pallets,
-       r.lane_depth - count(p.pallet_id)     AS free_slots
-  FROM lane l
+       r.channel_depth - count(p.pallet_id)     AS free_slots
+  FROM channel l
   JOIN rail r USING (rail_no)
-  LEFT JOIN lane_sku_assignment a ON a.lane_id = l.lane_id AND a.released_at IS NULL
+  LEFT JOIN channel_sku_assignment a ON a.channel_id = l.channel_id AND a.released_at IS NULL
   LEFT JOIN sku sk ON sk.sku_id = a.sku_id
-  LEFT JOIN lane_slot s ON s.lane_id = l.lane_id
+  LEFT JOIN channel_slot s ON s.channel_id = l.channel_id
   LEFT JOIN pallet p ON p.current_slot_id = s.slot_id
- GROUP BY l.lane_id, r.lane_depth, sk.sku_code;
+ GROUP BY l.channel_id, r.channel_depth, sk.sku_code;
 
 -- SKU별 재고
 CREATE VIEW v_sku_stock AS
 SELECT sk.sku_code, sk.name, ps.stored, ps.inbound_wip, ps.held,
-       (SELECT count(*) FROM lane_sku_assignment a
-         WHERE a.sku_id = sk.sku_id AND a.released_at IS NULL) AS lanes
+       (SELECT count(*) FROM channel_sku_assignment a
+         WHERE a.sku_id = sk.sku_id AND a.released_at IS NULL) AS channels
   FROM sku sk
   CROSS JOIN LATERAL (
         SELECT count(*) FILTER (WHERE p.status = 'stored')                           AS stored,
@@ -494,7 +498,7 @@ SELECT sk.sku_code, sk.name, ps.stored, ps.inbound_wip, ps.held,
 
 -- 창고 사용률
 CREATE VIEW v_capacity AS
-SELECT (SELECT count(*) FROM lane_slot)                                   AS slots,
+SELECT (SELECT count(*) FROM channel_slot)                                   AS slots,
        (SELECT count(*) FROM pallet WHERE current_slot_id IS NOT NULL)    AS occupied,
-       (SELECT count(*) FROM lane_sku_assignment WHERE released_at IS NULL) AS lanes_in_use,
-       (SELECT count(*) FROM lane)                                        AS lanes;
+       (SELECT count(*) FROM channel_sku_assignment WHERE released_at IS NULL) AS channels_in_use,
+       (SELECT count(*) FROM channel)                                        AS channels;

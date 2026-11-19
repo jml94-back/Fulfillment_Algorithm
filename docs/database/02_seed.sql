@@ -14,16 +14,16 @@ SELECT lv, (lv - 1) * 1.5,
 INSERT INTO rail (rail_no, center_x, y_start, y_end) VALUES
     (1, 21.8, 21.6, 77.6), (2, 60.0, 21.6, 77.6), (3, 98.2, 21.6, 77.6);
 
--- 레인 1,980개 = 통로 3 x 면 2 x 줄 33 x 단 10. 줄 중심 y = 32.1 + (줄-1) x 1.4
-INSERT INTO lane (rail_no, side, row_no, level_no, center_y)
+-- 레인(채널) 1,980개 = 통로 3 x 면 2 x 줄 33 x 단 10. 줄 중심 y = 32.1 + (줄-1) x 1.4
+INSERT INTO channel (rail_no, side, row_no, level_no, center_y)
 SELECT r, s, n, lv, 32.1 + (n - 1) * 1.4
   FROM generate_series(1, 3) r, unnest(ARRAY['W', 'E']) s,
        generate_series(1, 33) n, generate_series(1, 10) lv;
 
 -- 칸 27,720개 = 레인 x 14
-INSERT INTO lane_slot (lane_id, slot_no, slot_code)
-SELECT l.lane_id, k, l.lane_code || '-' || lpad(k::text, 2, '0')
-  FROM lane l, generate_series(1, 14) k;
+INSERT INTO channel_slot (channel_id, slot_no, slot_code)
+SELECT l.channel_id, k, l.channel_code || '-' || lpad(k::text, 2, '0')
+  FROM channel l, generate_series(1, 14) k;
 
 -- 도크 12개. 출고 번호는 배치도 기준 (OUT1 = 동쪽 끝 x 117.5)
 INSERT INTO dock (dock_code, direction, door_x) VALUES
@@ -69,12 +69,6 @@ SELECT b.location_code || '-' || k, 'buffer_slot', b.location_id, b.rail_no, k,
        20.4, 0.6
   FROM location b JOIN rail r USING (rail_no), generate_series(1, 5) k
  WHERE b.kind = 'buffer';
-
--- 단별 리프트 이송점 (씬 이름 제안 R1-L03-XIN / XOUT)
-INSERT INTO location (location_code, kind, rail_no, x, y, z, capacity)
-SELECT 'R' || r.rail_no || '-' || lv.level_code || '-X' || d, 'lift_handoff', r.rail_no,
-       r.center_x, 21.6, lv.floor_height_m, 2
-  FROM rail r, storage_level lv, unnest(ARRAY['IN', 'OUT']) d;
 
 -- 검수·지원 띠
 INSERT INTO location (location_code, kind, x, y, nav_node, capacity) VALUES
