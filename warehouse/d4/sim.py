@@ -5,9 +5,10 @@
   경로를 예약해 두고 다음 AMR은 그 예약을 피해 계획한다. 통로 방향은 정해 두지 않고 예약으로 그때그때 정해진다.
   작업 하나 = [지금 위치 → 집는 곳(8초) → 놓는 곳(8초) → 쉬는 자리/충전기]를 한 번에 계획·예약.
 - AMR 배정: 놀고 있는 AMR과 준비된 작업을 (거리 - 대기 시간 - 출고 버퍼 압박) 비용이 가장 낮은 쌍부터 묶는다.
-- 리프트(레일마다 1기): 이중 사이클. 올라갈 때 입고 팔레트를 그 층 이송점에 놓고, 출고 팔레트가 기다리는
-  층에서 집어 내려온다. 층 이송점은 입·출고 각 2칸.
-- 셔틀(레일 x 층 = 30세트): 이송점 ↔ 레인. 놀 때 같은 SKU 레인 합치기.
+- 장비 규칙·속도는 Unity 구현(ShuttleRackSystem, 2026-11-19 팀원 명세)에 맞춘다 (storage.py 머리 상수).
+- 리프트(레일마다 1기): 기본은 Unity 와 같이 한 번에 한 작업(입고 또는 출고). dual_cycle=True 면 이중 사이클.
+  층 이송점은 입·출고 각 1칸(Unity 는 모셔틀에 바로 넘김). 버퍼 끝칸 ↔ 첫칸 컨베이어 10.4 s.
+- 셔틀(레일 x 층 = 30세트): 이송점 ↔ 레인. 같은 단 작업은 등록 순서대로(Unity). consolidate=True 면 놀 때 레인 합치기.
 - 배터리: 이동 5시간에 100% 소모, 충전 1.5시간에 100%. 쉴 때 70% 미만이면 충전기 자리에서 쉰다(기회 충전).
   25% 미만이면 작업을 받지 않고 충전기로 가서 90%까지 채운다.
 """
@@ -24,11 +25,13 @@ from ..fleet import Reservations, plan_segment, verify_no_collisions
 from ..pathfinding import DistanceOracle
 from .bus import EventBus
 from .layout import DEPTH, LEVEL_MAX_KG, LEVELS, PD_BUF, Cell, D4Layout, cx
-from .storage import (LIFT_XFER, SHUTTLE_XFER, LaneState, Storage, StoragePolicy, lift_time, mother_time, sat_time)
+from .storage import (CONVEYOR_SLOT, LIFT_XFER, SHUTTLE_XFER, LaneState, Storage, StoragePolicy, lift_move, lift_time,
+                      mother_time, sat_time)
 
 STAGE_CAP = 28             # 도크별 적치 칸 (4줄 x 7)
 HANDLE = 8                 # AMR 팔레트 싣기/내리기 (초)
-LEVEL_SLOT = 2             # 층 이송점 칸 수 (입고·출고 각각)
+LEVEL_SLOT = 1             # 층 이송점 칸 수 (입고·출고 각각). Unity 는 리프트가 모셔틀에 바로 넘기므로 1칸(모셔틀 위)으로 근사
+CONVEYOR_RUN = (PD_BUF - 1) * CONVEYOR_SLOT   # 버퍼 끝칸 ↔ 첫칸 4칸 = 10.4 s (Unity 컨베이어 0.5 m/s)
 WEIGH = 20                 # 계량·라벨 확인 (초)
 HORIZON = 900              # 경로 탐색 시간 한계 (초)
 BAT_MOVE = 100 / (5 * 3600)
@@ -51,7 +54,8 @@ class SimConfig:
     load_s: float = 30.0             # 출고 트럭에 1개 싣기
     mismatch: float = 0.02           # 신고 무게와 ±5% 넘게 다른 팔레트 비율
     dispatch: str = "cost"           # "cost" (거리·대기·버퍼 압박) / "fifo" (오래된 작업부터)
-    dual_cycle: bool = True
+    dual_cycle: bool = False         # Unity 리프트는 한 번에 한 작업(liftOwner). True = 올라갈 때 입고 + 내려올 때 출고
+    shuttle_fifo: bool = True        # Unity: 같은 단 작업은 등록 순서대로
     battery: bool = True
     seed: int = 0
     policy: StoragePolicy = field(default_factory=StoragePolicy)
@@ -143,7 +147,7 @@ class D4Sim:
         self.lvl_out: dict[tuple[int, int], list[Pallet]] = defaultdict(list)
         self.lvl_out_res: dict[tuple[int, int], int] = defaultdict(int)
         self.sh_busy: dict[tuple[int, int], bool] = defaultdict(bool)
-        self.sh_y: dict[tuple[int, int], float] = defaultdict(lambda: self.L.lift_y)
+        self.sh_y: dict[tuple[int, int], float] = defaultdict(lambda: self.L.xfer_y)
         self.sh_q: dict[tuple[int, int], list] = defaultdict(list)
         self.sh_time: dict[tuple[int, int], float] = defaultdict(float)
         # AMR
@@ -312,7 +316,10 @@ class D4Sim:
         # 이송점이 차서 리프트가 막히지 않게: 입고 이송점이 찼으면 store 먼저, 아니면 retrieve 먼저
         stores = [j for j in q if j[0] == "store"]
         retrs = [j for j in q if j[0] == "retrieve"]
-        if stores and len(self.lvl_in[k]) >= LEVEL_SLOT:
+        if self.cfg.shuttle_fifo:
+            if q and (q[0][0] == "store" or len(self.lvl_out[k]) + self.lvl_out_res[k] < LEVEL_SLOT):
+                job = q[0]
+        elif stores and len(self.lvl_in[k]) >= LEVEL_SLOT:
             job = stores[0]
         elif retrs and len(self.lvl_out[k]) + self.lvl_out_res[k] < LEVEL_SLOT:
             job = retrs[0]
@@ -329,16 +336,16 @@ class D4Sim:
         ln = p.lane
         y0 = self.sh_y[k]
         if kind == "store":
-            t1 = mother_time(y0, self.L.lift_y) + SHUTTLE_XFER
+            t1 = mother_time(y0, self.L.xfer_y) + SHUTTLE_XFER
             depth = DEPTH - ln.count - 1
-            t2 = t1 + mother_time(self.L.lift_y, ln.lane.y) + sat_time(depth)
+            t2 = t1 + mother_time(self.L.xfer_y, ln.lane.y) + sat_time(depth)
             self.at(self.t + t1, self._shuttle_took, k, p)
             self.at(self.t + t2, self._shuttle_stored, k, p)
         else:
             self.lvl_out_res[k] += 1
             depth = DEPTH - ln.count
             t1 = mother_time(y0, ln.lane.y) + sat_time(depth)
-            t2 = t1 + mother_time(ln.lane.y, self.L.lift_y) + SHUTTLE_XFER
+            t2 = t1 + mother_time(ln.lane.y, self.L.xfer_y) + SHUTTLE_XFER
             self.at(self.t + t1, self._shuttle_fetched, k, p)
             self.at(self.t + t2, self._shuttle_delivered, k, p)
             t2 = t2
@@ -369,7 +376,7 @@ class D4Sim:
         p.marks["at_level"] = self.t
         self.lvl_out_res[k] -= 1
         self.lvl_out[k].append(p)
-        self.sh_y[k] = self.L.lift_y
+        self.sh_y[k] = self.L.xfer_y
         self.sh_busy[k] = False
         self._lift_next(k[0])
         self._shuttle_next(k)
@@ -409,8 +416,8 @@ class D4Sim:
     def _lift_next(self, r: int) -> None:
         if self.lift_busy[r]:
             return
-        up = next((p for p in self.in_buf[r]
-                   if len(self.lvl_in[(r, p.lane.lane.level)]) + self.lvl_in_res[(r, p.lane.lane.level)] < LEVEL_SLOT),
+        up = next((p for p in self.in_buf[r] if p.marks.get("conv_ready", 0) <= self.t
+                   and len(self.lvl_in[(r, p.lane.lane.level)]) + self.lvl_in_res[(r, p.lane.lane.level)] < LEVEL_SLOT),
                   None)
         down = None
         if len(self.out_buf[r]) + self.out_incoming[r] < PD_BUF:
@@ -425,7 +432,7 @@ class D4Sim:
             up = None if down is not None else up
         self.lift_busy[r] = True
         t = LIFT_XFER if up else 0.0
-        lv = 0
+        lv = None                       # None = 버퍼 높이
         t_up = None
         if up:
             self.in_buf[r].remove(up)
@@ -441,10 +448,10 @@ class D4Sim:
             dlv, dp = down
             self.lvl_out[(r, dlv)].remove(dp)
             self.out_incoming[r] += 1
-            t += lift_time(abs(dlv - lv)) + LIFT_XFER
+            t += lift_move(lv, dlv) + LIFT_XFER
             lv = dlv
             self._shuttle_next((r, dlv))
-        t += lift_time(lv) + (LIFT_XFER if down else 0.0)
+        t += lift_move(lv, None) + (LIFT_XFER if down else 0.0)
         self.lift_time[r] += t
         self.bus.publish(self.t, f"wh/lift/{self.L.lift_id(r)}/cycle",
                          {"up": {"pallet": up.id, "level": up.lane.lane.level + 1} if up else None,
@@ -467,7 +474,7 @@ class D4Sim:
             self.out_incoming[r] -= 1
             self.out_buf[r].append(p)
             dock = self.L.out_docks[p.dock].cell
-            self.tasks.append(AmrTask("out", p, self.L.lifts[r].out_pick, dock, self.t, lift=r))
+            self.tasks.append(AmrTask("out", p, self.L.lifts[r].out_pick, dock, self.t + CONVEYOR_RUN, lift=r))
         self.lift_busy[r] = False
         self._lift_next(r)
 
@@ -650,8 +657,9 @@ class D4Sim:
                 p.marks["dropped"] = t
                 if tk.kind == "in":
                     self.in_incoming[tk.lift] -= 1
+                    p.marks["conv_ready"] = t + CONVEYOR_RUN        # 끝칸(IN5) → 첫칸(IN1)
                     self.in_buf[tk.lift].append(p)
-                    self._lift_next(tk.lift)
+                    self.at(t + CONVEYOR_RUN, self._lift_next, tk.lift)
                 elif tk.kind == "hold":
                     p.t_done = t
                     self.held.append(p)

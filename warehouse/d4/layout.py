@@ -21,8 +21,9 @@ from plans import d_plan as P
 
 Cell = tuple[int, int]
 CELL = 1.2
-LEVELS, LEVEL_H = P.LEVELS, 1.5
-DEPTH, SLOT, LANE_W = P.DEPTH, P.SLOT, P.LANE
+LEVELS, LEVEL_H = P.LEVELS, P.LEVEL_H          # 10단, 단 간격 1.45 m (Unity ShuttleRackSystem)
+DEPTH, SLOT, LANE_W = P.DEPTH, P.SLOT_D4, P.LANE   # 레인 칸 간격 1.25 m
+BUF_PITCH = P.BUF_PITCH
 PD_BUF = P.PD_BUF
 # 층별 허용 하중 (kg/팔레트). 높은 층일수록 낮다.
 LEVEL_MAX_KG = (1500, 1500, 1500, 1200, 1200, 1200, 1000, 1000, 1000, 1000)
@@ -95,7 +96,7 @@ class D4Layout:
         # 리프트 + 버퍼 (리프트 줄)
         blocked: set[Cell] = set()
         for x in self.rail_x:
-            for c in range(col(x - 1.2 - PD_BUF * SLOT), col(x + 1.2 + PD_BUF * SLOT - 1e-6) + 1):
+            for c in range(col(x - 1.2 - PD_BUF * BUF_PITCH), col(x + 1.2 + PD_BUF * BUF_PITCH - 1e-6) + 1):
                 for r in lift_rows:
                     blocked.add((c, r))
         # 레일은 검수 띠를 지나 리프트까지 내려온다: 레일 칸은 AMR이 건너지 않는다
@@ -123,7 +124,7 @@ class D4Layout:
         self._walk = walk
         # 리프트 버퍼 접점: 통로 북쪽 줄(15)에서, 입고 버퍼 서쪽 끝 / 출고 버퍼 동쪽 끝
         top = aisle_rows[-1]
-        self.lifts = [Lift(i, x, (col(x - 1.2 - PD_BUF * SLOT + .6), top), (col(x + 1.2 + PD_BUF * SLOT - .6), top))
+        self.lifts = [Lift(i, x, (col(x - 1.2 - PD_BUF * BUF_PITCH + .6), top), (col(x + 1.2 + PD_BUF * BUF_PITCH - .6), top))
                       for i, x in enumerate(self.rail_x)]
         # 검수·보류 구역 입구: 상자 남쪽 리프트 줄 가운데
         a, b = boxes[1]
@@ -143,7 +144,8 @@ class D4Layout:
                     for row in range(self.n_rows):
                         lanes.append(Lane(len(lanes), r, side, lv, row, P.LANE_Y0 + (row + .5) * LANE_W))
         self.lanes = lanes
-        self.lift_y = (P.LIFT_ROW[0] + P.LIFT_ROW[1]) / 2       # 셔틀이 리프트와 주고받는 y
+        self.lift_y = (P.LIFT_ROW[0] + P.LIFT_ROW[1]) / 2       # 리프트 중심 y
+        self.xfer_y = P.SHUTTLE_XFER_Y                          # 모셔틀이 리프트와 팔레트를 주고받는 y (리프트 + 2.0 m)
 
         self.contacts = self._contacts()
 
@@ -157,12 +159,23 @@ class D4Layout:
         return f"L{r + 1}"
 
     @staticmethod
+    def rail_id(r: int) -> str:
+        return f"R{r + 1}"
+
+    @staticmethod
     def shuttle_id(r: int, lv: int) -> str:
-        return f"MS-R{r + 1}-LV{lv + 1:02d}"
+        """Unity 모셔틀 오브젝트 Rack_R{r}/.../Shuttle_L{단} 을 통로 이름과 붙인 것."""
+        return f"R{r + 1}-Shuttle_L{lv + 1:02d}"
 
     @staticmethod
     def lane_id(ln: Lane) -> str:
-        return f"R{ln.rail + 1}-{'WE'[ln.side]}-LV{ln.level + 1:02d}-N{ln.row + 1:02d}"
+        """Unity ShuttleRackSystem 채널 이름 R{통로}-{W|E}{줄}-L{단} (줄 01 = 리프트에 가장 가까운 남쪽 줄)."""
+        return f"R{ln.rail + 1}-{'WE'[ln.side]}{ln.row + 1:02d}-L{ln.level + 1:02d}"
+
+    @staticmethod
+    def buffer_id(r: int, kind: str) -> str:
+        """입고·출고 버퍼 = Unity 위치 문자열 R1-IN / R1-OUT."""
+        return f"R{r + 1}-{kind.upper()}"
 
     def _contacts(self) -> dict[Cell, tuple[str, tuple[float, float, float]]]:
         """AMR 접점 칸 → (ID, Unity 좌표). unity/d4_layout.json 이 있으면 그 좌표를 쓴다(격자 중심보다 정확)."""
@@ -172,8 +185,8 @@ class D4Layout:
         for d in self.out_docks:
             names[d.cell] = f"OUT{d.idx + 1}"
         for l in self.lifts:
-            names[l.in_drop] = f"L{l.rail + 1}-IN"
-            names[l.out_pick] = f"L{l.rail + 1}-OUT"
+            names[l.in_drop] = self.buffer_id(l.rail, "in")
+            names[l.out_pick] = self.buffer_id(l.rail, "out")
         names[self.hold_cell] = "QC-IN"
         for i, c in enumerate(self.chargers):
             names[c] = f"CH{'WE'[i // 3]}{i % 3 + 1}"

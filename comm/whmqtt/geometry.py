@@ -1,9 +1,11 @@
 """D4 배치의 MQTT 기준 좌표와 AMR 바닥 경로 그래프.
 
 좌표계 (MQTT 메시지 전체 공통)
-- 도면 좌표, 단위 m. 원점 = 건물 남서쪽 바닥 안쪽 모서리. x = 동쪽(0~120), y = 북쪽(0~80), z = 위.
+- 도면(배치도) 좌표, 단위 m. Unity DockZoneBuilder 와 같은 기준:
+  x = 서쪽 벽 외부면에서의 거리(fromWest, 0~120.01), y = 남쪽 벽 안쪽면에서의 깊이(depth), z = 창고 바닥 윗면에서의 높이.
+  Unity 월드 = (x - 60.005, z + 1.20, y - 39.705)  (DockZoneBuilder.TryGetOrigin() = (-60.005, 1.20, -39.705)).
 - 방향 theta = +x(동쪽)에서 반시계 방향 rad. 0 = 동쪽, pi/2 = 북쪽.
-- Unity로 옮길 때: Vector3(x, z, y). yaw(Unity, +Z에서 시계 방향 deg) = 90 - degrees(theta).
+- Unity로 옮길 때: 월드 = WORLD_ORIGIN + Vector3(x, z, y). yaw(Unity, +Z에서 시계 방향 deg) = 90 - degrees(theta).
 
 좌표의 원본은 Unity 배치 데이터 `unity/d4_layout.json` (Unity 순서 [x, 높이, 북쪽]) 이다.
 여기서는 그 파일의 `nav` 그래프와 정지점(계량대·하차대·버퍼 접점·충전기·검수)을 읽어 도면 좌표로 바꿔 쓴다.
@@ -19,7 +21,10 @@ from pathlib import Path
 from . import ids
 
 LAYOUT_PATH = Path(__file__).resolve().parents[2] / "unity" / "d4_layout.json"
-LEVEL_H = 1.5
+LEVEL_H = 1.45                 # 단 간격 (Unity ShuttleRackSystem)
+RAIL_TOP0 = 0.40               # 1단 레일 윗면
+BUF_TOP = 0.50                 # 버퍼 롤러 윗면
+WORLD_ORIGIN = (-60.005, 1.20, -39.705)   # 배치도 원점의 Unity 월드 좌표 (x, 높이, z)
 
 
 @lru_cache(maxsize=1)
@@ -50,8 +55,10 @@ def _stop_nodes() -> dict[str, str]:
         m[f"SC-IN{i}"] = f"n_dock_IN{i}"
         m[f"DP-OUT{i}"] = f"n_dock_OUT{i}"
     for r in range(1, 4):
-        m[f"L{r}-IN"] = f"n_buf_L{r}-IN"
-        m[f"L{r}-OUT"] = f"n_buf_L{r}-OUT"
+        m[f"R{r}-IN"] = f"n_buf_R{r}-IN"
+        m[f"R{r}-OUT"] = f"n_buf_R{r}-OUT"
+    for w in ids.WAITS:
+        m[w] = f"n_{w}"
     for c in ids.CHARGERS:
         m[c] = f"n_{c}"
     m["QC-IN"], m["QC-OUT"] = "n_inbound_qc", "n_outbound_qc"
@@ -70,7 +77,7 @@ def stop_theta(stop: str) -> float:
     """정지점에서 AMR이 바라보는 방향: 도크·버퍼는 설비 쪽, 충전기는 벽 쪽."""
     if stop.startswith(("SC-", "DP-")):
         return -math.pi / 2
-    if stop.startswith("L"):
+    if stop.startswith("R"):
         return math.pi / 2
     if stop.startswith("CHW"):
         return math.pi
@@ -113,13 +120,20 @@ def nearest_node(x: float, y: float) -> str:
     return min(nodes, key=lambda k: math.dist(nodes[k], (x, y)))
 
 
-def lane_xyz(lane: str, pos: int = 1) -> tuple[float, float, float]:
-    """레인 안 pos 번째 팔레트 자리 중심 (pos 1 = 레일 쪽 입·출구). z = 팔레트 바닥 높이."""
-    r, side, lv, row = ids.parse_lane(lane)
-    floor_id = f"R{r}-{side}-N{row:02d}"
-    ln = _lanes()[floor_id]
-    x = ln["slot0_x"] + (pos - 1) * ln["slot_step_x"]
-    return round(x, 3), round(ln["center_z"], 3), round((lv - 1) * LEVEL_H, 3)
+def channel_xyz(ch: str, slot: int = 1) -> tuple[float, float, float]:
+    """채널 안 칸(1 = 통로 쪽 맨 앞 ~ 14) 중심. z = 그 단 레일 윗면 높이 0.40 + 1.45 x (단-1)."""
+    r, side, row, lv = ids.parse_channel(ch)
+    ln = _lanes()[f"R{r}-{side}{row:02d}"]
+    x = ln["slot0_x"] + (slot - 1) * ln["slot_step_x"]
+    return round(x, 3), round(ln["center_z"], 3), round(RAIL_TOP0 + (lv - 1) * LEVEL_H, 3)
+
+
+lane_xyz = channel_xyz
+
+
+def shuttle_xfer_y(rail: str) -> float:
+    """모셔틀이 리프트와 팔레트를 주고받는 위치(도면 y) = 리프트 중심 + 2.0 m."""
+    return next(r["shuttle_xfer_z"] for r in layout()["rails"] if r["id"] == rail)
 
 
 @lru_cache(maxsize=1)
@@ -143,7 +157,14 @@ def amr_spawn(amr: str) -> tuple[float, float, str]:
 
 
 def to_unity(x: float, y: float, z: float = 0.0) -> tuple[float, float, float]:
+    """도면 (x, y, z높이) → Unity 배치도 좌표 Vector3(x, 높이, y) (원점 이동 전)."""
     return x, z, y
+
+
+def to_unity_world(x: float, y: float, z: float = 0.0) -> tuple[float, float, float]:
+    """도면 (x, y, z높이) → Unity 월드 좌표."""
+    ox, oy, oz = WORLD_ORIGIN
+    return round(x + ox, 4), round(z + oy, 4), round(y + oz, 4)
 
 
 def theta_to_unity_yaw_deg(theta: float) -> float:

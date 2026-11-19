@@ -22,28 +22,65 @@ from __future__ import annotations
 import random
 from dataclasses import dataclass, field
 
-from .layout import DEPTH, LEVEL_H, LEVEL_MAX_KG, D4Layout, Lane
+from .layout import DEPTH, LEVEL_H, LEVEL_MAX_KG, LEVELS, D4Layout, Lane
 
-# 장비 성능 (가정값, warehouse/shuttle.py 와 같음)
-LIFT_V, LIFT_OVERHEAD, LIFT_XFER = 1.5, 2.0, 5.0
-MOTHER_V, MOTHER_OVERHEAD = 2.0, 3.0
-SAT_V, SAT_XFER = 1.0, 4.0
-SHUTTLE_XFER = 4.0
-SLOT_M = 1.3
+# 장비 성능: Unity 구현(ShuttleRackSystem·LiftController·ShuttleController 기본값, 2026-11-19 팀원 명세)
+# 이동은 사다리꼴 속도(가속 → 최고 속도 → 감속). 이송은 등속.
+LIFT_V, LIFT_A = 1.5, 0.8              # 리프트 m/s, m/s²
+MOTHER_V, MOTHER_A = 2.5, 1.0          # 모셔틀
+SAT_V, SAT_A = 1.2, 0.8                # 새틀라이트
+PLATE_S = 0.05 / 0.08                  # 새틀라이트 판 0.05 m 승강 (0.08 m/s) = 0.625 s
+XFER_V = 0.6                           # 이송 (버퍼 ↔ 리프트, 리프트 ↔ 모셔틀) 등속 m/s
+XFER_DIST = 1.95                       # (추정) 이송 거리. 명세의 "리프트 1회 점유 약 18.5 s"(승강 2 x 6.0 s + 이송 2회)에서 역산
+CONVEYOR_V, BUF_PITCH = 0.5, 1.3       # 버퍼 컨베이어 0.5 m/s, 칸 간격 1.3 m → 한 칸 2.6 s
+BUF_TOP = 0.50                         # 버퍼 롤러 윗면 (리프트 바닥 위치)
+RAIL_TOP0 = 0.40                       # 1단 레일 윗면, 단마다 +LEVEL_H(1.45)
+SLOT_M = 1.25                          # 레인 칸 간격
+AISLE_HALF = 1.0                       # 통로 중심 → 레인 입구 (칸 위치 x = ±(1.0 + (칸-0.5) x 1.25))
+LIFT_XFER = XFER_DIST / XFER_V         # 3.25 s
+SHUTTLE_XFER = XFER_DIST / XFER_V
+CONVEYOR_SLOT = BUF_PITCH / CONVEYOR_V  # 2.6 s
+# Unity 레인 배정 비용의 가중치
+UNITY_QUEUE_S = 20.0                   # 단별 대기 작업 1개당
+UNITY_EMPTY_W = 0.1                    # 빈칸 1개당
+
+
+def trap_time(d: float, v: float, a: float) -> float:
+    """정지 → 정지 이동 시간 (사다리꼴, 짧으면 삼각형)."""
+    d = abs(d)
+    if d < 1e-9:
+        return 0.0
+    if d >= v * v / a:
+        return d / v + v / a
+    return 2 * (d / a) ** .5
+
+
+def level_height(level: int | None) -> float:
+    """리프트 위치 높이. level None = 버퍼(바닥), 0~9 = 1~10단 레일 윗면."""
+    return BUF_TOP if level is None else RAIL_TOP0 + LEVEL_H * level
+
+
+def lift_move(a: int | None, b: int | None) -> float:
+    return trap_time(level_height(a) - level_height(b), LIFT_V, LIFT_A)
 
 
 def lift_time(level: int) -> float:
-    return 0.0 if level == 0 else level * LEVEL_H / LIFT_V + LIFT_OVERHEAD
+    """버퍼 높이 ↔ level(0~9) 단 편도."""
+    return lift_move(None, level)
 
 
 def mother_time(y0: float, y1: float) -> float:
-    d = abs(y0 - y1)
-    return 0.0 if d < 1e-6 else d / MOTHER_V + MOTHER_OVERHEAD
+    return trap_time(y1 - y0, MOTHER_V, MOTHER_A)
+
+
+def sat_distance(depth_pos: int) -> float:
+    """통로 중심에서 레인 칸 중심까지. depth_pos 는 0부터 (0 = 칸 01 맨 앞, 13 = 칸 14 가장 안쪽)."""
+    return AISLE_HALF + (max(depth_pos, 0) + .5) * SLOT_M
 
 
 def sat_time(depth_pos: int) -> float:
-    """세틀라이트가 입구에서 depth_pos 칸 들어갔다 나오는 시간 (+ 들기·놓기)."""
-    return 2 * depth_pos * SLOT_M / SAT_V + 2 * SAT_XFER
+    """새틀라이트가 칸(0부터)까지 들어갔다 나오는 시간 + 판 올리기·내리기."""
+    return 2 * trap_time(sat_distance(depth_pos), SAT_V, SAT_A) + 2 * PLATE_S
 
 
 @dataclass
@@ -69,10 +106,11 @@ class LaneState:
 
 @dataclass
 class StoragePolicy:
-    slotting: str = "abc"          # "abc" / "random"
+    slotting: str = "unity"        # "unity" (Unity ShuttleRackSystem 비용식, 기본) / "abc" / "random"
+    weight_limits: bool = True     # 층별 허용 하중 (안전 규칙. Unity 에는 아직 없음 → Unity 쪽 미구현 목록에 올림)
     retrieval: str = "nearest"     # "nearest" / "fewest" (8시간 비교에서 nearest가 출고 트럭 시간이 짧았다)
     balance: bool = True           # 셔틀 대기열 반영
-    consolidate: bool = True       # 셔틀이 놀 때 레인 합치기
+    consolidate: bool = False      # 셔틀이 놀 때 레인 합치기 (Unity 에는 없음 → 기본 끔)
 
 
 @dataclass
@@ -93,8 +131,13 @@ class Storage:
     # ---- 시간 추정 -----------------------------------------------------------
     def access_time(self, lane: Lane) -> float:
         """리프트 바닥 → 레인 입구 → 레인 가운데 깊이까지 한 번 다녀오는 대표 시간."""
-        return (2 * lift_time(lane.level) + 2 * mother_time(self.layout.lift_y, lane.y)
+        return (2 * lift_time(lane.level) + 2 * mother_time(self.layout.xfer_y, lane.y)
                 + sat_time(DEPTH // 2))
+
+    def unity_cost(self, s: "LaneState", queue_len: dict[tuple[int, int], int]) -> float:
+        """Unity ShuttleRackSystem 레인 배정 비용 = 리프트 승강 + 모셔틀 주행 + 단별 대기 작업 x 20 s + 빈칸 x 0.1."""
+        return (lift_time(s.lane.level) + mother_time(self.layout.xfer_y, s.lane.y)
+                + UNITY_QUEUE_S * self._q(s, queue_len) + UNITY_EMPTY_W * s.space)
 
     # ---- 재고 ---------------------------------------------------------------
     def place_initial(self, idx: int, sku: str, n: int) -> None:
@@ -116,11 +159,32 @@ class Storage:
         return 1 - sum(s.count for s in used) / (len(used) * DEPTH)
 
     # ---- 적재: 레인 배정 ----------------------------------------------------
+    def choose_rail(self, sku: str, queue_len: dict[tuple[int, int], int]) -> int:
+        """통로(레일) 고르기 = 우리(WMS) 몫. Unity 는 통로 안에서만 레인을 고른다.
+        같은 SKU 레인에 빈칸이 있는 통로 우선, 그다음 대기 작업이 적은 통로."""
+        def key(r: int):
+            has_same = any(self.lanes[i].lane.rail == r and self.lanes[i].space > 0 and self.lanes[i].reserved_out == 0
+                           for i in self.by_sku.get(sku, ()))
+            load = sum(n for (rr, _), n in queue_len.items() if rr == r)
+            return (0 if has_same else 1, load, r)
+        return min(range(len(self.layout.rails)), key=key)
+
     def choose_lane(self, sku: str, weight: float, queue_len: dict[tuple[int, int], int]) -> LaneState | None:
-        ok_level = [lv for lv, m in enumerate(LEVEL_MAX_KG) if weight <= m]
+        limits = self.policy.weight_limits or self.policy.slotting == "abc"
+        ok_level = [lv for lv, m in enumerate(LEVEL_MAX_KG) if weight <= m] if limits else list(range(LEVELS))
         if not ok_level:
             return None
         lv_ok = set(ok_level)
+        if self.policy.slotting == "unity":
+            # Unity: 같은 SKU 레인(빈칸 있음) → 없으면 빈 레인. 그 안에서 비용 최소. 통로는 choose_rail.
+            r = self.choose_rail(sku, queue_len)
+            same = [self.lanes[i] for i in self.by_sku.get(sku, ()) if self.lanes[i].lane.rail == r
+                    and self.lanes[i].space > 0 and self.lanes[i].reserved_out == 0 and self.lanes[i].lane.level in lv_ok]
+            cand = same or [s for s in self.lanes if s.lane.rail == r and s.sku is None and s.idle
+                            and s.lane.level in lv_ok]
+            if not cand:      # 그 통로가 꽉 찼으면 다른 통로
+                cand = [s for s in self.lanes if s.sku is None and s.idle and s.lane.level in lv_ok]
+            return min(cand, key=lambda s: self.unity_cost(s, queue_len)) if cand else None
         if self.policy.slotting == "random":
             cand = [s for s in self.lanes if s.lane.level in lv_ok and
                     ((s.sku == sku and s.space > 0 and s.reserved_out == 0) or (s.sku is None and s.idle))]

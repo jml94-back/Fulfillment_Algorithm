@@ -1,24 +1,22 @@
 {
- "topic": "wh/v1/shuttle/MS-R1-LV01/state",
+ "topic": "wh/v1/shuttle/R1-Shuttle_L01/state",
  "v": 1,
- "id": "3c2c96dd071f75b5",
- "ts": 1794999282.576,
+ "id": "194cdb8d7ad07dae",
+ "ts": 1795052285.503,
  "t": 0.0,
  "src": "unity-sim",
  "type": "shuttle.state",
  "corr": null,
  "data": {
-  "mode": "idle",
-  "y": 20.4,
+  "busy": false,
+  "status": "대기",
+  "level": 1,
+  "y": 22.4,
   "satellite": {
    "where": "docked",
-   "lane": null,
-   "pos": null
+   "channel": null,
+   "depth_m": null
   },
-  "pallet": null,
-  "cmd_id": null,
-  "queue": 0,
-  "battery": null,
-  "error": null
+  "pallet": null
  }
 }

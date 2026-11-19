@@ -1,19 +1,19 @@
 {
  "topic": "wh/v1/wms/inventory/evt",
  "v": 1,
- "id": "9b4b9cb8256ff829",
- "ts": 1794999288.205,
- "t": 170.908,
+ "id": "e92f33bd3f2ed579",
+ "ts": 1795052289.168,
+ "t": 146.975,
  "src": "scheduler",
  "type": "wms.inventory",
  "corr": null,
  "data": {
-  "event_id": "E000012",
+  "event_id": "E000013",
   "event": "stored",
   "pallet": "P00000001",
   "sku": "SKU101",
-  "lane": "R1-W-LV01-N01",
-  "pos": 14,
+  "channel": "R1-W01-L01",
+  "slot": 14,
   "weight_kg": null,
   "job_id": "J00009"
  }

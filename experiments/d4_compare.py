@@ -26,12 +26,12 @@ KEYS = ["dock_to_stock_mean_s", "dock_to_stock_p95_s", "out_truck_mean_min", "ou
 
 BASE = SimConfig(hours=8, in_per_h=RATE, out_per_h=RATE, record_tracks=True, bus_keep=False)
 VARIANTS = {
-    "기본 (제안 알고리즘)": BASE,
+    "기본 (Unity 랙 규칙)": BASE,
+    "적재: 회전율·하중 비용식": replace(BASE, policy=StoragePolicy(slotting="abc")),
     "적재: 무작위 레인": replace(BASE, policy=StoragePolicy(slotting="random")),
     "출고: 적은 레인 먼저": replace(BASE, policy=StoragePolicy(retrieval="fewest")),
-    "셔틀 부하 분산 끔": replace(BASE, policy=StoragePolicy(balance=False)),
     "AMR: 오래된 작업 먼저": replace(BASE, dispatch="fifo"),
-    "리프트 이중 사이클 끔": replace(BASE, dual_cycle=False),
+    "리프트 이중 사이클 켬": replace(BASE, dual_cycle=True),
 }
 LOADS = [25, 35, 45, 55]
 

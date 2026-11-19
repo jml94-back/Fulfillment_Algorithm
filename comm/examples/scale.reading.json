@@ -1,16 +1,16 @@
 {
  "topic": "wh/v1/scale/SC-IN2/reading",
  "v": 1,
- "id": "f4d2acb03abb1631",
- "ts": 1794999282.992,
- "t": 15.0,
+ "id": "e300b875e59f5006",
+ "ts": 1795052285.942,
+ "t": 20.0,
  "src": "unity-sim",
  "type": "scale.reading",
  "corr": null,
  "data": {
   "pallet": "P00000001",
   "sku": "SKU101",
-  "weight_kg": 648.3,
+  "weight_kg": 638.7,
   "declared_kg": 650.0,
   "stable": true
  }

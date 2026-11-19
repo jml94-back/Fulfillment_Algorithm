@@ -6,7 +6,7 @@
 
 시나리오 (D4)
 - 입고 트럭 2대: IN2 (SKU101 x 4, 그중 1개는 송장보다 12% 무거움 → 보류), IN5 (SKU102 x 3)
-- 출고 트럭 1대: OUT3 (시작 재고에 있는 SKU 2종 x 2)
+- 출고 트럭 1대: OUT3 (랙 시작 재고(PrefillRandom 대역)에 있는 SKU 2종 x 2)
 - 관제(LangGraph 자리)가 중간에 보고를 요청하고, 보류 팔레트를 해제한다.
 
 결과: out/demo_log.jsonl (모든 메시지), out/demo_summary.json (토픽별 수·대역폭·작업 결과), 스키마 위반 수.
@@ -77,7 +77,6 @@ def run(host: str | None, port: int | None, scale: float, out: Path, timeout: fl
     port = port or 1883
     rec = Recorder(host, port, str(out / "demo_log.jsonl"), echo=not quiet).start()
     sched = Scheduler(host, port, validate=True, seed=3).start()
-    time.sleep(0.3)                                          # 스냅샷(retain) → 가상 장비가 시작 재고를 받음
     plant = Plant(host, port, scale=scale, validate=True, seed=3,
                   heavy={ids.pallet_id(3)}).start()          # P00000003: 송장보다 12% 무거움 → 보류
     ctrl = WhClient("control-demo", "control", host, port, validate=True)
@@ -90,12 +89,13 @@ def run(host: str | None, port: int | None, scale: float, out: Path, timeout: fl
     wall0 = time.time()
     try:
         wait_until(lambda: ctrl.sim_t is not None, 5)
-        # 출고할 SKU: 시작 재고에서 수량이 많은 2종
+        # 출고할 SKU: 랙 3개가 rack/+/inventory 로 알린 시작 재고에서 수량이 많은 2종
+        wait_until(lambda: all(sched.stock[r] for r in ids.RAILS), 5)
         stock: dict[str, int] = {}
-        for lane, slots in sched.lane_pallets.items():
-            for s in slots:
-                if s:
-                    stock[s[1]] = stock.get(s[1], 0) + 1
+        with sched.lock:
+            for st in sched.stock.values():
+                for sku, n in st.items():
+                    stock[sku] = stock.get(sku, 0) + n
         out_skus = sorted(stock, key=lambda k: -stock[k])[:2]
         orders = [
             inbound("ASN-0001", "IN2", "TRK-IN-01", "SKU101", 4, 1),
@@ -143,7 +143,7 @@ def run(host: str | None, port: int | None, scale: float, out: Path, timeout: fl
         "wall_seconds": round(time.time() - wall0, 1),
         "scale": scale,
         "jobs": [{"job_id": j.job_id, "kind": j.kind, "pallet": j.pallet, "sku": j.sku, "status": j.status,
-                  "lane": j.lane, "pos": j.pos, "amr": j.amr, "lead_s": None if j.done_t is None
+                  "rail": j.rail, "channel": j.channel, "slot": j.slot, "amr": j.amr, "lead_s": None if j.done_t is None
                   else round(j.done_t - j.created, 1), "reason": j.reason} for j in jobs],
         "jobs_done": len(sched.done_log), "jobs_expected": total_jobs,
         "reports": reports,
@@ -173,7 +173,7 @@ def main() -> None:
     print(f"완료 {s['jobs_done']}/{s['jobs_expected']} 작업, 시뮬레이션 {s['sim_seconds']}초 "
           f"(벽시계 {s['wall_seconds']}초), 메시지 {s['messages']}개, 스키마 위반 {len(s['schema_violations'])}건")
     for j in s["jobs"]:
-        print(f"  {j['job_id']} {j['kind']:8s} {j['pallet']} {j['sku']} {j['status']:6s} {j['lane'] or '':14s} "
+        print(f"  {j['job_id']} {j['kind']:8s} {j['pallet']} {j['sku']} {j['status']:6s} {j['channel'] or '':12s} "
               f"{j['amr'] or '':5s} {j['lead_s']}s {j['reason'] or ''}")
     for r in s["reports"]:
         print("  관제 응답:", r["event"], r["text"])

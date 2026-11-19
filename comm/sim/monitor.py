@@ -14,7 +14,8 @@ from whmqtt import schemas
 from whmqtt.client import WhClient
 from whmqtt.topics import ROOT, match
 
-QUIET = {"amr.pose", "amr.scan2d", "sim.clock", "fleet.kpi", "traffic.reservations", "wms.snapshot"}
+QUIET = {"amr.pose", "amr.scan2d", "sim.clock", "fleet.kpi", "traffic.reservations", "wms.snapshot", "rack.inventory",
+         "shuttle.state", "lift.state"}
 
 
 def brief(key: str, d: dict) -> str:
@@ -23,14 +24,15 @@ def brief(key: str, d: dict) -> str:
             f"{s['action']}:{s['stop']}" for s in d["steps"])
     if key in ("amr.evt",):
         return f"{d['event']} {d['mission_id'] or ''} seq={d['seq']} {d.get('reason') or ''}"
-    if key in ("lift.cmd", "shuttle.cmd"):
-        return f"{d['cmd_id']} {d['action']} {d.get('pallet')} {d.get('lane') or ''} lv/pos={d.get('level') or d.get('pos')}"
-    if key in ("lift.evt", "shuttle.evt"):
-        return f"{d['event']} {d['cmd_id']} {d.get('reason') or ''}"
+    if key == "rack.cmd":
+        return f"{d['cmd_id']} {d['action']} {d.get('pallet') or ''} {d['sku']}"
+    if key == "rack.evt":
+        return (f"{d['event']} {d['cmd_id']} {d['action']} {d.get('pallet') or ''} {d.get('channel') or ''}"
+                f"{'-%02d' % d['slot'] if d.get('slot') else ''} {d.get('reason') or ''}")
     if key == "wms.job":
-        return f"{d['job_id']} {d['kind']} {d['status']} {d['pallet']} {d['sku']} lane={d['lane']} amr={d['amr']}"
+        return f"{d['job_id']} {d['kind']} {d['status']} {d['pallet']} {d['sku']} rail={d['rail']} channel={d['channel']} amr={d['amr']}"
     if key == "wms.inventory":
-        return f"{d['event']} {d['pallet']} {d['sku']} {d['lane'] or ''}"
+        return f"{d['event']} {d['pallet']} {d['sku']} {d['channel'] or ''}"
     s = json.dumps(d, ensure_ascii=False)
     return s if len(s) < 140 else s[:137] + "..."
 
