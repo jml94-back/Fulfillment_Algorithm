@@ -1,0 +1,6 @@
+# AMR 강화학습 (rl/). 코어·MQTT 와 독립.
+numpy
+matplotlib
+torch
+gymnasium
+pettingzoo

@@ -1,7 +1,9 @@
 """MQTT 스케줄러(comm/sim/scheduler_bridge.py)에 D4 알고리즘을 끼우는 어댑터.
 
-    from warehouse.d4.comm_planner import D4Planner
-    Scheduler(host, port, planner=D4Planner({}))          # comm/ 를 PYTHONPATH 에 넣고 실행
+    from adapters.d4_planner import D4Planner           # comm/ 에서 실행
+    Scheduler(host, port, planner=D4Planner({}))
+
+의존 방향은 comm → 알고리즘 코어(warehouse/) 한쪽뿐이다. 코어는 이 파일을 모른다.
 
 스케줄러가 가진 레인 상태(lanes: 레인ID → 14칸, index 0 = 위치 1 = 레일 쪽)를 그대로 진실로 쓰고,
 고르는 규칙만 warehouse/d4/storage.py 와 같게 바꾼다.
@@ -16,11 +18,10 @@ from __future__ import annotations
 
 from collections import Counter
 
-from sim.scheduler_bridge import Planner        # comm/ 안의 패키지
+from sim.scheduler_bridge import Planner
+from warehouse.d4.layout import DEPTH, LEVEL_MAX_KG, D4Layout
+from warehouse.d4.storage import Storage, StoragePolicy
 from whmqtt import ids
-
-from .layout import DEPTH, LEVEL_MAX_KG, D4Layout
-from .storage import Storage, StoragePolicy
 
 
 class D4Planner(Planner):

@@ -1,7 +1,8 @@
 """장비 간 통신: MQTT 토픽 규칙과 메시지 기록기.
 
 시뮬레이션은 실제 브로커 없이 돌고, 모든 메시지를 시각 순으로 기록한다(out/d4_events.json).
-같은 토픽·페이로드를 실제 MQTT 브로커로 내보내려면 MqttBus 를 쓴다(paho-mqtt 필요, 선택).
+이 모듈은 MQTT 라이브러리 없이 돈다. 같은 토픽·페이로드를 실제 브로커로 내보내는 MqttBus 는
+comm/adapters/mqtt_bus.py 에 있다(paho-mqtt 필요).
 
 토픽 (wh = warehouse)
 - wh/amr/{id}/task      AMR 작업 배정: 종류, 팔레트, 집는 곳, 놓는 곳
@@ -36,17 +37,3 @@ class EventBus:
         with open(path, "w") as f:
             json.dump({"format": "mqtt-log/1", "time_unit": "s", "messages": msgs}, f, ensure_ascii=False)
         return len(msgs)
-
-
-class MqttBus(EventBus):
-    """실제 브로커로 내보내기 (선택). 예: MqttBus(host="localhost") → 시뮬 메시지가 그대로 발행된다."""
-
-    def __init__(self, host: str = "localhost", port: int = 1883, keep: bool = False) -> None:
-        super().__init__(keep=keep)
-        import paho.mqtt.client as mqtt   # 선택 의존성
-        self.client = mqtt.Client()
-        self.client.connect(host, port)
-
-    def publish(self, t: float, topic: str, payload: dict) -> None:
-        super().publish(t, topic, payload)
-        self.client.publish(topic, json.dumps({"t": t, **payload}, ensure_ascii=False))

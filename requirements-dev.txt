@@ -1,0 +1,5 @@
+# 전체 테스트: pip install -r requirements-dev.txt  (+ mosquitto, 없으면 브로커 테스트는 건너뜀)
+-r requirements.txt
+-r comm/requirements.txt
+-r rl/requirements.txt
+pytest

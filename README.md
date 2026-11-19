@@ -63,14 +63,28 @@ Unity 창고 시뮬레이션, MQTT 장비 통신, 강화학습 AMR 주행까지 
 | `tests/` | 알고리즘·D4·RL 테스트 | |
 | `out/` | 실험 결과 그림·JSON | |
 
+## 의존 구조
+
+```
+comm/  (MQTT: whmqtt, sim, adapters)  ──►  warehouse/ · plans/  (알고리즘 코어)
+                                             ▲
+experiments/ · unity/ · emergency/  ─────────┘        rl/ 은 독립
+```
+
+- 알고리즘 코어(`warehouse/`, `plans/`)는 paho-mqtt·`comm/`을 import 하지 않습니다. MQTT 없이 import·실행·테스트됩니다.
+- `comm/`이 코어를 쓰는 코드는 `comm/adapters/`에만 있습니다 (`D4Planner`: 스케줄러용 레인 규칙, `MqttBus`: D4 시뮬 메시지를 브로커로 발행).
+- 의존성 파일도 나눴습니다: `requirements.txt`(코어), `comm/requirements.txt`, `rl/requirements.txt`, `requirements-dev.txt`(전체 + pytest).
+- `tests/test_boundary.py`가 이 방향을 검사합니다. 나중에 `comm/`만 떼어 낼 때는 `comm/requirements.txt`의 `-r ../requirements.txt`를 코어 패키지 설치로 바꾸면 됩니다.
+
 ## 실행 방법
 
 Python 3.10 이상.
 
 ```bash
-pip install numpy matplotlib pytest                 # 알고리즘
-pip install paho-mqtt jsonschema                    # 통신 (+ brew install mosquitto)
-pip install torch gymnasium pettingzoo              # 강화학습
+pip install -r requirements.txt                     # 알고리즘 코어 (numpy, matplotlib)
+pip install -r comm/requirements.txt                # 통신 (paho-mqtt, jsonschema) (+ brew install mosquitto)
+pip install -r rl/requirements.txt                  # 강화학습 (torch, gymnasium, pettingzoo)
+pip install pytest                                  # 또는 한 번에: pip install -r requirements-dev.txt
 
 python -m pytest -q                                 # 전체 테스트
 
