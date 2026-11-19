@@ -27,7 +27,7 @@
    "minLength": 1
   },
   "type": {
-   "const": "lift.cmd"
+   "const": "rack.state"
   },
   "corr": {
    "anyOf": [
@@ -42,52 +42,51 @@
   "data": {
    "type": "object",
    "properties": {
-    "cmd_id": {
-     "type": "string",
-     "minLength": 1,
-     "maxLength": 64
-    },
-    "job_id": {
-     "anyOf": [
-      {
-       "type": "string"
-      },
-      {
-       "type": "null"
-      }
-     ]
-    },
-    "action": {
-     "type": "string",
-     "enum": [
-      "lift_in",
-      "lift_out",
-      "cancel"
-     ]
-    },
-    "pallet": {
-     "anyOf": [
-      {
-       "type": "string",
-       "pattern": "^P\\d{8}$"
-      },
-      {
-       "type": "null"
-      }
-     ]
-    },
-    "level": {
+    "stored": {
      "type": "integer",
-     "minimum": 1,
-     "maximum": 10
+     "minimum": 0
+    },
+    "capacity": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "pending": {
+     "type": "integer",
+     "minimum": 0,
+     "description": "대기·진행 중 작업 수 (PendingTasks)"
+    },
+    "inbound_free": {
+     "type": "boolean",
+     "description": "입고 버퍼 끝칸(IN5)이 비어 AMR 이 내려놓을 수 있음 (InboundFree)"
+    },
+    "total_stored": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "total_retrieved": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "avg_cycle_s": {
+     "anyOf": [
+      {
+       "type": "number",
+       "minimum": 0
+      },
+      {
+       "type": "null"
+      }
+     ]
     }
    },
    "required": [
-    "cmd_id",
-    "job_id",
-    "action",
-    "pallet",
-    "level"
+    "stored",
+    "capacity",
+    "pending",
+    "inbound_free",
+    "total_stored",
+    "total_retrieved",
+    "avg_cycle_s"
    ],
    "additionalProperties": false
   }
@@ -103,6 +102,6 @@
   "data"
  ],
  "additionalProperties": false,
- "$id": "lift.cmd.schema.json",
- "title": "lift.cmd"
+ "$id": "rack.state.schema.json",
+ "title": "rack.state"
 }

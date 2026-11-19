@@ -25,9 +25,10 @@ def test_every_topic_has_schema_and_example():
 
 def test_topic_builder_and_match_roundtrip():
     assert T.amr_pose("AMR01") == "wh/v1/amr/AMR01/pose"
-    assert topic("shuttle.cmd", "MS-R2-LV07") == "wh/v1/shuttle/MS-R2-LV07/cmd"
-    tp, p = match("wh/v1/buffer/L3-OUT/state")
-    assert tp.key == "buffer.state" and p == {"buffer": "L3-OUT"}
+    assert topic("rack.cmd", "R2") == "wh/v1/rack/R2/cmd"
+    assert topic("shuttle.state", "R2-Shuttle_L07") == "wh/v1/shuttle/R2-Shuttle_L07/state"
+    tp, p = match("wh/v1/buffer/R3-OUT/state")
+    assert tp.key == "buffer.state" and p == {"buffer": "R3-OUT"}
     assert match("wh/v1/amr/AMR01/unknown") is None
     # 서로 다른 토픽 패턴이 같은 문자열에 겹치지 않는다
     seen = {}
@@ -61,19 +62,23 @@ def test_schema_rejects_bad_messages():
         m["data"].update(bad)
         with pytest.raises(jsonschema.ValidationError):
             schemas.validate(m)
-    lane = json.loads((ROOT / "examples" / "shuttle.cmd.json").read_text())
-    lane.pop("topic")
-    lane["data"]["lane"] = "R4-W-LV01-N01"
-    with pytest.raises(jsonschema.ValidationError):
-        schemas.validate(lane)
+    ev = json.loads((ROOT / "examples" / "rack.evt.json").read_text())
+    ev.pop("topic")
+    for bad in ("R4-W01-L01", "R1-W-LV01-N01", "R1-W34-L01", "R1-W01-L11"):
+        ev["data"]["channel"] = bad
+        with pytest.raises(jsonschema.ValidationError):
+            schemas.validate(ev)
 
 
 def test_ids():
-    assert len(ids.SHUTTLES) == 30 and ids.shuttle_for_lane("R2-E-LV07-N33") == "MS-R2-LV07"
-    assert ids.parse_lane("R1-W-LV10-N01") == (1, "W", 10, 1)
-    for bad in ("R1-W-LV11-N01", "R1-X-LV01-N01", "R1-W-LV01-N34", "R1-W-LV1-N01"):
+    """Unity ShuttleRackSystem 이름: 채널 R2-E07-L03, 칸 R2-E07-L03-14, 팔레트 R1-000123, 모셔틀 Shuttle_L01."""
+    assert len(ids.SHUTTLES) == 30 and ids.shuttle_for_channel("R2-E33-L07") == "R2-Shuttle_L07"
+    assert ids.parse_channel("R2-E07-L03") == (2, "E", 7, 3) and ids.channel_id(2, "E", 7, 3) == "R2-E07-L03"
+    assert ids.SLOT_RE.match(ids.slot_id("R2-E07-L03", 14)) and ids.slot_id("R2-E07-L03", 14) == "R2-E07-L03-14"
+    assert ids.PALLET_RE.match("R1-000123") and ids.PALLET_RE.match("P00000003")
+    for bad in ("R1-W01-L11", "R1-X01-L01", "R1-W34-L01", "R1-W1-L01", "R1-W-LV01-N01"):
         with pytest.raises(ValueError):
-            ids.parse_lane(bad)
+            ids.parse_channel(bad)
 
 
 def test_geometry_matches_layouts():
@@ -87,16 +92,22 @@ def test_geometry_matches_layouts():
             if a != b:
                 assert G.path_length(G.shortest_path(a, b)) > 0
     # 레인 위치: 레일 쪽 1번이 레일에 붙어 있고 14번이 레일에서 가장 멀다
-    for lane in ("R1-W-LV01-N01", "R2-E-LV05-N17", "R3-W-LV10-N33"):
-        r = ids.parse_lane(lane)[0]
+    for ch in ("R1-W01-L01", "R2-E17-L05", "R3-W33-L10"):
+        r = ids.parse_channel(ch)[0]
         rail = next(x for x in lay["rails"] if x["id"] == f"R{r}")
-        x1, y1, _ = G.lane_xyz(lane, 1)
-        x14, _, _ = G.lane_xyz(lane, 14)
-        assert abs(x1 - rail["center_x"]) < abs(x14 - rail["center_x"])
+        x1, y1, _ = G.channel_xyz(ch, 1)
+        x14, _, _ = G.channel_xyz(ch, 14)
+        # Unity: 칸 위치 x = 통로 중심 ± (1.0 + (칸-0.5) x 1.25)
+        assert abs(x1 - rail["center_x"]) == pytest.approx(1.625)
+        assert abs(x14 - rail["center_x"]) == pytest.approx(17.875)
         assert 31.4 < y1 < 80
-    assert G.lane_xyz("R1-W-LV03-N01")[2] == pytest.approx(3.0)
+    # Unity: 줄 z(로컬) = 11.0 + (줄-0.5) x 1.4, 리프트 중심 20.4 기준
+    assert G.channel_xyz("R1-W01-L01")[1] == pytest.approx(20.4 + 11.0 + 0.5 * 1.4)
+    assert G.channel_xyz("R1-W01-L03")[2] == pytest.approx(0.40 + 2 * 1.45)
+    assert G.shuttle_xfer_y("R2") == pytest.approx(22.4)
     # Unity 변환
     assert G.to_unity(10, 20, 3) == (10, 3, 20)
+    assert G.to_unity_world(21.8, 20.4) == pytest.approx((-38.205, 1.20, -19.305))     # 명세 6.2 리프트 L1
     assert G.theta_to_unity_yaw_deg(math.pi / 2) == pytest.approx(0.0)
 
 

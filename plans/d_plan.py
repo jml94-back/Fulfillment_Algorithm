@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import FancyArrowPatch, Rectangle
 
 from plans.shuttle_plan import (BUILDING_H, DOCK_W, FLOW, H, INK, INK2, LANE, LEVELS, OFF_C, PD_BUF, RACK_C,
-                                RACK_F, RACK_H, RAIL, RAIL_C, SLOT, STAGE_DEPTH, STAGE_LANES, SURF, W, box, dim)
+                                RACK_F, RACK_H, RAIL_C, STAGE_DEPTH, STAGE_LANES, SURF, W, box, dim)
 
 N_RAILS = 3
 STAGE = 14.4
@@ -29,18 +29,26 @@ IN_X = [2.5, 7.5, 12.5, 27.5, 32.5, 37.5]            # 도크 3 + 예비 구역 
 OUT_X = [117.5, 112.5, 107.5, 92.5, 87.5, 82.5]
 IN_SPARE, OUT_SPARE = (15.5, 24.5), (95.5, 104.5)    # 도크 사이 가운데 예비 구역
 DEPTH = 14                        # 3레일로 벽에서 벽까지 채우는 최대 깊이
+
+# Unity 구현(ShuttleRackSystem 기본값 = Blender 상수, 2026-11-19 팀원 명세)에 맞춘 랙 치수
+RAIL_CX = (21.8, 60.0, 98.2)      # 통로(레일) 중심 x = 리프트 중심 x
+AISLE_W = 2.0                     # 모셔틀 통로 폭 (칸 위치 x = ±(1.0 + (칸-0.5) x 1.25))
+SLOT_D4 = 1.25                    # 레인 안 칸 간격 → 깊이 14칸 = 17.5 m
+LEVEL_H = 1.45                    # 단 간격 (레일 윗면 0.40 + 1.45 x (단-1))
+RAIL_TOP0 = 0.40                  # 1단 레일 윗면 높이 (창고 바닥 윗면 기준)
+BUF_PITCH = 1.3                   # 리프트 버퍼 칸 간격
+BUF_TOP = 0.50                    # 버퍼 롤러 윗면 높이
+SHUTTLE_XFER_Y = LIFT_ROW[0] + 1.2 + 2.0   # 모셔틀이 리프트와 팔레트를 주고받는 위치 (리프트 중심 + 2.0 m)
 IN_C, OUT_C = "#d7f0e6", "#fbe1d6"
 
 
 def geometry() -> dict:
-    block = DEPTH * SLOT
-    module = 2 * block + RAIL
+    block = DEPTH * SLOT_D4
+    h = AISLE_W / 2
     rails = []
-    x = SX0 + (SX1 - SX0 - N_RAILS * module) / 2
-    for _ in range(N_RAILS):
-        rails.append({"west_block": (x, x + block), "rail": (x + block, x + block + RAIL),
-                      "east_block": (x + block + RAIL, x + module)})
-        x += module
+    for c in RAIL_CX:
+        rails.append({"west_block": (c - h - block, c - h), "rail": (c - h, c + h),
+                      "east_block": (c + h, c + h + block)})
     n = int((LANE_Y1 - LANE_Y0) // LANE)
     return {"rails": rails, "lanes_per_side": n, "pallet_positions": N_RAILS * 2 * n * DEPTH * LEVELS,
             "lanes_total": N_RAILS * 2 * n * LEVELS, "shuttle_sets": N_RAILS * LEVELS, "lifts": N_RAILS,
@@ -130,7 +138,7 @@ def draw(path: Path) -> dict:
                 ly = LANE_Y0 + i * LANE
                 box(ax, a, ly + .1, b - a, LANE - .2, RACK_F, ec=RACK_C, lw=.35)
                 for k in range(1, DEPTH):
-                    ax.plot([a + k * SLOT] * 2, [ly + .1, ly + LANE - .1], color=RACK_C, lw=.2)
+                    ax.plot([a + k * SLOT_D4] * 2, [ly + .1, ly + LANE - .1], color=RACK_C, lw=.2)
         ra, rb = rail["rail"]
         box(ax, ra, LIFT_ROW[1], rb - ra, LANE_Y0 + n * LANE - LIFT_ROW[1], "#e9e6fb", ec=RAIL_C, lw=.8)
         ax.text((ra + rb) / 2, 62, f"모셔틀 레일 {r + 1}", rotation=90, ha="center", va="center", fontsize=8,
@@ -139,11 +147,11 @@ def draw(path: Path) -> dict:
         box(ax, cx - 1.2, LIFT_ROW[0], 2.4, 2.4, RAIL_C, ec=INK, lw=.8)
         ax.text(cx, LIFT_ROW[0] + 1.2, f"L{r + 1}", ha="center", va="center", fontsize=7, color="white")
         for k in range(PD_BUF):
-            box(ax, cx - 1.2 - (k + 1) * SLOT + .1, LIFT_ROW[0] + .3, SLOT - .2, 1.8, "#9fd9c2", ec=FLOW, lw=.6)
-            box(ax, cx + 1.2 + k * SLOT + .1, LIFT_ROW[0] + .3, SLOT - .2, 1.8, "#f6b79c", ec="#eb6834", lw=.6)
-        ax.text(cx - 1.2 - PD_BUF * SLOT / 2, AISLE[1] - .9, f"입고 버퍼 {PD_BUF}", ha="center", fontsize=6.5,
+            box(ax, cx - 1.2 - (k + 1) * BUF_PITCH + .1, LIFT_ROW[0] + .3, BUF_PITCH - .2, 1.8, "#9fd9c2", ec=FLOW, lw=.6)
+            box(ax, cx + 1.2 + k * BUF_PITCH + .1, LIFT_ROW[0] + .3, BUF_PITCH - .2, 1.8, "#f6b79c", ec="#eb6834", lw=.6)
+        ax.text(cx - 1.2 - PD_BUF * BUF_PITCH / 2, AISLE[1] - .9, f"입고 버퍼 {PD_BUF}", ha="center", fontsize=6.5,
                 color=INK2, va="center")
-        ax.text(cx + 1.2 + PD_BUF * SLOT / 2, AISLE[1] - .9, f"출고 버퍼 {PD_BUF}", ha="center", fontsize=6.5,
+        ax.text(cx + 1.2 + PD_BUF * BUF_PITCH / 2, AISLE[1] - .9, f"출고 버퍼 {PD_BUF}", ha="center", fontsize=6.5,
                 color=INK2, va="center")
 
     # 흐름

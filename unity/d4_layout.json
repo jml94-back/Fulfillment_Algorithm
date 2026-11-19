@@ -1,29 +1,38 @@
 {
  "meta": {
   "name": "물류창고 배치 D4",
-  "version": "1.0",
+  "version": "2.0",
   "source": "plans/d_plan.py (geometry, 상수)",
+  "aligned_to": "Unity 구현 (2026-11-19 팀원 명세: ShuttleRackSystem·DockZoneBuilder 기본값)",
   "units": "meter",
   "coordinate_system": {
    "handedness": "Unity left-handed, Y-up",
-   "origin": "창고 바닥 남서쪽 안쪽 모서리 (0,0,0)",
-   "+X": "동쪽 (도면 x, 0~120)",
+   "origin": "배치도 좌표 = DockZoneBuilder 기준: x = 서쪽 벽 외부면에서의 거리(fromWest), z = 남쪽 벽 안쪽면에서의 깊이(depth), y = 창고 바닥 윗면에서의 높이",
+   "world_origin": [
+    -60.005,
+    1.2,
+    -39.705
+   ],
+   "to_world": "월드 = (x - 60.005, y + 1.20, z - 39.705) = 배치도 좌표 + world_origin",
+   "+X": "동쪽 (fromWest 0~120.01)",
    "+Y": "위 (높이)",
-   "+Z": "북쪽 (도면 y, 0~80)",
-   "note": "Top 뷰가 도면과 같은 방향. 남쪽 벽 바깥 트럭 칸은 Z<0. 각 box는 center(x,y,z)와 size(x,y,z), 회전 없음."
+   "+Z": "북쪽 (depth)",
+   "note": "Top 뷰가 도면과 같은 방향. 남쪽 벽 바깥 트럭 칸은 Z<0. 각 box는 center(x,y,z)와 size(x,y,z), 회전 없음. Unity 도크·벽 모듈 기준 바닥은 1.22 m(바닥 윗면 1.20 m와 2 cm 차이, Unity 쪽 미정리)."
   },
   "assumed_heights": {
    "wall_thickness": 0.3,
    "dock_door_height": 4.5,
    "office_floor_height": 4.0,
-   "conveyor_height": 0.6,
+   "conveyor_height": 0.5,
    "weigh_station_height": 0.1,
    "dock_leveler_height": 0.05,
    "charger_height": 1.5,
    "lift_height": 16.0,
    "facility_wall_height": 2.5,
    "marking_height": 0.01,
-   "pallet_load_height": 1.2
+   "pallet_height": 0.15,
+   "pallet_load_height": 1.1,
+   "rail_top_first_level": 0.4
   }
  },
  "params": {
@@ -32,17 +41,30 @@
   "building_height": 25.0,
   "rack_height": 15.0,
   "levels": 10,
-  "level_height": 1.5,
+  "level_height": 1.45,
+  "rail_top_first_level": 0.4,
   "pallet": [
    1.1,
-   1.1
+   1.1,
+   0.15
   ],
-  "slot_pitch": 1.3,
+  "slot_pitch": 1.25,
   "lane_width": 1.4,
   "lane_depth": 14,
-  "rail_width": 1.8,
+  "rail_width": 2.0,
+  "buffer_pitch": 1.3,
+  "buffer_top": 0.5,
   "rails": 3,
   "lanes_per_side": 33,
+  "world_origin": [
+   -60.005,
+   1.2,
+   -39.705
+  ],
+  "floor": [
+   120.01,
+   80.01
+  ],
   "floor_lanes": 198,
   "lanes_total": 1980,
   "pallet_positions": 27720,
@@ -74,7 +96,7 @@
    ],
    "north_margin": [
     77.6,
-    80.0
+    79.41
    ]
   }
  },
@@ -134,7 +156,9 @@
     "dock_IN1_stage_45",
     "dock_IN1_stage_46",
     "dock_IN1_stage_47"
-   ]
+   ],
+   "unity_object": "Warehouse_Perimeter/South/Dock_IN1",
+   "unity_station_object": "Dock_Zones/Equipment/Scale_IN1"
   },
   {
    "id": "IN2",
@@ -191,7 +215,9 @@
     "dock_IN2_stage_45",
     "dock_IN2_stage_46",
     "dock_IN2_stage_47"
-   ]
+   ],
+   "unity_object": "Warehouse_Perimeter/South/Dock_IN2",
+   "unity_station_object": "Dock_Zones/Equipment/Scale_IN2"
   },
   {
    "id": "IN3",
@@ -248,7 +274,9 @@
     "dock_IN3_stage_45",
     "dock_IN3_stage_46",
     "dock_IN3_stage_47"
-   ]
+   ],
+   "unity_object": "Warehouse_Perimeter/South/Dock_IN3",
+   "unity_station_object": "Dock_Zones/Equipment/Scale_IN3"
   },
   {
    "id": "IN4",
@@ -305,7 +333,9 @@
     "dock_IN4_stage_45",
     "dock_IN4_stage_46",
     "dock_IN4_stage_47"
-   ]
+   ],
+   "unity_object": "Warehouse_Perimeter/South/Dock_IN4",
+   "unity_station_object": "Dock_Zones/Equipment/Scale_IN4"
   },
   {
    "id": "IN5",
@@ -362,7 +392,9 @@
     "dock_IN5_stage_45",
     "dock_IN5_stage_46",
     "dock_IN5_stage_47"
-   ]
+   ],
+   "unity_object": "Warehouse_Perimeter/South/Dock_IN5",
+   "unity_station_object": "Dock_Zones/Equipment/Scale_IN5"
   },
   {
    "id": "IN6",
@@ -419,7 +451,9 @@
     "dock_IN6_stage_45",
     "dock_IN6_stage_46",
     "dock_IN6_stage_47"
-   ]
+   ],
+   "unity_object": "Warehouse_Perimeter/South/Dock_IN6",
+   "unity_station_object": "Dock_Zones/Equipment/Scale_IN6"
   },
   {
    "id": "OUT1",
@@ -476,7 +510,9 @@
     "dock_OUT1_stage_45",
     "dock_OUT1_stage_46",
     "dock_OUT1_stage_47"
-   ]
+   ],
+   "unity_object": "Warehouse_Perimeter/South/Dock_OUT1",
+   "unity_station_object": "Dock_Zones/Equipment/DropStand_OUT1"
   },
   {
    "id": "OUT2",
@@ -533,7 +569,9 @@
     "dock_OUT2_stage_45",
     "dock_OUT2_stage_46",
     "dock_OUT2_stage_47"
-   ]
+   ],
+   "unity_object": "Warehouse_Perimeter/South/Dock_OUT2",
+   "unity_station_object": "Dock_Zones/Equipment/DropStand_OUT2"
   },
   {
    "id": "OUT3",
@@ -590,7 +628,9 @@
     "dock_OUT3_stage_45",
     "dock_OUT3_stage_46",
     "dock_OUT3_stage_47"
-   ]
+   ],
+   "unity_object": "Warehouse_Perimeter/South/Dock_OUT3",
+   "unity_station_object": "Dock_Zones/Equipment/DropStand_OUT3"
   },
   {
    "id": "OUT4",
@@ -647,7 +687,9 @@
     "dock_OUT4_stage_45",
     "dock_OUT4_stage_46",
     "dock_OUT4_stage_47"
-   ]
+   ],
+   "unity_object": "Warehouse_Perimeter/South/Dock_OUT4",
+   "unity_station_object": "Dock_Zones/Equipment/DropStand_OUT4"
   },
   {
    "id": "OUT5",
@@ -704,7 +746,9 @@
     "dock_OUT5_stage_45",
     "dock_OUT5_stage_46",
     "dock_OUT5_stage_47"
-   ]
+   ],
+   "unity_object": "Warehouse_Perimeter/South/Dock_OUT5",
+   "unity_station_object": "Dock_Zones/Equipment/DropStand_OUT5"
   },
   {
    "id": "OUT6",
@@ -761,15 +805,17 @@
     "dock_OUT6_stage_45",
     "dock_OUT6_stage_46",
     "dock_OUT6_stage_47"
-   ]
+   ],
+   "unity_object": "Warehouse_Perimeter/South/Dock_OUT6",
+   "unity_station_object": "Dock_Zones/Equipment/DropStand_OUT6"
   }
  ],
  "rails": [
   {
    "id": "R1",
    "x_range": [
-    20.9,
-    22.7
+    20.8,
+    22.8
    ],
    "z_range": [
     21.6,
@@ -777,49 +823,53 @@
    ],
    "center_x": 21.8,
    "levels": 10,
-   "level_height": 1.5,
+   "level_height": 1.45,
+   "rail_top_first": 0.4,
+   "level_rail_top": [
+    0.4,
+    1.85,
+    3.3,
+    4.75,
+    6.2,
+    7.65,
+    9.1,
+    10.55,
+    12.0,
+    13.45
+   ],
    "levels_id": [
-    "LV01",
-    "LV02",
-    "LV03",
-    "LV04",
-    "LV05",
-    "LV06",
-    "LV07",
-    "LV08",
-    "LV09",
-    "LV10"
+    "L01",
+    "L02",
+    "L03",
+    "L04",
+    "L05",
+    "L06",
+    "L07",
+    "L08",
+    "L09",
+    "L10"
    ],
+   "shuttle_xfer_z": 22.4,
    "mother_shuttles": [
-    "MS-R1-LV01",
-    "MS-R1-LV02",
-    "MS-R1-LV03",
-    "MS-R1-LV04",
-    "MS-R1-LV05",
-    "MS-R1-LV06",
-    "MS-R1-LV07",
-    "MS-R1-LV08",
-    "MS-R1-LV09",
-    "MS-R1-LV10"
+    "R1-Shuttle_L01",
+    "R1-Shuttle_L02",
+    "R1-Shuttle_L03",
+    "R1-Shuttle_L04",
+    "R1-Shuttle_L05",
+    "R1-Shuttle_L06",
+    "R1-Shuttle_L07",
+    "R1-Shuttle_L08",
+    "R1-Shuttle_L09",
+    "R1-Shuttle_L10"
    ],
-   "satellites": [
-    "SAT-R1-LV01",
-    "SAT-R1-LV02",
-    "SAT-R1-LV03",
-    "SAT-R1-LV04",
-    "SAT-R1-LV05",
-    "SAT-R1-LV06",
-    "SAT-R1-LV07",
-    "SAT-R1-LV08",
-    "SAT-R1-LV09",
-    "SAT-R1-LV10"
-   ]
+   "unity_object": "Rack_R1/Rack_Generated",
+   "unity_system": "ShuttleRackSystem"
   },
   {
    "id": "R2",
    "x_range": [
-    59.1,
-    60.9
+    59.0,
+    61.0
    ],
    "z_range": [
     21.6,
@@ -827,49 +877,53 @@
    ],
    "center_x": 60.0,
    "levels": 10,
-   "level_height": 1.5,
+   "level_height": 1.45,
+   "rail_top_first": 0.4,
+   "level_rail_top": [
+    0.4,
+    1.85,
+    3.3,
+    4.75,
+    6.2,
+    7.65,
+    9.1,
+    10.55,
+    12.0,
+    13.45
+   ],
    "levels_id": [
-    "LV01",
-    "LV02",
-    "LV03",
-    "LV04",
-    "LV05",
-    "LV06",
-    "LV07",
-    "LV08",
-    "LV09",
-    "LV10"
+    "L01",
+    "L02",
+    "L03",
+    "L04",
+    "L05",
+    "L06",
+    "L07",
+    "L08",
+    "L09",
+    "L10"
    ],
+   "shuttle_xfer_z": 22.4,
    "mother_shuttles": [
-    "MS-R2-LV01",
-    "MS-R2-LV02",
-    "MS-R2-LV03",
-    "MS-R2-LV04",
-    "MS-R2-LV05",
-    "MS-R2-LV06",
-    "MS-R2-LV07",
-    "MS-R2-LV08",
-    "MS-R2-LV09",
-    "MS-R2-LV10"
+    "R2-Shuttle_L01",
+    "R2-Shuttle_L02",
+    "R2-Shuttle_L03",
+    "R2-Shuttle_L04",
+    "R2-Shuttle_L05",
+    "R2-Shuttle_L06",
+    "R2-Shuttle_L07",
+    "R2-Shuttle_L08",
+    "R2-Shuttle_L09",
+    "R2-Shuttle_L10"
    ],
-   "satellites": [
-    "SAT-R2-LV01",
-    "SAT-R2-LV02",
-    "SAT-R2-LV03",
-    "SAT-R2-LV04",
-    "SAT-R2-LV05",
-    "SAT-R2-LV06",
-    "SAT-R2-LV07",
-    "SAT-R2-LV08",
-    "SAT-R2-LV09",
-    "SAT-R2-LV10"
-   ]
+   "unity_object": "Rack_R2/Rack_Generated",
+   "unity_system": "ShuttleRackSystem"
   },
   {
    "id": "R3",
    "x_range": [
-    97.3,
-    99.1
+    97.2,
+    99.2
    ],
    "z_range": [
     21.6,
@@ -877,43 +931,47 @@
    ],
    "center_x": 98.2,
    "levels": 10,
-   "level_height": 1.5,
+   "level_height": 1.45,
+   "rail_top_first": 0.4,
+   "level_rail_top": [
+    0.4,
+    1.85,
+    3.3,
+    4.75,
+    6.2,
+    7.65,
+    9.1,
+    10.55,
+    12.0,
+    13.45
+   ],
    "levels_id": [
-    "LV01",
-    "LV02",
-    "LV03",
-    "LV04",
-    "LV05",
-    "LV06",
-    "LV07",
-    "LV08",
-    "LV09",
-    "LV10"
+    "L01",
+    "L02",
+    "L03",
+    "L04",
+    "L05",
+    "L06",
+    "L07",
+    "L08",
+    "L09",
+    "L10"
    ],
+   "shuttle_xfer_z": 22.4,
    "mother_shuttles": [
-    "MS-R3-LV01",
-    "MS-R3-LV02",
-    "MS-R3-LV03",
-    "MS-R3-LV04",
-    "MS-R3-LV05",
-    "MS-R3-LV06",
-    "MS-R3-LV07",
-    "MS-R3-LV08",
-    "MS-R3-LV09",
-    "MS-R3-LV10"
+    "R3-Shuttle_L01",
+    "R3-Shuttle_L02",
+    "R3-Shuttle_L03",
+    "R3-Shuttle_L04",
+    "R3-Shuttle_L05",
+    "R3-Shuttle_L06",
+    "R3-Shuttle_L07",
+    "R3-Shuttle_L08",
+    "R3-Shuttle_L09",
+    "R3-Shuttle_L10"
    ],
-   "satellites": [
-    "SAT-R3-LV01",
-    "SAT-R3-LV02",
-    "SAT-R3-LV03",
-    "SAT-R3-LV04",
-    "SAT-R3-LV05",
-    "SAT-R3-LV06",
-    "SAT-R3-LV07",
-    "SAT-R3-LV08",
-    "SAT-R3-LV09",
-    "SAT-R3-LV10"
-   ]
+   "unity_object": "Rack_R3/Rack_Generated",
+   "unity_system": "ShuttleRackSystem"
   }
  ],
  "lifts": [
@@ -926,7 +984,6 @@
     20.4
    ],
    "serves_levels": [
-    0,
     1,
     2,
     3,
@@ -935,8 +992,11 @@
     6,
     7,
     8,
-    9
-   ]
+    9,
+    10
+   ],
+   "buffer_height": 0.5,
+   "unity_object": "Rack_R1/Rack_Generated/Lift/Lift"
   },
   {
    "id": "L2",
@@ -947,7 +1007,6 @@
     20.4
    ],
    "serves_levels": [
-    0,
     1,
     2,
     3,
@@ -956,8 +1015,11 @@
     6,
     7,
     8,
-    9
-   ]
+    9,
+    10
+   ],
+   "buffer_height": 0.5,
+   "unity_object": "Rack_R2/Rack_Generated/Lift/Lift"
   },
   {
    "id": "L3",
@@ -968,7 +1030,6 @@
     20.4
    ],
    "serves_levels": [
-    0,
     1,
     2,
     3,
@@ -977,23 +1038,27 @@
     6,
     7,
     8,
-    9
-   ]
+    9,
+    10
+   ],
+   "buffer_height": 0.5,
+   "unity_object": "Rack_R3/Rack_Generated/Lift/Lift"
   }
  ],
  "buffers": [
   {
-   "id": "L1-IN",
+   "id": "R1-IN",
    "lift": "L1",
    "kind": "in",
    "slots_from_lift": [
-    "L1-IN-1",
-    "L1-IN-2",
-    "L1-IN-3",
-    "L1-IN-4",
-    "L1-IN-5"
+    "Buffer_L1_IN1",
+    "Buffer_L1_IN2",
+    "Buffer_L1_IN3",
+    "Buffer_L1_IN4",
+    "Buffer_L1_IN5"
    ],
-   "flow": "AMR→리프트 (서쪽 끝에서 넣음)",
+   "flow": "AMR→IN5 → 컨베이어 → IN1→리프트 (서쪽 끝에서 넣음)",
+   "unity_logic": "Rack_R1 ShuttleRackSystem.inBuf[0..4]",
    "amr_contact": [
     14.75,
     0.0,
@@ -1001,17 +1066,18 @@
    ]
   },
   {
-   "id": "L1-OUT",
+   "id": "R1-OUT",
    "lift": "L1",
    "kind": "out",
    "slots_from_lift": [
-    "L1-OUT-1",
-    "L1-OUT-2",
-    "L1-OUT-3",
-    "L1-OUT-4",
-    "L1-OUT-5"
+    "Buffer_L1_OUT1",
+    "Buffer_L1_OUT2",
+    "Buffer_L1_OUT3",
+    "Buffer_L1_OUT4",
+    "Buffer_L1_OUT5"
    ],
-   "flow": "리프트→AMR (동쪽 끝에서 꺼냄)",
+   "flow": "리프트→OUT1 → 컨베이어 → OUT5→AMR (동쪽 끝에서 꺼냄)",
+   "unity_logic": "Rack_R1 ShuttleRackSystem.outBuf[0..4]",
    "amr_contact": [
     28.85,
     0.0,
@@ -1019,17 +1085,18 @@
    ]
   },
   {
-   "id": "L2-IN",
+   "id": "R2-IN",
    "lift": "L2",
    "kind": "in",
    "slots_from_lift": [
-    "L2-IN-1",
-    "L2-IN-2",
-    "L2-IN-3",
-    "L2-IN-4",
-    "L2-IN-5"
+    "Buffer_L2_IN1",
+    "Buffer_L2_IN2",
+    "Buffer_L2_IN3",
+    "Buffer_L2_IN4",
+    "Buffer_L2_IN5"
    ],
-   "flow": "AMR→리프트 (서쪽 끝에서 넣음)",
+   "flow": "AMR→IN5 → 컨베이어 → IN1→리프트 (서쪽 끝에서 넣음)",
+   "unity_logic": "Rack_R2 ShuttleRackSystem.inBuf[0..4]",
    "amr_contact": [
     52.95,
     0.0,
@@ -1037,17 +1104,18 @@
    ]
   },
   {
-   "id": "L2-OUT",
+   "id": "R2-OUT",
    "lift": "L2",
    "kind": "out",
    "slots_from_lift": [
-    "L2-OUT-1",
-    "L2-OUT-2",
-    "L2-OUT-3",
-    "L2-OUT-4",
-    "L2-OUT-5"
+    "Buffer_L2_OUT1",
+    "Buffer_L2_OUT2",
+    "Buffer_L2_OUT3",
+    "Buffer_L2_OUT4",
+    "Buffer_L2_OUT5"
    ],
-   "flow": "리프트→AMR (동쪽 끝에서 꺼냄)",
+   "flow": "리프트→OUT1 → 컨베이어 → OUT5→AMR (동쪽 끝에서 꺼냄)",
+   "unity_logic": "Rack_R2 ShuttleRackSystem.outBuf[0..4]",
    "amr_contact": [
     67.05,
     0.0,
@@ -1055,17 +1123,18 @@
    ]
   },
   {
-   "id": "L3-IN",
+   "id": "R3-IN",
    "lift": "L3",
    "kind": "in",
    "slots_from_lift": [
-    "L3-IN-1",
-    "L3-IN-2",
-    "L3-IN-3",
-    "L3-IN-4",
-    "L3-IN-5"
+    "Buffer_L3_IN1",
+    "Buffer_L3_IN2",
+    "Buffer_L3_IN3",
+    "Buffer_L3_IN4",
+    "Buffer_L3_IN5"
    ],
-   "flow": "AMR→리프트 (서쪽 끝에서 넣음)",
+   "flow": "AMR→IN5 → 컨베이어 → IN1→리프트 (서쪽 끝에서 넣음)",
+   "unity_logic": "Rack_R3 ShuttleRackSystem.inBuf[0..4]",
    "amr_contact": [
     91.15,
     0.0,
@@ -1073,17 +1142,18 @@
    ]
   },
   {
-   "id": "L3-OUT",
+   "id": "R3-OUT",
    "lift": "L3",
    "kind": "out",
    "slots_from_lift": [
-    "L3-OUT-1",
-    "L3-OUT-2",
-    "L3-OUT-3",
-    "L3-OUT-4",
-    "L3-OUT-5"
+    "Buffer_L3_OUT1",
+    "Buffer_L3_OUT2",
+    "Buffer_L3_OUT3",
+    "Buffer_L3_OUT4",
+    "Buffer_L3_OUT5"
    ],
-   "flow": "리프트→AMR (동쪽 끝에서 꺼냄)",
+   "flow": "리프트→OUT1 → 컨베이어 → OUT5→AMR (동쪽 끝에서 꺼냄)",
+   "unity_logic": "Rack_R3 ShuttleRackSystem.outBuf[0..4]",
    "amr_contact": [
     105.25,
     0.0,
@@ -1096,7 +1166,7 @@
    "id": "fac_maintenance",
    "label": "셔틀·리프트 정비",
    "amr_contact": [
-    15.3,
+    15.25,
     0.0,
     21.8
    ]
@@ -1123,7 +1193,7 @@
    "id": "fac_spare_parts",
    "label": "예비 셔틀·부품",
    "amr_contact": [
-    104.7,
+    104.75,
     0.0,
     21.8
    ]
@@ -1264,1790 +1334,1988 @@
   }
  ],
  "storage": {
-  "id_rule": "층별 레인 ID = R{레일}-{W|E}-LV{층 01~10}-N{줄 01~33, 남쪽부터}. 레인 안 위치 P = 1(레일 쪽 입·출구)~14.",
-  "slot_rule": "위치 P(1~depth) 중심 x = slot0_x + (P-1)*slot_step_x, z = center_z. 층 LVnn 의 팔레트 바닥 y = (nn-1)*level_height. 위치 1이 레일 쪽 입·출구(선입후출).",
+  "id_rule": "채널(단별 레인) ID = Unity ShuttleRackSystem 이름 R{통로}-{W|E}{줄 01~33, 리프트 쪽(남쪽)부터}-L{단 01~10} (예 R2-E07-L03). 칸 ID = 채널-칸(01~14), 예 R2-E07-L03-14. 이 JSON의 lanes 는 단을 뺀 R2-E07.",
+  "slot_rule": "칸 P(1~14) 중심 x = slot0_x + (P-1)*slot_step_x (= 통로 중심 ± (1.0 + (P-0.5) x 1.25)), z = center_z. 단 n 레일 윗면 y = 0.40 + 1.45 x (n-1). 칸 01이 통로 쪽 입·출구(후입선출).",
   "lanes": [
    {
-    "id": "R1-W-N01",
+    "id": "R1-W01",
     "rail": "R1",
     "side": "W",
     "row": 1,
     "center_z": 32.1,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W01"
    },
    {
-    "id": "R1-W-N02",
+    "id": "R1-W02",
     "rail": "R1",
     "side": "W",
     "row": 2,
     "center_z": 33.5,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W02"
    },
    {
-    "id": "R1-W-N03",
+    "id": "R1-W03",
     "rail": "R1",
     "side": "W",
     "row": 3,
     "center_z": 34.9,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W03"
    },
    {
-    "id": "R1-W-N04",
+    "id": "R1-W04",
     "rail": "R1",
     "side": "W",
     "row": 4,
     "center_z": 36.3,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W04"
    },
    {
-    "id": "R1-W-N05",
+    "id": "R1-W05",
     "rail": "R1",
     "side": "W",
     "row": 5,
     "center_z": 37.7,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W05"
    },
    {
-    "id": "R1-W-N06",
+    "id": "R1-W06",
     "rail": "R1",
     "side": "W",
     "row": 6,
     "center_z": 39.1,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W06"
    },
    {
-    "id": "R1-W-N07",
+    "id": "R1-W07",
     "rail": "R1",
     "side": "W",
     "row": 7,
     "center_z": 40.5,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W07"
    },
    {
-    "id": "R1-W-N08",
+    "id": "R1-W08",
     "rail": "R1",
     "side": "W",
     "row": 8,
     "center_z": 41.9,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W08"
    },
    {
-    "id": "R1-W-N09",
+    "id": "R1-W09",
     "rail": "R1",
     "side": "W",
     "row": 9,
     "center_z": 43.3,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W09"
    },
    {
-    "id": "R1-W-N10",
+    "id": "R1-W10",
     "rail": "R1",
     "side": "W",
     "row": 10,
     "center_z": 44.7,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W10"
    },
    {
-    "id": "R1-W-N11",
+    "id": "R1-W11",
     "rail": "R1",
     "side": "W",
     "row": 11,
     "center_z": 46.1,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W11"
    },
    {
-    "id": "R1-W-N12",
+    "id": "R1-W12",
     "rail": "R1",
     "side": "W",
     "row": 12,
     "center_z": 47.5,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W12"
    },
    {
-    "id": "R1-W-N13",
+    "id": "R1-W13",
     "rail": "R1",
     "side": "W",
     "row": 13,
     "center_z": 48.9,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W13"
    },
    {
-    "id": "R1-W-N14",
+    "id": "R1-W14",
     "rail": "R1",
     "side": "W",
     "row": 14,
     "center_z": 50.3,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W14"
    },
    {
-    "id": "R1-W-N15",
+    "id": "R1-W15",
     "rail": "R1",
     "side": "W",
     "row": 15,
     "center_z": 51.7,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W15"
    },
    {
-    "id": "R1-W-N16",
+    "id": "R1-W16",
     "rail": "R1",
     "side": "W",
     "row": 16,
     "center_z": 53.1,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W16"
    },
    {
-    "id": "R1-W-N17",
+    "id": "R1-W17",
     "rail": "R1",
     "side": "W",
     "row": 17,
     "center_z": 54.5,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W17"
    },
    {
-    "id": "R1-W-N18",
+    "id": "R1-W18",
     "rail": "R1",
     "side": "W",
     "row": 18,
     "center_z": 55.9,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W18"
    },
    {
-    "id": "R1-W-N19",
+    "id": "R1-W19",
     "rail": "R1",
     "side": "W",
     "row": 19,
     "center_z": 57.3,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W19"
    },
    {
-    "id": "R1-W-N20",
+    "id": "R1-W20",
     "rail": "R1",
     "side": "W",
     "row": 20,
     "center_z": 58.7,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W20"
    },
    {
-    "id": "R1-W-N21",
+    "id": "R1-W21",
     "rail": "R1",
     "side": "W",
     "row": 21,
     "center_z": 60.1,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W21"
    },
    {
-    "id": "R1-W-N22",
+    "id": "R1-W22",
     "rail": "R1",
     "side": "W",
     "row": 22,
     "center_z": 61.5,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W22"
    },
    {
-    "id": "R1-W-N23",
+    "id": "R1-W23",
     "rail": "R1",
     "side": "W",
     "row": 23,
     "center_z": 62.9,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W23"
    },
    {
-    "id": "R1-W-N24",
+    "id": "R1-W24",
     "rail": "R1",
     "side": "W",
     "row": 24,
     "center_z": 64.3,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W24"
    },
    {
-    "id": "R1-W-N25",
+    "id": "R1-W25",
     "rail": "R1",
     "side": "W",
     "row": 25,
     "center_z": 65.7,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W25"
    },
    {
-    "id": "R1-W-N26",
+    "id": "R1-W26",
     "rail": "R1",
     "side": "W",
     "row": 26,
     "center_z": 67.1,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W26"
    },
    {
-    "id": "R1-W-N27",
+    "id": "R1-W27",
     "rail": "R1",
     "side": "W",
     "row": 27,
     "center_z": 68.5,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W27"
    },
    {
-    "id": "R1-W-N28",
+    "id": "R1-W28",
     "rail": "R1",
     "side": "W",
     "row": 28,
     "center_z": 69.9,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W28"
    },
    {
-    "id": "R1-W-N29",
+    "id": "R1-W29",
     "rail": "R1",
     "side": "W",
     "row": 29,
     "center_z": 71.3,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W29"
    },
    {
-    "id": "R1-W-N30",
+    "id": "R1-W30",
     "rail": "R1",
     "side": "W",
     "row": 30,
     "center_z": 72.7,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W30"
    },
    {
-    "id": "R1-W-N31",
+    "id": "R1-W31",
     "rail": "R1",
     "side": "W",
     "row": 31,
     "center_z": 74.1,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W31"
    },
    {
-    "id": "R1-W-N32",
+    "id": "R1-W32",
     "rail": "R1",
     "side": "W",
     "row": 32,
     "center_z": 75.5,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W32"
    },
    {
-    "id": "R1-W-N33",
+    "id": "R1-W33",
     "rail": "R1",
     "side": "W",
     "row": 33,
     "center_z": 76.9,
-    "slot0_x": 20.25,
-    "slot_step_x": -1.3
+    "slot0_x": 20.175,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_W33"
    },
    {
-    "id": "R1-E-N01",
+    "id": "R1-E01",
     "rail": "R1",
     "side": "E",
     "row": 1,
     "center_z": 32.1,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E01"
    },
    {
-    "id": "R1-E-N02",
+    "id": "R1-E02",
     "rail": "R1",
     "side": "E",
     "row": 2,
     "center_z": 33.5,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E02"
    },
    {
-    "id": "R1-E-N03",
+    "id": "R1-E03",
     "rail": "R1",
     "side": "E",
     "row": 3,
     "center_z": 34.9,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E03"
    },
    {
-    "id": "R1-E-N04",
+    "id": "R1-E04",
     "rail": "R1",
     "side": "E",
     "row": 4,
     "center_z": 36.3,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E04"
    },
    {
-    "id": "R1-E-N05",
+    "id": "R1-E05",
     "rail": "R1",
     "side": "E",
     "row": 5,
     "center_z": 37.7,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E05"
    },
    {
-    "id": "R1-E-N06",
+    "id": "R1-E06",
     "rail": "R1",
     "side": "E",
     "row": 6,
     "center_z": 39.1,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E06"
    },
    {
-    "id": "R1-E-N07",
+    "id": "R1-E07",
     "rail": "R1",
     "side": "E",
     "row": 7,
     "center_z": 40.5,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E07"
    },
    {
-    "id": "R1-E-N08",
+    "id": "R1-E08",
     "rail": "R1",
     "side": "E",
     "row": 8,
     "center_z": 41.9,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E08"
    },
    {
-    "id": "R1-E-N09",
+    "id": "R1-E09",
     "rail": "R1",
     "side": "E",
     "row": 9,
     "center_z": 43.3,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E09"
    },
    {
-    "id": "R1-E-N10",
+    "id": "R1-E10",
     "rail": "R1",
     "side": "E",
     "row": 10,
     "center_z": 44.7,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E10"
    },
    {
-    "id": "R1-E-N11",
+    "id": "R1-E11",
     "rail": "R1",
     "side": "E",
     "row": 11,
     "center_z": 46.1,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E11"
    },
    {
-    "id": "R1-E-N12",
+    "id": "R1-E12",
     "rail": "R1",
     "side": "E",
     "row": 12,
     "center_z": 47.5,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E12"
    },
    {
-    "id": "R1-E-N13",
+    "id": "R1-E13",
     "rail": "R1",
     "side": "E",
     "row": 13,
     "center_z": 48.9,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E13"
    },
    {
-    "id": "R1-E-N14",
+    "id": "R1-E14",
     "rail": "R1",
     "side": "E",
     "row": 14,
     "center_z": 50.3,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E14"
    },
    {
-    "id": "R1-E-N15",
+    "id": "R1-E15",
     "rail": "R1",
     "side": "E",
     "row": 15,
     "center_z": 51.7,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E15"
    },
    {
-    "id": "R1-E-N16",
+    "id": "R1-E16",
     "rail": "R1",
     "side": "E",
     "row": 16,
     "center_z": 53.1,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E16"
    },
    {
-    "id": "R1-E-N17",
+    "id": "R1-E17",
     "rail": "R1",
     "side": "E",
     "row": 17,
     "center_z": 54.5,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E17"
    },
    {
-    "id": "R1-E-N18",
+    "id": "R1-E18",
     "rail": "R1",
     "side": "E",
     "row": 18,
     "center_z": 55.9,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E18"
    },
    {
-    "id": "R1-E-N19",
+    "id": "R1-E19",
     "rail": "R1",
     "side": "E",
     "row": 19,
     "center_z": 57.3,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E19"
    },
    {
-    "id": "R1-E-N20",
+    "id": "R1-E20",
     "rail": "R1",
     "side": "E",
     "row": 20,
     "center_z": 58.7,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E20"
    },
    {
-    "id": "R1-E-N21",
+    "id": "R1-E21",
     "rail": "R1",
     "side": "E",
     "row": 21,
     "center_z": 60.1,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E21"
    },
    {
-    "id": "R1-E-N22",
+    "id": "R1-E22",
     "rail": "R1",
     "side": "E",
     "row": 22,
     "center_z": 61.5,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E22"
    },
    {
-    "id": "R1-E-N23",
+    "id": "R1-E23",
     "rail": "R1",
     "side": "E",
     "row": 23,
     "center_z": 62.9,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E23"
    },
    {
-    "id": "R1-E-N24",
+    "id": "R1-E24",
     "rail": "R1",
     "side": "E",
     "row": 24,
     "center_z": 64.3,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E24"
    },
    {
-    "id": "R1-E-N25",
+    "id": "R1-E25",
     "rail": "R1",
     "side": "E",
     "row": 25,
     "center_z": 65.7,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E25"
    },
    {
-    "id": "R1-E-N26",
+    "id": "R1-E26",
     "rail": "R1",
     "side": "E",
     "row": 26,
     "center_z": 67.1,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E26"
    },
    {
-    "id": "R1-E-N27",
+    "id": "R1-E27",
     "rail": "R1",
     "side": "E",
     "row": 27,
     "center_z": 68.5,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E27"
    },
    {
-    "id": "R1-E-N28",
+    "id": "R1-E28",
     "rail": "R1",
     "side": "E",
     "row": 28,
     "center_z": 69.9,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E28"
    },
    {
-    "id": "R1-E-N29",
+    "id": "R1-E29",
     "rail": "R1",
     "side": "E",
     "row": 29,
     "center_z": 71.3,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E29"
    },
    {
-    "id": "R1-E-N30",
+    "id": "R1-E30",
     "rail": "R1",
     "side": "E",
     "row": 30,
     "center_z": 72.7,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E30"
    },
    {
-    "id": "R1-E-N31",
+    "id": "R1-E31",
     "rail": "R1",
     "side": "E",
     "row": 31,
     "center_z": 74.1,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E31"
    },
    {
-    "id": "R1-E-N32",
+    "id": "R1-E32",
     "rail": "R1",
     "side": "E",
     "row": 32,
     "center_z": 75.5,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E32"
    },
    {
-    "id": "R1-E-N33",
+    "id": "R1-E33",
     "rail": "R1",
     "side": "E",
     "row": 33,
     "center_z": 76.9,
-    "slot0_x": 23.35,
-    "slot_step_x": 1.3
+    "slot0_x": 23.425,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R1/Rack_Generated/Lanes/Lane_E33"
    },
    {
-    "id": "R2-W-N01",
+    "id": "R2-W01",
     "rail": "R2",
     "side": "W",
     "row": 1,
     "center_z": 32.1,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W01"
    },
    {
-    "id": "R2-W-N02",
+    "id": "R2-W02",
     "rail": "R2",
     "side": "W",
     "row": 2,
     "center_z": 33.5,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W02"
    },
    {
-    "id": "R2-W-N03",
+    "id": "R2-W03",
     "rail": "R2",
     "side": "W",
     "row": 3,
     "center_z": 34.9,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W03"
    },
    {
-    "id": "R2-W-N04",
+    "id": "R2-W04",
     "rail": "R2",
     "side": "W",
     "row": 4,
     "center_z": 36.3,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W04"
    },
    {
-    "id": "R2-W-N05",
+    "id": "R2-W05",
     "rail": "R2",
     "side": "W",
     "row": 5,
     "center_z": 37.7,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W05"
    },
    {
-    "id": "R2-W-N06",
+    "id": "R2-W06",
     "rail": "R2",
     "side": "W",
     "row": 6,
     "center_z": 39.1,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W06"
    },
    {
-    "id": "R2-W-N07",
+    "id": "R2-W07",
     "rail": "R2",
     "side": "W",
     "row": 7,
     "center_z": 40.5,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W07"
    },
    {
-    "id": "R2-W-N08",
+    "id": "R2-W08",
     "rail": "R2",
     "side": "W",
     "row": 8,
     "center_z": 41.9,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W08"
    },
    {
-    "id": "R2-W-N09",
+    "id": "R2-W09",
     "rail": "R2",
     "side": "W",
     "row": 9,
     "center_z": 43.3,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W09"
    },
    {
-    "id": "R2-W-N10",
+    "id": "R2-W10",
     "rail": "R2",
     "side": "W",
     "row": 10,
     "center_z": 44.7,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W10"
    },
    {
-    "id": "R2-W-N11",
+    "id": "R2-W11",
     "rail": "R2",
     "side": "W",
     "row": 11,
     "center_z": 46.1,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W11"
    },
    {
-    "id": "R2-W-N12",
+    "id": "R2-W12",
     "rail": "R2",
     "side": "W",
     "row": 12,
     "center_z": 47.5,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W12"
    },
    {
-    "id": "R2-W-N13",
+    "id": "R2-W13",
     "rail": "R2",
     "side": "W",
     "row": 13,
     "center_z": 48.9,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W13"
    },
    {
-    "id": "R2-W-N14",
+    "id": "R2-W14",
     "rail": "R2",
     "side": "W",
     "row": 14,
     "center_z": 50.3,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W14"
    },
    {
-    "id": "R2-W-N15",
+    "id": "R2-W15",
     "rail": "R2",
     "side": "W",
     "row": 15,
     "center_z": 51.7,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W15"
    },
    {
-    "id": "R2-W-N16",
+    "id": "R2-W16",
     "rail": "R2",
     "side": "W",
     "row": 16,
     "center_z": 53.1,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W16"
    },
    {
-    "id": "R2-W-N17",
+    "id": "R2-W17",
     "rail": "R2",
     "side": "W",
     "row": 17,
     "center_z": 54.5,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W17"
    },
    {
-    "id": "R2-W-N18",
+    "id": "R2-W18",
     "rail": "R2",
     "side": "W",
     "row": 18,
     "center_z": 55.9,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W18"
    },
    {
-    "id": "R2-W-N19",
+    "id": "R2-W19",
     "rail": "R2",
     "side": "W",
     "row": 19,
     "center_z": 57.3,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W19"
    },
    {
-    "id": "R2-W-N20",
+    "id": "R2-W20",
     "rail": "R2",
     "side": "W",
     "row": 20,
     "center_z": 58.7,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W20"
    },
    {
-    "id": "R2-W-N21",
+    "id": "R2-W21",
     "rail": "R2",
     "side": "W",
     "row": 21,
     "center_z": 60.1,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W21"
    },
    {
-    "id": "R2-W-N22",
+    "id": "R2-W22",
     "rail": "R2",
     "side": "W",
     "row": 22,
     "center_z": 61.5,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W22"
    },
    {
-    "id": "R2-W-N23",
+    "id": "R2-W23",
     "rail": "R2",
     "side": "W",
     "row": 23,
     "center_z": 62.9,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W23"
    },
    {
-    "id": "R2-W-N24",
+    "id": "R2-W24",
     "rail": "R2",
     "side": "W",
     "row": 24,
     "center_z": 64.3,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W24"
    },
    {
-    "id": "R2-W-N25",
+    "id": "R2-W25",
     "rail": "R2",
     "side": "W",
     "row": 25,
     "center_z": 65.7,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W25"
    },
    {
-    "id": "R2-W-N26",
+    "id": "R2-W26",
     "rail": "R2",
     "side": "W",
     "row": 26,
     "center_z": 67.1,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W26"
    },
    {
-    "id": "R2-W-N27",
+    "id": "R2-W27",
     "rail": "R2",
     "side": "W",
     "row": 27,
     "center_z": 68.5,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W27"
    },
    {
-    "id": "R2-W-N28",
+    "id": "R2-W28",
     "rail": "R2",
     "side": "W",
     "row": 28,
     "center_z": 69.9,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W28"
    },
    {
-    "id": "R2-W-N29",
+    "id": "R2-W29",
     "rail": "R2",
     "side": "W",
     "row": 29,
     "center_z": 71.3,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W29"
    },
    {
-    "id": "R2-W-N30",
+    "id": "R2-W30",
     "rail": "R2",
     "side": "W",
     "row": 30,
     "center_z": 72.7,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W30"
    },
    {
-    "id": "R2-W-N31",
+    "id": "R2-W31",
     "rail": "R2",
     "side": "W",
     "row": 31,
     "center_z": 74.1,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W31"
    },
    {
-    "id": "R2-W-N32",
+    "id": "R2-W32",
     "rail": "R2",
     "side": "W",
     "row": 32,
     "center_z": 75.5,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W32"
    },
    {
-    "id": "R2-W-N33",
+    "id": "R2-W33",
     "rail": "R2",
     "side": "W",
     "row": 33,
     "center_z": 76.9,
-    "slot0_x": 58.45,
-    "slot_step_x": -1.3
+    "slot0_x": 58.375,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_W33"
    },
    {
-    "id": "R2-E-N01",
+    "id": "R2-E01",
     "rail": "R2",
     "side": "E",
     "row": 1,
     "center_z": 32.1,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E01"
    },
    {
-    "id": "R2-E-N02",
+    "id": "R2-E02",
     "rail": "R2",
     "side": "E",
     "row": 2,
     "center_z": 33.5,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E02"
    },
    {
-    "id": "R2-E-N03",
+    "id": "R2-E03",
     "rail": "R2",
     "side": "E",
     "row": 3,
     "center_z": 34.9,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E03"
    },
    {
-    "id": "R2-E-N04",
+    "id": "R2-E04",
     "rail": "R2",
     "side": "E",
     "row": 4,
     "center_z": 36.3,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E04"
    },
    {
-    "id": "R2-E-N05",
+    "id": "R2-E05",
     "rail": "R2",
     "side": "E",
     "row": 5,
     "center_z": 37.7,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E05"
    },
    {
-    "id": "R2-E-N06",
+    "id": "R2-E06",
     "rail": "R2",
     "side": "E",
     "row": 6,
     "center_z": 39.1,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E06"
    },
    {
-    "id": "R2-E-N07",
+    "id": "R2-E07",
     "rail": "R2",
     "side": "E",
     "row": 7,
     "center_z": 40.5,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E07"
    },
    {
-    "id": "R2-E-N08",
+    "id": "R2-E08",
     "rail": "R2",
     "side": "E",
     "row": 8,
     "center_z": 41.9,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E08"
    },
    {
-    "id": "R2-E-N09",
+    "id": "R2-E09",
     "rail": "R2",
     "side": "E",
     "row": 9,
     "center_z": 43.3,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E09"
    },
    {
-    "id": "R2-E-N10",
+    "id": "R2-E10",
     "rail": "R2",
     "side": "E",
     "row": 10,
     "center_z": 44.7,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E10"
    },
    {
-    "id": "R2-E-N11",
+    "id": "R2-E11",
     "rail": "R2",
     "side": "E",
     "row": 11,
     "center_z": 46.1,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E11"
    },
    {
-    "id": "R2-E-N12",
+    "id": "R2-E12",
     "rail": "R2",
     "side": "E",
     "row": 12,
     "center_z": 47.5,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E12"
    },
    {
-    "id": "R2-E-N13",
+    "id": "R2-E13",
     "rail": "R2",
     "side": "E",
     "row": 13,
     "center_z": 48.9,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E13"
    },
    {
-    "id": "R2-E-N14",
+    "id": "R2-E14",
     "rail": "R2",
     "side": "E",
     "row": 14,
     "center_z": 50.3,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E14"
    },
    {
-    "id": "R2-E-N15",
+    "id": "R2-E15",
     "rail": "R2",
     "side": "E",
     "row": 15,
     "center_z": 51.7,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E15"
    },
    {
-    "id": "R2-E-N16",
+    "id": "R2-E16",
     "rail": "R2",
     "side": "E",
     "row": 16,
     "center_z": 53.1,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E16"
    },
    {
-    "id": "R2-E-N17",
+    "id": "R2-E17",
     "rail": "R2",
     "side": "E",
     "row": 17,
     "center_z": 54.5,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E17"
    },
    {
-    "id": "R2-E-N18",
+    "id": "R2-E18",
     "rail": "R2",
     "side": "E",
     "row": 18,
     "center_z": 55.9,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E18"
    },
    {
-    "id": "R2-E-N19",
+    "id": "R2-E19",
     "rail": "R2",
     "side": "E",
     "row": 19,
     "center_z": 57.3,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E19"
    },
    {
-    "id": "R2-E-N20",
+    "id": "R2-E20",
     "rail": "R2",
     "side": "E",
     "row": 20,
     "center_z": 58.7,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E20"
    },
    {
-    "id": "R2-E-N21",
+    "id": "R2-E21",
     "rail": "R2",
     "side": "E",
     "row": 21,
     "center_z": 60.1,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E21"
    },
    {
-    "id": "R2-E-N22",
+    "id": "R2-E22",
     "rail": "R2",
     "side": "E",
     "row": 22,
     "center_z": 61.5,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E22"
    },
    {
-    "id": "R2-E-N23",
+    "id": "R2-E23",
     "rail": "R2",
     "side": "E",
     "row": 23,
     "center_z": 62.9,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E23"
    },
    {
-    "id": "R2-E-N24",
+    "id": "R2-E24",
     "rail": "R2",
     "side": "E",
     "row": 24,
     "center_z": 64.3,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E24"
    },
    {
-    "id": "R2-E-N25",
+    "id": "R2-E25",
     "rail": "R2",
     "side": "E",
     "row": 25,
     "center_z": 65.7,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E25"
    },
    {
-    "id": "R2-E-N26",
+    "id": "R2-E26",
     "rail": "R2",
     "side": "E",
     "row": 26,
     "center_z": 67.1,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E26"
    },
    {
-    "id": "R2-E-N27",
+    "id": "R2-E27",
     "rail": "R2",
     "side": "E",
     "row": 27,
     "center_z": 68.5,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E27"
    },
    {
-    "id": "R2-E-N28",
+    "id": "R2-E28",
     "rail": "R2",
     "side": "E",
     "row": 28,
     "center_z": 69.9,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E28"
    },
    {
-    "id": "R2-E-N29",
+    "id": "R2-E29",
     "rail": "R2",
     "side": "E",
     "row": 29,
     "center_z": 71.3,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E29"
    },
    {
-    "id": "R2-E-N30",
+    "id": "R2-E30",
     "rail": "R2",
     "side": "E",
     "row": 30,
     "center_z": 72.7,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E30"
    },
    {
-    "id": "R2-E-N31",
+    "id": "R2-E31",
     "rail": "R2",
     "side": "E",
     "row": 31,
     "center_z": 74.1,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E31"
    },
    {
-    "id": "R2-E-N32",
+    "id": "R2-E32",
     "rail": "R2",
     "side": "E",
     "row": 32,
     "center_z": 75.5,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E32"
    },
    {
-    "id": "R2-E-N33",
+    "id": "R2-E33",
     "rail": "R2",
     "side": "E",
     "row": 33,
     "center_z": 76.9,
-    "slot0_x": 61.55,
-    "slot_step_x": 1.3
+    "slot0_x": 61.625,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R2/Rack_Generated/Lanes/Lane_E33"
    },
    {
-    "id": "R3-W-N01",
+    "id": "R3-W01",
     "rail": "R3",
     "side": "W",
     "row": 1,
     "center_z": 32.1,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W01"
    },
    {
-    "id": "R3-W-N02",
+    "id": "R3-W02",
     "rail": "R3",
     "side": "W",
     "row": 2,
     "center_z": 33.5,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W02"
    },
    {
-    "id": "R3-W-N03",
+    "id": "R3-W03",
     "rail": "R3",
     "side": "W",
     "row": 3,
     "center_z": 34.9,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W03"
    },
    {
-    "id": "R3-W-N04",
+    "id": "R3-W04",
     "rail": "R3",
     "side": "W",
     "row": 4,
     "center_z": 36.3,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W04"
    },
    {
-    "id": "R3-W-N05",
+    "id": "R3-W05",
     "rail": "R3",
     "side": "W",
     "row": 5,
     "center_z": 37.7,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W05"
    },
    {
-    "id": "R3-W-N06",
+    "id": "R3-W06",
     "rail": "R3",
     "side": "W",
     "row": 6,
     "center_z": 39.1,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W06"
    },
    {
-    "id": "R3-W-N07",
+    "id": "R3-W07",
     "rail": "R3",
     "side": "W",
     "row": 7,
     "center_z": 40.5,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W07"
    },
    {
-    "id": "R3-W-N08",
+    "id": "R3-W08",
     "rail": "R3",
     "side": "W",
     "row": 8,
     "center_z": 41.9,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W08"
    },
    {
-    "id": "R3-W-N09",
+    "id": "R3-W09",
     "rail": "R3",
     "side": "W",
     "row": 9,
     "center_z": 43.3,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W09"
    },
    {
-    "id": "R3-W-N10",
+    "id": "R3-W10",
     "rail": "R3",
     "side": "W",
     "row": 10,
     "center_z": 44.7,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W10"
    },
    {
-    "id": "R3-W-N11",
+    "id": "R3-W11",
     "rail": "R3",
     "side": "W",
     "row": 11,
     "center_z": 46.1,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W11"
    },
    {
-    "id": "R3-W-N12",
+    "id": "R3-W12",
     "rail": "R3",
     "side": "W",
     "row": 12,
     "center_z": 47.5,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W12"
    },
    {
-    "id": "R3-W-N13",
+    "id": "R3-W13",
     "rail": "R3",
     "side": "W",
     "row": 13,
     "center_z": 48.9,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W13"
    },
    {
-    "id": "R3-W-N14",
+    "id": "R3-W14",
     "rail": "R3",
     "side": "W",
     "row": 14,
     "center_z": 50.3,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W14"
    },
    {
-    "id": "R3-W-N15",
+    "id": "R3-W15",
     "rail": "R3",
     "side": "W",
     "row": 15,
     "center_z": 51.7,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W15"
    },
    {
-    "id": "R3-W-N16",
+    "id": "R3-W16",
     "rail": "R3",
     "side": "W",
     "row": 16,
     "center_z": 53.1,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W16"
    },
    {
-    "id": "R3-W-N17",
+    "id": "R3-W17",
     "rail": "R3",
     "side": "W",
     "row": 17,
     "center_z": 54.5,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W17"
    },
    {
-    "id": "R3-W-N18",
+    "id": "R3-W18",
     "rail": "R3",
     "side": "W",
     "row": 18,
     "center_z": 55.9,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W18"
    },
    {
-    "id": "R3-W-N19",
+    "id": "R3-W19",
     "rail": "R3",
     "side": "W",
     "row": 19,
     "center_z": 57.3,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W19"
    },
    {
-    "id": "R3-W-N20",
+    "id": "R3-W20",
     "rail": "R3",
     "side": "W",
     "row": 20,
     "center_z": 58.7,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W20"
    },
    {
-    "id": "R3-W-N21",
+    "id": "R3-W21",
     "rail": "R3",
     "side": "W",
     "row": 21,
     "center_z": 60.1,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W21"
    },
    {
-    "id": "R3-W-N22",
+    "id": "R3-W22",
     "rail": "R3",
     "side": "W",
     "row": 22,
     "center_z": 61.5,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W22"
    },
    {
-    "id": "R3-W-N23",
+    "id": "R3-W23",
     "rail": "R3",
     "side": "W",
     "row": 23,
     "center_z": 62.9,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W23"
    },
    {
-    "id": "R3-W-N24",
+    "id": "R3-W24",
     "rail": "R3",
     "side": "W",
     "row": 24,
     "center_z": 64.3,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W24"
    },
    {
-    "id": "R3-W-N25",
+    "id": "R3-W25",
     "rail": "R3",
     "side": "W",
     "row": 25,
     "center_z": 65.7,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W25"
    },
    {
-    "id": "R3-W-N26",
+    "id": "R3-W26",
     "rail": "R3",
     "side": "W",
     "row": 26,
     "center_z": 67.1,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W26"
    },
    {
-    "id": "R3-W-N27",
+    "id": "R3-W27",
     "rail": "R3",
     "side": "W",
     "row": 27,
     "center_z": 68.5,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W27"
    },
    {
-    "id": "R3-W-N28",
+    "id": "R3-W28",
     "rail": "R3",
     "side": "W",
     "row": 28,
     "center_z": 69.9,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W28"
    },
    {
-    "id": "R3-W-N29",
+    "id": "R3-W29",
     "rail": "R3",
     "side": "W",
     "row": 29,
     "center_z": 71.3,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W29"
    },
    {
-    "id": "R3-W-N30",
+    "id": "R3-W30",
     "rail": "R3",
     "side": "W",
     "row": 30,
     "center_z": 72.7,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W30"
    },
    {
-    "id": "R3-W-N31",
+    "id": "R3-W31",
     "rail": "R3",
     "side": "W",
     "row": 31,
     "center_z": 74.1,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W31"
    },
    {
-    "id": "R3-W-N32",
+    "id": "R3-W32",
     "rail": "R3",
     "side": "W",
     "row": 32,
     "center_z": 75.5,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W32"
    },
    {
-    "id": "R3-W-N33",
+    "id": "R3-W33",
     "rail": "R3",
     "side": "W",
     "row": 33,
     "center_z": 76.9,
-    "slot0_x": 96.65,
-    "slot_step_x": -1.3
+    "slot0_x": 96.575,
+    "slot_step_x": -1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_W33"
    },
    {
-    "id": "R3-E-N01",
+    "id": "R3-E01",
     "rail": "R3",
     "side": "E",
     "row": 1,
     "center_z": 32.1,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E01"
    },
    {
-    "id": "R3-E-N02",
+    "id": "R3-E02",
     "rail": "R3",
     "side": "E",
     "row": 2,
     "center_z": 33.5,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E02"
    },
    {
-    "id": "R3-E-N03",
+    "id": "R3-E03",
     "rail": "R3",
     "side": "E",
     "row": 3,
     "center_z": 34.9,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E03"
    },
    {
-    "id": "R3-E-N04",
+    "id": "R3-E04",
     "rail": "R3",
     "side": "E",
     "row": 4,
     "center_z": 36.3,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E04"
    },
    {
-    "id": "R3-E-N05",
+    "id": "R3-E05",
     "rail": "R3",
     "side": "E",
     "row": 5,
     "center_z": 37.7,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E05"
    },
    {
-    "id": "R3-E-N06",
+    "id": "R3-E06",
     "rail": "R3",
     "side": "E",
     "row": 6,
     "center_z": 39.1,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E06"
    },
    {
-    "id": "R3-E-N07",
+    "id": "R3-E07",
     "rail": "R3",
     "side": "E",
     "row": 7,
     "center_z": 40.5,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E07"
    },
    {
-    "id": "R3-E-N08",
+    "id": "R3-E08",
     "rail": "R3",
     "side": "E",
     "row": 8,
     "center_z": 41.9,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E08"
    },
    {
-    "id": "R3-E-N09",
+    "id": "R3-E09",
     "rail": "R3",
     "side": "E",
     "row": 9,
     "center_z": 43.3,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E09"
    },
    {
-    "id": "R3-E-N10",
+    "id": "R3-E10",
     "rail": "R3",
     "side": "E",
     "row": 10,
     "center_z": 44.7,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E10"
    },
    {
-    "id": "R3-E-N11",
+    "id": "R3-E11",
     "rail": "R3",
     "side": "E",
     "row": 11,
     "center_z": 46.1,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E11"
    },
    {
-    "id": "R3-E-N12",
+    "id": "R3-E12",
     "rail": "R3",
     "side": "E",
     "row": 12,
     "center_z": 47.5,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E12"
    },
    {
-    "id": "R3-E-N13",
+    "id": "R3-E13",
     "rail": "R3",
     "side": "E",
     "row": 13,
     "center_z": 48.9,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E13"
    },
    {
-    "id": "R3-E-N14",
+    "id": "R3-E14",
     "rail": "R3",
     "side": "E",
     "row": 14,
     "center_z": 50.3,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E14"
    },
    {
-    "id": "R3-E-N15",
+    "id": "R3-E15",
     "rail": "R3",
     "side": "E",
     "row": 15,
     "center_z": 51.7,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E15"
    },
    {
-    "id": "R3-E-N16",
+    "id": "R3-E16",
     "rail": "R3",
     "side": "E",
     "row": 16,
     "center_z": 53.1,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E16"
    },
    {
-    "id": "R3-E-N17",
+    "id": "R3-E17",
     "rail": "R3",
     "side": "E",
     "row": 17,
     "center_z": 54.5,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E17"
    },
    {
-    "id": "R3-E-N18",
+    "id": "R3-E18",
     "rail": "R3",
     "side": "E",
     "row": 18,
     "center_z": 55.9,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E18"
    },
    {
-    "id": "R3-E-N19",
+    "id": "R3-E19",
     "rail": "R3",
     "side": "E",
     "row": 19,
     "center_z": 57.3,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E19"
    },
    {
-    "id": "R3-E-N20",
+    "id": "R3-E20",
     "rail": "R3",
     "side": "E",
     "row": 20,
     "center_z": 58.7,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E20"
    },
    {
-    "id": "R3-E-N21",
+    "id": "R3-E21",
     "rail": "R3",
     "side": "E",
     "row": 21,
     "center_z": 60.1,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E21"
    },
    {
-    "id": "R3-E-N22",
+    "id": "R3-E22",
     "rail": "R3",
     "side": "E",
     "row": 22,
     "center_z": 61.5,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E22"
    },
    {
-    "id": "R3-E-N23",
+    "id": "R3-E23",
     "rail": "R3",
     "side": "E",
     "row": 23,
     "center_z": 62.9,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E23"
    },
    {
-    "id": "R3-E-N24",
+    "id": "R3-E24",
     "rail": "R3",
     "side": "E",
     "row": 24,
     "center_z": 64.3,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E24"
    },
    {
-    "id": "R3-E-N25",
+    "id": "R3-E25",
     "rail": "R3",
     "side": "E",
     "row": 25,
     "center_z": 65.7,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E25"
    },
    {
-    "id": "R3-E-N26",
+    "id": "R3-E26",
     "rail": "R3",
     "side": "E",
     "row": 26,
     "center_z": 67.1,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E26"
    },
    {
-    "id": "R3-E-N27",
+    "id": "R3-E27",
     "rail": "R3",
     "side": "E",
     "row": 27,
     "center_z": 68.5,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E27"
    },
    {
-    "id": "R3-E-N28",
+    "id": "R3-E28",
     "rail": "R3",
     "side": "E",
     "row": 28,
     "center_z": 69.9,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E28"
    },
    {
-    "id": "R3-E-N29",
+    "id": "R3-E29",
     "rail": "R3",
     "side": "E",
     "row": 29,
     "center_z": 71.3,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E29"
    },
    {
-    "id": "R3-E-N30",
+    "id": "R3-E30",
     "rail": "R3",
     "side": "E",
     "row": 30,
     "center_z": 72.7,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E30"
    },
    {
-    "id": "R3-E-N31",
+    "id": "R3-E31",
     "rail": "R3",
     "side": "E",
     "row": 31,
     "center_z": 74.1,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E31"
    },
    {
-    "id": "R3-E-N32",
+    "id": "R3-E32",
     "rail": "R3",
     "side": "E",
     "row": 32,
     "center_z": 75.5,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E32"
    },
    {
-    "id": "R3-E-N33",
+    "id": "R3-E33",
     "rail": "R3",
     "side": "E",
     "row": 33,
     "center_z": 76.9,
-    "slot0_x": 99.75,
-    "slot_step_x": 1.3
+    "slot0_x": 99.825,
+    "slot_step_x": 1.25,
+    "unity_object": "Rack_R3/Rack_Generated/Lanes/Lane_E33"
    }
   ]
  },
@@ -3272,7 +3540,7 @@
     "kind": "aisle"
    },
    {
-    "id": "n_buf_L1-IN",
+    "id": "n_buf_R1-IN",
     "pos": [
      14.75,
      0.0,
@@ -3281,7 +3549,7 @@
     "kind": "buffer_in"
    },
    {
-    "id": "n_aisle_L1-IN",
+    "id": "n_aisle_R1-IN",
     "pos": [
      14.75,
      0.0,
@@ -3290,7 +3558,7 @@
     "kind": "aisle"
    },
    {
-    "id": "n_buf_L1-OUT",
+    "id": "n_buf_R1-OUT",
     "pos": [
      28.85,
      0.0,
@@ -3299,7 +3567,7 @@
     "kind": "buffer_out"
    },
    {
-    "id": "n_aisle_L1-OUT",
+    "id": "n_aisle_R1-OUT",
     "pos": [
      28.85,
      0.0,
@@ -3308,7 +3576,7 @@
     "kind": "aisle"
    },
    {
-    "id": "n_buf_L2-IN",
+    "id": "n_buf_R2-IN",
     "pos": [
      52.95,
      0.0,
@@ -3317,7 +3585,7 @@
     "kind": "buffer_in"
    },
    {
-    "id": "n_aisle_L2-IN",
+    "id": "n_aisle_R2-IN",
     "pos": [
      52.95,
      0.0,
@@ -3326,7 +3594,7 @@
     "kind": "aisle"
    },
    {
-    "id": "n_buf_L2-OUT",
+    "id": "n_buf_R2-OUT",
     "pos": [
      67.05,
      0.0,
@@ -3335,7 +3603,7 @@
     "kind": "buffer_out"
    },
    {
-    "id": "n_aisle_L2-OUT",
+    "id": "n_aisle_R2-OUT",
     "pos": [
      67.05,
      0.0,
@@ -3344,7 +3612,7 @@
     "kind": "aisle"
    },
    {
-    "id": "n_buf_L3-IN",
+    "id": "n_buf_R3-IN",
     "pos": [
      91.15,
      0.0,
@@ -3353,7 +3621,7 @@
     "kind": "buffer_in"
    },
    {
-    "id": "n_aisle_L3-IN",
+    "id": "n_aisle_R3-IN",
     "pos": [
      91.15,
      0.0,
@@ -3362,7 +3630,7 @@
     "kind": "aisle"
    },
    {
-    "id": "n_buf_L3-OUT",
+    "id": "n_buf_R3-OUT",
     "pos": [
      105.25,
      0.0,
@@ -3371,7 +3639,7 @@
     "kind": "buffer_out"
    },
    {
-    "id": "n_aisle_L3-OUT",
+    "id": "n_aisle_R3-OUT",
     "pos": [
      105.25,
      0.0,
@@ -3676,33 +3944,33 @@
     "length": 5.0
    },
    {
-    "from": "n_buf_L1-IN",
-    "to": "n_aisle_L1-IN",
+    "from": "n_buf_R1-IN",
+    "to": "n_aisle_R1-IN",
     "length": 1.8
    },
    {
-    "from": "n_buf_L1-OUT",
-    "to": "n_aisle_L1-OUT",
+    "from": "n_buf_R1-OUT",
+    "to": "n_aisle_R1-OUT",
     "length": 1.8
    },
    {
-    "from": "n_buf_L2-IN",
-    "to": "n_aisle_L2-IN",
+    "from": "n_buf_R2-IN",
+    "to": "n_aisle_R2-IN",
     "length": 1.8
    },
    {
-    "from": "n_buf_L2-OUT",
-    "to": "n_aisle_L2-OUT",
+    "from": "n_buf_R2-OUT",
+    "to": "n_aisle_R2-OUT",
     "length": 1.8
    },
    {
-    "from": "n_buf_L3-IN",
-    "to": "n_aisle_L3-IN",
+    "from": "n_buf_R3-IN",
+    "to": "n_aisle_R3-IN",
     "length": 1.8
    },
    {
-    "from": "n_buf_L3-OUT",
-    "to": "n_aisle_L3-OUT",
+    "from": "n_buf_R3-OUT",
+    "to": "n_aisle_R3-OUT",
     "length": 1.8
    },
    {
@@ -3812,21 +4080,21 @@
    },
    {
     "from": "n_aisle_IN3",
-    "to": "n_aisle_L1-IN",
+    "to": "n_aisle_R1-IN",
     "length": 2.25
    },
    {
-    "from": "n_aisle_L1-IN",
+    "from": "n_aisle_R1-IN",
     "to": "n_aisle_IN4",
     "length": 12.75
    },
    {
     "from": "n_aisle_IN4",
-    "to": "n_aisle_L1-OUT",
+    "to": "n_aisle_R1-OUT",
     "length": 1.35
    },
    {
-    "from": "n_aisle_L1-OUT",
+    "from": "n_aisle_R1-OUT",
     "to": "n_aisle_IN5",
     "length": 3.65
    },
@@ -3852,16 +4120,16 @@
    },
    {
     "from": "n_aisle_inbound_qc",
-    "to": "n_aisle_L2-IN",
+    "to": "n_aisle_R2-IN",
     "length": 12.05
    },
    {
-    "from": "n_aisle_L2-IN",
-    "to": "n_aisle_L2-OUT",
+    "from": "n_aisle_R2-IN",
+    "to": "n_aisle_R2-OUT",
     "length": 14.1
    },
    {
-    "from": "n_aisle_L2-OUT",
+    "from": "n_aisle_R2-OUT",
     "to": "n_aisle_outbound_qc",
     "length": 12.05
    },
@@ -3887,21 +4155,21 @@
    },
    {
     "from": "n_aisle_OUT5",
-    "to": "n_aisle_L3-IN",
+    "to": "n_aisle_R3-IN",
     "length": 3.65
    },
    {
-    "from": "n_aisle_L3-IN",
+    "from": "n_aisle_R3-IN",
     "to": "n_aisle_OUT4",
     "length": 1.35
    },
    {
     "from": "n_aisle_OUT4",
-    "to": "n_aisle_L3-OUT",
+    "to": "n_aisle_R3-OUT",
     "length": 12.75
    },
    {
-    "from": "n_aisle_L3-OUT",
+    "from": "n_aisle_R3-OUT",
     "to": "n_aisle_OUT3",
     "length": 2.25
    },
@@ -3926,30 +4194,30 @@
   {
    "id": "floor",
    "type": "floor",
-   "label": "바닥 120 x 80",
+   "label": "바닥 120.01 x 80.01",
    "center": [
-    60.0,
+    60.005,
     -0.05,
-    40.0
+    39.705
    ],
    "size": [
-    120.0,
+    120.01,
     0.1,
-    80.0
+    80.01
    ],
    "color": "#f3f2ee"
   },
   {
    "id": "wall_N",
    "type": "wall",
-   "label": "북쪽 벽",
+   "label": "북쪽 벽 (추정)",
    "center": [
-    60.0,
+    60.005,
     12.5,
-    80.15
+    79.56
    ],
    "size": [
-    120.6,
+    120.01,
     25.0,
     0.3
    ],
@@ -3960,30 +4228,30 @@
    "type": "wall",
    "label": "서쪽 벽",
    "center": [
-    -0.15,
+    0.15,
     12.5,
-    40.0
+    39.705
    ],
    "size": [
     0.3,
     25.0,
-    80.0
+    79.41
    ],
    "color": "#3a3936"
   },
   {
    "id": "wall_E",
    "type": "wall",
-   "label": "동쪽 벽",
+   "label": "동쪽 벽 (추정)",
    "center": [
-    120.15,
+    119.86,
     12.5,
-    40.0
+    39.705
    ],
    "size": [
     0.3,
     25.0,
-    80.0
+    79.41
    ],
    "color": "#3a3936"
   },
@@ -3992,12 +4260,12 @@
    "type": "wall",
    "label": "남쪽 벽",
    "center": [
-    0.2,
+    0.35,
     12.5,
     -0.15
    ],
    "size": [
-    1.0,
+    0.7,
     25.0,
     0.3
    ],
@@ -4184,12 +4452,12 @@
    "type": "wall",
    "label": "남쪽 벽",
    "center": [
-    119.8,
+    119.655,
     12.5,
     -0.15
    ],
    "size": [
-    1.0,
+    0.71,
     25.0,
     0.3
    ],
@@ -4420,22 +4688,39 @@
    "color": "#fbe1d6"
   },
   {
-   "id": "office",
-   "type": "office",
-   "label": "사무실·관제실·휴게 (2층)",
+   "id": "office_zone",
+   "type": "zone",
+   "label": "사무 구역 (DockZoneBuilder 40~80)",
    "center": [
     60.0,
-    4.0,
+    0.005,
     7.2
    ],
    "size": [
     40.0,
-    8.0,
+    0.01,
     14.4
+   ],
+   "color": "#ecebe7"
+  },
+  {
+   "id": "office",
+   "type": "office",
+   "label": "사무동 (1층 사무·입구 홀·휴게, 2층 관제·회의·서버)",
+   "center": [
+    60.0,
+    4.0,
+    6.0
+   ],
+   "size": [
+    32.0,
+    8.0,
+    12.0
    ],
    "color": "#ecebe7",
    "floors": 2,
-   "floor_height": 4.0
+   "floor_height": 4.0,
+   "unity_object": "Office_Building"
   },
   {
    "id": "spare_IN",
@@ -4533,7 +4818,8 @@
     0.1,
     2.4
    ],
-   "color": "#1baf7a"
+   "color": "#1baf7a",
+   "unity_object": "Dock_Zones/Equipment/Scale_IN1"
   },
   {
    "id": "dock_IN1_stage_11",
@@ -5047,7 +5333,8 @@
     0.1,
     2.4
    ],
-   "color": "#1baf7a"
+   "color": "#1baf7a",
+   "unity_object": "Dock_Zones/Equipment/Scale_IN2"
   },
   {
    "id": "dock_IN2_stage_11",
@@ -5561,7 +5848,8 @@
     0.1,
     2.4
    ],
-   "color": "#1baf7a"
+   "color": "#1baf7a",
+   "unity_object": "Dock_Zones/Equipment/Scale_IN3"
   },
   {
    "id": "dock_IN3_stage_11",
@@ -6075,7 +6363,8 @@
     0.1,
     2.4
    ],
-   "color": "#1baf7a"
+   "color": "#1baf7a",
+   "unity_object": "Dock_Zones/Equipment/Scale_IN4"
   },
   {
    "id": "dock_IN4_stage_11",
@@ -6589,7 +6878,8 @@
     0.1,
     2.4
    ],
-   "color": "#1baf7a"
+   "color": "#1baf7a",
+   "unity_object": "Dock_Zones/Equipment/Scale_IN5"
   },
   {
    "id": "dock_IN5_stage_11",
@@ -7103,7 +7393,8 @@
     0.1,
     2.4
    ],
-   "color": "#1baf7a"
+   "color": "#1baf7a",
+   "unity_object": "Dock_Zones/Equipment/Scale_IN6"
   },
   {
    "id": "dock_IN6_stage_11",
@@ -7617,7 +7908,8 @@
     0.1,
     2.4
    ],
-   "color": "#eb6834"
+   "color": "#eb6834",
+   "unity_object": "Dock_Zones/Equipment/DropStand_OUT1"
   },
   {
    "id": "dock_OUT1_stage_11",
@@ -8131,7 +8423,8 @@
     0.1,
     2.4
    ],
-   "color": "#eb6834"
+   "color": "#eb6834",
+   "unity_object": "Dock_Zones/Equipment/DropStand_OUT2"
   },
   {
    "id": "dock_OUT2_stage_11",
@@ -8645,7 +8938,8 @@
     0.1,
     2.4
    ],
-   "color": "#eb6834"
+   "color": "#eb6834",
+   "unity_object": "Dock_Zones/Equipment/DropStand_OUT3"
   },
   {
    "id": "dock_OUT3_stage_11",
@@ -9159,7 +9453,8 @@
     0.1,
     2.4
    ],
-   "color": "#eb6834"
+   "color": "#eb6834",
+   "unity_object": "Dock_Zones/Equipment/DropStand_OUT4"
   },
   {
    "id": "dock_OUT4_stage_11",
@@ -9673,7 +9968,8 @@
     0.1,
     2.4
    ],
-   "color": "#eb6834"
+   "color": "#eb6834",
+   "unity_object": "Dock_Zones/Equipment/DropStand_OUT5"
   },
   {
    "id": "dock_OUT5_stage_11",
@@ -10187,7 +10483,8 @@
     0.1,
     2.4
    ],
-   "color": "#eb6834"
+   "color": "#eb6834",
+   "unity_object": "Dock_Zones/Equipment/DropStand_OUT6"
   },
   {
    "id": "dock_OUT6_stage_11",
@@ -10656,14 +10953,14 @@
   {
    "id": "R1",
    "type": "rail",
-   "label": "모셔틀 레일 R1 (층마다 모셔틀 1대)",
+   "label": "모셔틀 통로 R1 (폭 2.0 m, 단마다 모셔틀 1대)",
    "center": [
     21.8,
     7.5,
     49.6
    ],
    "size": [
-    1.8,
+    2.0,
     15.0,
     56.0
    ],
@@ -10684,164 +10981,165 @@
     16.0,
     2.4
    ],
-   "color": "#6250d6"
+   "color": "#6250d6",
+   "unity_object": "Rack_R1/Rack_Generated/Lift/Lift"
   },
   {
-   "id": "L1-IN-1",
+   "id": "Buffer_L1_IN1",
    "type": "conveyor_slot",
-   "label": "L1 입고 버퍼 1",
+   "label": "R1 입고 버퍼 IN1",
    "center": [
     19.95,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#9fd9c2"
   },
   {
-   "id": "L1-IN-2",
+   "id": "Buffer_L1_IN2",
    "type": "conveyor_slot",
-   "label": "L1 입고 버퍼 2",
+   "label": "R1 입고 버퍼 IN2",
    "center": [
     18.65,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#9fd9c2"
   },
   {
-   "id": "L1-IN-3",
+   "id": "Buffer_L1_IN3",
    "type": "conveyor_slot",
-   "label": "L1 입고 버퍼 3",
+   "label": "R1 입고 버퍼 IN3",
    "center": [
     17.35,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#9fd9c2"
   },
   {
-   "id": "L1-IN-4",
+   "id": "Buffer_L1_IN4",
    "type": "conveyor_slot",
-   "label": "L1 입고 버퍼 4",
+   "label": "R1 입고 버퍼 IN4",
    "center": [
     16.05,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#9fd9c2"
   },
   {
-   "id": "L1-IN-5",
+   "id": "Buffer_L1_IN5",
    "type": "conveyor_slot",
-   "label": "L1 입고 버퍼 5",
+   "label": "R1 입고 버퍼 IN5",
    "center": [
     14.75,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#9fd9c2"
   },
   {
-   "id": "L1-OUT-1",
+   "id": "Buffer_L1_OUT1",
    "type": "conveyor_slot",
-   "label": "L1 출고 버퍼 1",
+   "label": "R1 출고 버퍼 OUT1",
    "center": [
     23.65,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#f6b79c"
   },
   {
-   "id": "L1-OUT-2",
+   "id": "Buffer_L1_OUT2",
    "type": "conveyor_slot",
-   "label": "L1 출고 버퍼 2",
+   "label": "R1 출고 버퍼 OUT2",
    "center": [
     24.95,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#f6b79c"
   },
   {
-   "id": "L1-OUT-3",
+   "id": "Buffer_L1_OUT3",
    "type": "conveyor_slot",
-   "label": "L1 출고 버퍼 3",
+   "label": "R1 출고 버퍼 OUT3",
    "center": [
     26.25,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#f6b79c"
   },
   {
-   "id": "L1-OUT-4",
+   "id": "Buffer_L1_OUT4",
    "type": "conveyor_slot",
-   "label": "L1 출고 버퍼 4",
+   "label": "R1 출고 버퍼 OUT4",
    "center": [
     27.55,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#f6b79c"
   },
   {
-   "id": "L1-OUT-5",
+   "id": "Buffer_L1_OUT5",
    "type": "conveyor_slot",
-   "label": "L1 출고 버퍼 5",
+   "label": "R1 출고 버퍼 OUT5",
    "center": [
     28.85,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#f6b79c"
@@ -10849,14 +11147,14 @@
   {
    "id": "R2",
    "type": "rail",
-   "label": "모셔틀 레일 R2 (층마다 모셔틀 1대)",
+   "label": "모셔틀 통로 R2 (폭 2.0 m, 단마다 모셔틀 1대)",
    "center": [
     60.0,
     7.5,
     49.6
    ],
    "size": [
-    1.8,
+    2.0,
     15.0,
     56.0
    ],
@@ -10877,164 +11175,165 @@
     16.0,
     2.4
    ],
-   "color": "#6250d6"
+   "color": "#6250d6",
+   "unity_object": "Rack_R2/Rack_Generated/Lift/Lift"
   },
   {
-   "id": "L2-IN-1",
+   "id": "Buffer_L2_IN1",
    "type": "conveyor_slot",
-   "label": "L2 입고 버퍼 1",
+   "label": "R2 입고 버퍼 IN1",
    "center": [
     58.15,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#9fd9c2"
   },
   {
-   "id": "L2-IN-2",
+   "id": "Buffer_L2_IN2",
    "type": "conveyor_slot",
-   "label": "L2 입고 버퍼 2",
+   "label": "R2 입고 버퍼 IN2",
    "center": [
     56.85,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#9fd9c2"
   },
   {
-   "id": "L2-IN-3",
+   "id": "Buffer_L2_IN3",
    "type": "conveyor_slot",
-   "label": "L2 입고 버퍼 3",
+   "label": "R2 입고 버퍼 IN3",
    "center": [
     55.55,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#9fd9c2"
   },
   {
-   "id": "L2-IN-4",
+   "id": "Buffer_L2_IN4",
    "type": "conveyor_slot",
-   "label": "L2 입고 버퍼 4",
+   "label": "R2 입고 버퍼 IN4",
    "center": [
     54.25,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#9fd9c2"
   },
   {
-   "id": "L2-IN-5",
+   "id": "Buffer_L2_IN5",
    "type": "conveyor_slot",
-   "label": "L2 입고 버퍼 5",
+   "label": "R2 입고 버퍼 IN5",
    "center": [
     52.95,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#9fd9c2"
   },
   {
-   "id": "L2-OUT-1",
+   "id": "Buffer_L2_OUT1",
    "type": "conveyor_slot",
-   "label": "L2 출고 버퍼 1",
+   "label": "R2 출고 버퍼 OUT1",
    "center": [
     61.85,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#f6b79c"
   },
   {
-   "id": "L2-OUT-2",
+   "id": "Buffer_L2_OUT2",
    "type": "conveyor_slot",
-   "label": "L2 출고 버퍼 2",
+   "label": "R2 출고 버퍼 OUT2",
    "center": [
     63.15,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#f6b79c"
   },
   {
-   "id": "L2-OUT-3",
+   "id": "Buffer_L2_OUT3",
    "type": "conveyor_slot",
-   "label": "L2 출고 버퍼 3",
+   "label": "R2 출고 버퍼 OUT3",
    "center": [
     64.45,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#f6b79c"
   },
   {
-   "id": "L2-OUT-4",
+   "id": "Buffer_L2_OUT4",
    "type": "conveyor_slot",
-   "label": "L2 출고 버퍼 4",
+   "label": "R2 출고 버퍼 OUT4",
    "center": [
     65.75,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#f6b79c"
   },
   {
-   "id": "L2-OUT-5",
+   "id": "Buffer_L2_OUT5",
    "type": "conveyor_slot",
-   "label": "L2 출고 버퍼 5",
+   "label": "R2 출고 버퍼 OUT5",
    "center": [
     67.05,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#f6b79c"
@@ -11042,14 +11341,14 @@
   {
    "id": "R3",
    "type": "rail",
-   "label": "모셔틀 레일 R3 (층마다 모셔틀 1대)",
+   "label": "모셔틀 통로 R3 (폭 2.0 m, 단마다 모셔틀 1대)",
    "center": [
     98.2,
     7.5,
     49.6
    ],
    "size": [
-    1.8,
+    2.0,
     15.0,
     56.0
    ],
@@ -11070,164 +11369,165 @@
     16.0,
     2.4
    ],
-   "color": "#6250d6"
+   "color": "#6250d6",
+   "unity_object": "Rack_R3/Rack_Generated/Lift/Lift"
   },
   {
-   "id": "L3-IN-1",
+   "id": "Buffer_L3_IN1",
    "type": "conveyor_slot",
-   "label": "L3 입고 버퍼 1",
+   "label": "R3 입고 버퍼 IN1",
    "center": [
     96.35,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#9fd9c2"
   },
   {
-   "id": "L3-IN-2",
+   "id": "Buffer_L3_IN2",
    "type": "conveyor_slot",
-   "label": "L3 입고 버퍼 2",
+   "label": "R3 입고 버퍼 IN2",
    "center": [
     95.05,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#9fd9c2"
   },
   {
-   "id": "L3-IN-3",
+   "id": "Buffer_L3_IN3",
    "type": "conveyor_slot",
-   "label": "L3 입고 버퍼 3",
+   "label": "R3 입고 버퍼 IN3",
    "center": [
     93.75,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#9fd9c2"
   },
   {
-   "id": "L3-IN-4",
+   "id": "Buffer_L3_IN4",
    "type": "conveyor_slot",
-   "label": "L3 입고 버퍼 4",
+   "label": "R3 입고 버퍼 IN4",
    "center": [
     92.45,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#9fd9c2"
   },
   {
-   "id": "L3-IN-5",
+   "id": "Buffer_L3_IN5",
    "type": "conveyor_slot",
-   "label": "L3 입고 버퍼 5",
+   "label": "R3 입고 버퍼 IN5",
    "center": [
     91.15,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#9fd9c2"
   },
   {
-   "id": "L3-OUT-1",
+   "id": "Buffer_L3_OUT1",
    "type": "conveyor_slot",
-   "label": "L3 출고 버퍼 1",
+   "label": "R3 출고 버퍼 OUT1",
    "center": [
     100.05,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#f6b79c"
   },
   {
-   "id": "L3-OUT-2",
+   "id": "Buffer_L3_OUT2",
    "type": "conveyor_slot",
-   "label": "L3 출고 버퍼 2",
+   "label": "R3 출고 버퍼 OUT2",
    "center": [
     101.35,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#f6b79c"
   },
   {
-   "id": "L3-OUT-3",
+   "id": "Buffer_L3_OUT3",
    "type": "conveyor_slot",
-   "label": "L3 출고 버퍼 3",
+   "label": "R3 출고 버퍼 OUT3",
    "center": [
     102.65,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#f6b79c"
   },
   {
-   "id": "L3-OUT-4",
+   "id": "Buffer_L3_OUT4",
    "type": "conveyor_slot",
-   "label": "L3 출고 버퍼 4",
+   "label": "R3 출고 버퍼 OUT4",
    "center": [
     103.95,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#f6b79c"
   },
   {
-   "id": "L3-OUT-5",
+   "id": "Buffer_L3_OUT5",
    "type": "conveyor_slot",
-   "label": "L3 출고 버퍼 5",
+   "label": "R3 출고 버퍼 OUT5",
    "center": [
     105.25,
-    0.3,
+    0.25,
     20.4
    ],
    "size": [
     1.1,
-    0.6,
+    0.5,
     1.8
    ],
    "color": "#f6b79c"
@@ -11253,17 +11553,17 @@
    "type": "facility",
    "label": "셔틀·리프트 정비",
    "center": [
-    15.3,
+    15.25,
     1.25,
     26.5
    ],
    "size": [
-    9.6,
+    9.5,
     2.5,
     8.2
    ],
    "color": "#ffffff",
-   "area_m2": 78.72
+   "area_m2": 77.9
   },
   {
    "id": "QC-IN",
@@ -11275,12 +11575,12 @@
     26.5
    ],
    "size": [
-    34.8,
+    34.6,
     2.5,
     8.2
    ],
    "color": "#ffffff",
-   "area_m2": 285.36
+   "area_m2": 283.72
   },
   {
    "id": "QC-OUT",
@@ -11292,36 +11592,36 @@
     26.5
    ],
    "size": [
-    34.8,
+    34.6,
     2.5,
     8.2
    ],
    "color": "#ffffff",
-   "area_m2": 285.36
+   "area_m2": 283.72
   },
   {
    "id": "fac_spare_parts",
    "type": "facility",
    "label": "예비 셔틀·부품",
    "center": [
-    104.7,
+    104.75,
     1.25,
     26.5
    ],
    "size": [
-    9.6,
+    9.5,
     2.5,
     8.2
    ],
    "color": "#ffffff",
-   "area_m2": 78.72
+   "area_m2": 77.9
   },
   {
    "id": "CHW1",
    "type": "charger",
    "label": "AMR 충전기 CHW1 (벽면)",
    "center": [
-    0.3,
+    0.6,
     0.75,
     23.6
    ],
@@ -11353,7 +11653,7 @@
    "type": "charger",
    "label": "AMR 충전기 CHW2 (벽면)",
    "center": [
-    0.3,
+    0.6,
     0.75,
     26.5
    ],
@@ -11385,7 +11685,7 @@
    "type": "charger",
    "label": "AMR 충전기 CHW3 (벽면)",
    "center": [
-    0.3,
+    0.6,
     0.75,
     29.4
    ],
@@ -11417,7 +11717,7 @@
    "type": "charger",
    "label": "AMR 충전기 CHE1 (벽면)",
    "center": [
-    119.7,
+    119.41,
     0.75,
     23.6
    ],
@@ -11449,7 +11749,7 @@
    "type": "charger",
    "label": "AMR 충전기 CHE2 (벽면)",
    "center": [
-    119.7,
+    119.41,
     0.75,
     26.5
    ],
@@ -11481,7 +11781,7 @@
    "type": "charger",
    "label": "AMR 충전기 CHE3 (벽면)",
    "center": [
-    119.7,
+    119.41,
     0.75,
     29.4
    ],
@@ -11607,14 +11907,14 @@
   {
    "id": "rack_R1W",
    "type": "rack_block",
-   "label": "랙 블록 R1W (33줄 x 깊이 14 x 10층)",
+   "label": "랙 블록 R1W (33줄 x 깊이 14 x 10단)",
    "center": [
-    11.8,
+    12.05,
     7.5,
     54.5
    ],
    "size": [
-    18.2,
+    17.5,
     15.0,
     46.2
    ],
@@ -11626,14 +11926,14 @@
   {
    "id": "rack_R1E",
    "type": "rack_block",
-   "label": "랙 블록 R1E (33줄 x 깊이 14 x 10층)",
+   "label": "랙 블록 R1E (33줄 x 깊이 14 x 10단)",
    "center": [
-    31.8,
+    31.55,
     7.5,
     54.5
    ],
    "size": [
-    18.2,
+    17.5,
     15.0,
     46.2
    ],
@@ -11645,14 +11945,14 @@
   {
    "id": "rack_R2W",
    "type": "rack_block",
-   "label": "랙 블록 R2W (33줄 x 깊이 14 x 10층)",
+   "label": "랙 블록 R2W (33줄 x 깊이 14 x 10단)",
    "center": [
-    50.0,
+    50.25,
     7.5,
     54.5
    ],
    "size": [
-    18.2,
+    17.5,
     15.0,
     46.2
    ],
@@ -11664,14 +11964,14 @@
   {
    "id": "rack_R2E",
    "type": "rack_block",
-   "label": "랙 블록 R2E (33줄 x 깊이 14 x 10층)",
+   "label": "랙 블록 R2E (33줄 x 깊이 14 x 10단)",
    "center": [
-    70.0,
+    69.75,
     7.5,
     54.5
    ],
    "size": [
-    18.2,
+    17.5,
     15.0,
     46.2
    ],
@@ -11683,14 +11983,14 @@
   {
    "id": "rack_R3W",
    "type": "rack_block",
-   "label": "랙 블록 R3W (33줄 x 깊이 14 x 10층)",
+   "label": "랙 블록 R3W (33줄 x 깊이 14 x 10단)",
    "center": [
-    88.2,
+    88.45,
     7.5,
     54.5
    ],
    "size": [
-    18.2,
+    17.5,
     15.0,
     46.2
    ],
@@ -11702,14 +12002,14 @@
   {
    "id": "rack_R3E",
    "type": "rack_block",
-   "label": "랙 블록 R3E (33줄 x 깊이 14 x 10층)",
+   "label": "랙 블록 R3E (33줄 x 깊이 14 x 10단)",
    "center": [
-    108.2,
+    107.95,
     7.5,
     54.5
    ],
    "size": [
-    18.2,
+    17.5,
     15.0,
     46.2
    ],

@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Warehouse.Mqtt
 {
-    /// 정지점(SC-IN1, L1-IN, DP-OUT3 …)에서 팔레트를 주고받는 쪽이 구현.
+    /// 정지점(SC-IN1, R1-IN, DP-OUT3 …). R?-IN 은 입고 버퍼 IN5(AMR 쪽), R?-OUT 은 출고 버퍼 OUT5에서 팔레트를 주고받는 쪽이 구현.
     public interface IPalletPort
     {
         string StopId { get; }
@@ -112,8 +112,8 @@ namespace Warehouse.Mqtt
             _v = (float)_vel.v; _w = (float)_vel.w;
             float theta = WhCoords.YawToTheta(transform.eulerAngles.y) + _w * dt;
             transform.rotation = WhCoords.ThetaToRotation(theta);
-            var plan = WhCoords.ToPlan(transform.position) + new Vector2(Mathf.Cos(theta), Mathf.Sin(theta)) * _v * dt;
-            transform.position = WhCoords.ToUnity(plan.x, plan.y, transform.position.y);
+            var plan = WhCoords.WorldToPlan(transform.position) + new Vector2(Mathf.Cos(theta), Mathf.Sin(theta)) * _v * dt;
+            transform.position = WhCoords.ToWorldXZ(plan, transform.position.y);
             // 실제 물리(Rigidbody, 충돌)를 쓰려면 위 두 줄 대신 Rigidbody.MovePosition / MoveRotation 사용
         }
 
@@ -151,14 +151,14 @@ namespace Warehouse.Mqtt
                     if (_wp >= s.path.Count) { FinishStep(); return; }
                     var wp = s.path[_wp];
                     var target = new Vector2((float)wp.x, (float)wp.y);
-                    var here = WhCoords.ToPlan(transform.position);
+                    var here = WhCoords.WorldToPlan(transform.position);
                     if (driveMode == "scripted")
                     {
                         if (wp.t_start.HasValue && now < wp.t_start.Value && _node != wp.node) return;   // 예약 시각 전 대기
                         var next = Vector2.MoveTowards(here, target, speed * dt);
                         if ((next - here).sqrMagnitude > 1e-8f)
                             transform.rotation = WhCoords.ThetaToRotation(Mathf.Atan2(target.y - here.y, target.x - here.x));
-                        transform.position = WhCoords.ToUnity(next.x, next.y, transform.position.y);
+                        transform.position = WhCoords.ToWorldXZ(next, transform.position.y);
                         _v = speed;
                         here = next;
                     }
@@ -211,7 +211,7 @@ namespace Warehouse.Mqtt
         // ── 발행 ────────────────────────────────────────────────────────
         void PublishPose()
         {
-            var p = WhCoords.ToPlan(transform.position);
+            var p = WhCoords.WorldToPlan(transform.position);
             _mq.Send("amr.pose", new AmrPose
             {
                 x = p.x, y = p.y, theta = WhCoords.YawToTheta(transform.eulerAngles.y),

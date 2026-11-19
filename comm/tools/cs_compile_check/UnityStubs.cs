@@ -31,6 +31,7 @@ namespace UnityEngine
         public static float Sin(float a) => (float)Math.Sin(a); public static float Cos(float a) => (float)Math.Cos(a);
         public static float Max(float a, float b) => Math.Max(a, b); public static float Abs(float a) => Math.Abs(a);
         public static float Round(float a) => (float)Math.Round(a); public static float Clamp01(float a) => Math.Clamp(a, 0, 1);
+        public static int RoundToInt(float a) => (int)Math.Round(a);
         public static float Lerp(float a, float b, float t) => a + (b - a) * Clamp01(t);
     }
     public struct Vector2

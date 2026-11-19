@@ -9,11 +9,12 @@ topic write wh/v1/amr/+/pose
 topic write wh/v1/amr/+/scan2d
 topic write wh/v1/amr/+/state
 topic write wh/v1/amr/+/evt
+topic write wh/v1/rack/+/evt
+topic write wh/v1/rack/+/state
+topic write wh/v1/rack/+/inventory
 topic write wh/v1/lift/+/state
-topic write wh/v1/lift/+/evt
 topic write wh/v1/buffer/+/state
 topic write wh/v1/shuttle/+/state
-topic write wh/v1/shuttle/+/evt
 topic write wh/v1/dock/+/state
 topic write wh/v1/dock/+/evt
 topic write wh/v1/scale/+/reading
@@ -24,8 +25,7 @@ topic read wh/v1/#
 topic write wh/v1/sim/control
 topic write wh/v1/amr/+/cmd/mission
 topic write wh/v1/amr/+/cmd/control
-topic write wh/v1/lift/+/cmd
-topic write wh/v1/shuttle/+/cmd
+topic write wh/v1/rack/+/cmd
 topic write wh/v1/wms/job
 topic write wh/v1/wms/inventory/evt
 topic write wh/v1/wms/inventory/snapshot

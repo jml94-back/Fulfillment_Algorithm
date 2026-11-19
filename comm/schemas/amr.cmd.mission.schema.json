@@ -86,7 +86,8 @@
         "anyOf": [
          {
           "type": "string",
-          "description": "정지점 ID: SC-INn, DP-OUTn, Ln-IN, Ln-OUT, CH*, QC-IN, QC-OUT"
+          "pattern": "^(SC-IN[1-6]|DP-OUT[1-6]|R[1-3]-(IN|OUT)|CH[WE][1-3]|QC-(IN|OUT)|WAIT[1-4])$",
+          "description": "정지점 ID: SC-INn, DP-OUTn, Rn-IN, Rn-OUT, CH*, QC-IN, QC-OUT, WAITn"
          },
          {
           "type": "null"
@@ -97,7 +98,7 @@
         "anyOf": [
          {
           "type": "string",
-          "pattern": "^P\\d{8}$"
+          "pattern": "^(P\\d{8}|R[1-3]-\\d{6})$"
          },
          {
           "type": "null"

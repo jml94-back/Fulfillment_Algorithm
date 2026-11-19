@@ -6,12 +6,13 @@ Unity 쪽이 구현해야 할 동작이 이 파일에 그대로 들어 있다 (U
 - AMR: cmd/mission 의 단계를 순서대로 수행. move 는 경유점을 따라 1.2 m/s, 경유점의 t_start 전에는 그 노드 앞에서 기다린다.
   pick/drop 8초. 전제 조건(팔레트가 있음/자리가 빔)이 안 되면 될 때까지 기다린다. 한 번에 미션 1개, 바쁘면 거부.
   drive_mode = rl 이면 cmd/vel 로 움직이고 0.5초 안에 새 명령이 없으면 정지.
-- 리프트: lift_in = 입고 버퍼 1번 칸 → n층 입고 이송점, lift_out = n층 출고 이송점 → 출고 버퍼 1번 칸. 명령은 FIFO.
-- 셔틀(레일 x 층 1세트): store = 입고 이송점 → 레인 pos, retrieve = 레인 pos → 출고 이송점. 명령은 FIFO.
-- 버퍼: 컨베이어 5칸. 입고는 5번 칸(AMR)→1번 칸(리프트), 출고는 1번→5번. 한 칸 이동 2초.
+- 랙(통로 R1~R3): Unity ShuttleRackSystem 과 같은 규칙으로 rack/+/cmd 의 store·retrieve 를 처리한다
+  (레인 배정 비용식, virtual 예약, 단별 순서, 리프트 단일 점유, 사다리꼴 속도). 자세한 규칙은 sim/rack_model.py.
+  시작 재고는 PrefillRandom 처럼 무작위로 채우고 rack/+/inventory(retain)로 알린다.
+- 버퍼: 컨베이어 5칸. 입고는 IN5(AMR)→IN1(리프트), 출고는 OUT1→OUT5. 한 칸 1.3 m / 0.5 m/s = 2.6초.
 - 도크: wms/order 를 보고 트럭을 세운다(시뮬레이션 전용). 입고 트럭은 30초마다 팔레트 1개를 계량대에 내린다.
   출고 트럭은 DP-OUT 에 내려진 팔레트를 싣고, 다 실으면 떠난다.
-- 셔틀·리프트 이동 시간은 warehouse/shuttle.py 의 장비 성능 가정과 같다.
+- 셔틀·리프트 속도는 Unity 스크립트 기본값(명세 4.3)과 같다.
 
 AMR끼리의 물리 충돌은 흉내 내지 않는다 (충돌 회피는 스케줄러의 시간 예약과 RL 정책 몫).
 """
@@ -31,10 +32,10 @@ from whmqtt import ids
 from whmqtt.client import WhClient
 from whmqtt.envelope import Envelope
 
+from .rack_model import CONVEYOR_S, RackModel
+
 AMR_V, AMR_HANDLE = 1.2, 8.0
-LIFT_V, LIFT_OVERHEAD, LIFT_XFER = 1.5, 2.0, 5.0
-MOTHER_V, MOTHER_OVERHEAD, SAT_V, SAT_XFER, SHUTTLE_XFER = 2.0, 3.0, 1.0, 4.0, 4.0
-UNLOAD_S, LOAD_S, CONVEYOR_S = 30.0, 20.0, 2.0
+UNLOAD_S, LOAD_S = 30.0, 30.0
 PRECOND_TIMEOUT = 600.0
 DRAIN_MOVE, DRAIN_IDLE, CHARGE_RATE = 0.02, 0.003, 0.5      # %/s
 log = logging.getLogger("plant")
@@ -69,38 +70,6 @@ class Amr:
 
 
 @dataclass
-class Device:
-    """리프트·셔틀 공통: 명령 FIFO 와 진행 중 명령."""
-    id: str
-    queue: deque = field(default_factory=deque)
-    cur: dict | None = None
-    phase: str = "idle"
-    busy_until: float = 0.0
-    waited: float = 0.0
-    pallet: str | None = None
-    last_state: tuple | None = None
-
-
-@dataclass
-class Lift(Device):
-    rail: int = 1
-    level: float = 0.0
-    target: float = 0.0
-    moving: str | None = None
-    m_from: float = 0.0
-    m_dur: float = 1.0
-
-
-@dataclass
-class Shuttle(Device):
-    rail: int = 1
-    lv: int = 1
-    y: float = 0.0
-    sat_lane: str | None = None
-    sat_pos: float | None = None
-
-
-@dataclass
 class Dock:
     id: str
     status: str = "empty"
@@ -116,7 +85,8 @@ class Dock:
 class Plant:
     def __init__(self, host: str, port: int, scale: float = 10.0, tick: float = 0.1, scan: bool = False,
                  validate: bool = False, seed: int = 0, client_id: str = "unity-sim",
-                 heavy: set[str] | None = None) -> None:
+                 heavy: set[str] | None = None, prefill_channels: int = 14,
+                 skus: list[str] | None = None) -> None:
         self.heavy = heavy or set()          # 시뮬레이션용: 실측 무게를 송장보다 12% 무겁게 만들 팔레트
         self.rng = random.Random(seed)
         self.scale, self.tick, self.scan = scale, tick, scan
@@ -130,15 +100,13 @@ class Plant:
             self.amrs[a] = Amr(a, x, y, G.stop_theta(ch), G.STOP_NODES[ch], charger=ch,
                                battery=self.rng.uniform(70, 95))
         self.chargers = {c: next((a.id for a in self.amrs.values() if a.charger == c), None) for c in ids.CHARGERS}
-        self.lifts = {f"L{r}": Lift(f"L{r}", rail=r) for r in range(1, 4)}
-        self.shuttles = {ids.shuttle_id(r, lv): Shuttle(ids.shuttle_id(r, lv), rail=r, lv=lv,
-                                                        y=G.lift_xy(f"L{r}")[1])
-                         for r in range(1, 4) for lv in range(1, 11)}
         self.buffers: dict[str, list[str | None]] = {b: [None] * 5 for b in ids.BUFFERS}
         self.buf_move: dict[str, float] = {b: 0.0 for b in ids.BUFFERS}
-        self.handoff_in: dict[tuple[int, int], str | None] = {(r, lv): None for r in range(1, 4) for lv in range(1, 11)}
-        self.handoff_out: dict[tuple[int, int], str | None] = dict(self.handoff_in)
-        self.lanes: dict[str, list[str | None]] = {}      # 레인 → 위치 1~14 (index 0 = pos 1)
+        self.racks = {f"R{r}": RackModel(r, self.buffers, self._rack_send, lambda: self.t) for r in range(1, 4)}
+        skus = skus or [f"SKU{k:03d}" for k in range(1, 21)]
+        for rk in self.racks.values():             # 시작 재고 (Unity PrefillRandom 대역)
+            rk.prefill(self.rng, skus, prefill_channels)
+        self._inv_next = 0.0
         self.weights: dict[str, float] = {}
         self.stations: dict[str, deque] = {s: deque() for s in ids.SCALES + ids.DROPS + ["QC-IN", "QC-OUT"]}
         self.docks = {d: Dock(d) for d in ids.DOCKS}
@@ -149,10 +117,8 @@ class Plant:
         c.on("amr.cmd.mission", self._on_mission)
         c.on("amr.cmd.vel", self._on_vel)
         c.on("amr.cmd.control", self._on_amr_control)
-        c.on("lift.cmd", self._on_lift_cmd)
-        c.on("shuttle.cmd", self._on_shuttle_cmd)
+        c.on("rack.cmd", self._on_rack_cmd)
         c.on("wms.order", self._on_order)
-        c.on("wms.snapshot", self._on_snapshot)
         c.on("sim.control", self._on_sim_control)
 
     # ── 수신 ────────────────────────────────────────────────────────────────
@@ -197,31 +163,14 @@ class Plant:
             self._amr_evt(a, "control_applied", a.mission["mission_id"] if a.mission else None, None, corr=env.id)
             self._amr_state(a, force=True)
 
-    def _on_lift_cmd(self, env: Envelope, p: dict) -> None:
+    def _on_rack_cmd(self, env: Envelope, p: dict) -> None:
         with self.lock:
-            lf = self.lifts.get(p["lift"])
-            if lf:
-                self._dev_accept(lf, env, "lift.evt", p["lift"])
+            rk = self.racks.get(p["rail"])
+            if rk:
+                rk.request(env.data, env.id)
 
-    def _on_shuttle_cmd(self, env: Envelope, p: dict) -> None:
-        with self.lock:
-            sh = self.shuttles.get(p["shuttle"])
-            if sh:
-                self._dev_accept(sh, env, "shuttle.evt", p["shuttle"])
-
-    def _dev_accept(self, dev: Device, env: Envelope, evt_key: str, dev_id: str) -> None:
-        d = env.data
-        if d["action"] == "cancel":
-            dev.queue = deque(q for q in dev.queue if q["cmd_id"] != d["cmd_id"])
-            self.c.send(evt_key, self._dev_evt("canceled", d), dev_id, corr=env.id, t=self.t)
-            return
-        dev.queue.append(dict(d, _corr=env.id))
-        self.c.send(evt_key, self._dev_evt("accepted", d), dev_id, corr=env.id, t=self.t)
-
-    @staticmethod
-    def _dev_evt(event: str, d: dict, reason: str | None = None) -> dict:
-        return {"event": event, "cmd_id": d["cmd_id"], "job_id": d.get("job_id"), "pallet": d.get("pallet"),
-                "reason": reason}
+    def _rack_send(self, key: str, data: dict, rail: str, corr: str | None = None) -> None:
+        self.c.send(key, data, rail, corr=corr, t=self.t)
 
     def _on_order(self, env: Envelope, _p) -> None:
         """시뮬레이션 전용: 주문에 맞춰 트럭을 도크에 세운다 (실제로는 트럭이 그냥 온다)."""
@@ -245,17 +194,6 @@ class Plant:
             self.c.send("dock.evt", {"event": "truck_arrived", "truck": dk.truck, "order_id": dk.order_id,
                                      "pallet": None, "station": None}, dk.id, t=self.t)
             self._dock_state(dk)
-
-    def _on_snapshot(self, env: Envelope, _p) -> None:
-        """시작 재고를 스케줄러 스냅샷에서 받아 레인을 채운다 (Unity도 이렇게 재고를 맞춘다)."""
-        with self.lock:
-            if self.lanes:
-                return
-            for lane, sku, cnt in env.data["lanes"]:
-                slots = [None] * ids.DEPTH
-                for k in range(cnt):          # 안쪽(14)부터 채워져 있음
-                    slots[ids.DEPTH - 1 - k] = f"~{sku}"
-                self.lanes[lane] = slots
 
     def _on_sim_control(self, env: Envelope, _p) -> None:
         a = env.data["action"]
@@ -284,27 +222,29 @@ class Plant:
                                   "step": a.step_i if a.mission else None, "node": a.node, "error": a.error},
                     a.id, t=self.t)
 
-    def _lift_state(self, lf: Lift) -> None:
-        mode = "moving" if lf.moving else "idle" if lf.cur is None else "transferring"
-        key = (mode, round(lf.level, 1), lf.pallet, lf.cur and lf.cur["cmd_id"], len(lf.queue))
-        if key == lf.last_state:
-            return
-        lf.last_state = key
-        self.c.send("lift.state", {"mode": mode, "level": round(lf.level, 2), "pallet": lf.pallet,
-                                   "cmd_id": key[3], "queue": len(lf.queue), "error": None}, lf.id, t=self.t)
-
-    def _shuttle_state(self, sh: Shuttle) -> None:
-        mode = {"idle": "idle", "wait": "idle"}.get(sh.phase, "moving" if sh.sat_lane is None else "in_lane")
-        key = (mode, round(sh.y, 0), sh.sat_lane, sh.pallet, sh.cur and sh.cur["cmd_id"], len(sh.queue))
-        if key == sh.last_state:
-            return
-        sh.last_state = key
-        self.c.send("shuttle.state", {
-            "mode": mode, "y": round(sh.y, 2),
-            "satellite": {"where": "in_lane" if sh.sat_lane else "docked", "lane": sh.sat_lane,
-                          "pos": None if sh.sat_pos is None else round(sh.sat_pos, 1)},
-            "pallet": sh.pallet, "cmd_id": key[4], "queue": len(sh.queue), "battery": None, "error": None},
-            sh.id, t=self.t)
+    def _rack_states(self, force: bool = False) -> None:
+        for rid, rk in self.racks.items():
+            st = rk.state()
+            if force or st != getattr(rk, "_last_state", None):
+                rk._last_state = st
+                self.c.send("rack.state", st, rid, t=self.t)
+            ls = rk.lift_state()
+            if force or ls != rk.lift.last:
+                rk.lift.last = ls
+                self.c.send("lift.state", ls, rk.lift.id, t=self.t)
+            for m in rk.mothers.values():
+                ms = rk.shuttle_state(m)
+                if force or ms != m.last:
+                    m.last = ms
+                    self.c.send("shuttle.state", ms, m.id, t=self.t)
+            for b in list(rk.dirty_buf):
+                self._buffer_state(b)
+            rk.dirty_buf.clear()
+            if force or (rk.dirty_inv and self.t >= self._inv_next):
+                rk.dirty_inv = False
+                self.c.send("rack.inventory", rk.inventory(), rid, t=self.t)
+        if self.t >= self._inv_next:
+            self._inv_next = self.t + 60.0
 
     def _buffer_state(self, b: str) -> None:
         self.c.send("buffer.state", {"slots": list(self.buffers[b]), "blocked": False}, b, t=self.t)
@@ -328,10 +268,7 @@ class Plant:
             self._clock(force=True)
             for a in self.amrs.values():
                 self._amr_state(a, force=True)
-            for lf in self.lifts.values():
-                self._lift_state(lf)
-            for sh in self.shuttles.values():
-                self._shuttle_state(sh)
+            self._rack_states(force=True)
             for b in self.buffers:
                 self._buffer_state(b)
             for dk in self.docks.values():
@@ -364,14 +301,11 @@ class Plant:
         self._n += 1
         for a in self.amrs.values():
             self._amr_step(a, dt)
-        for lf in self.lifts.values():
-            self._lift_step(lf)
-            self._lift_state(lf)
-        for sh in self.shuttles.values():
-            self._shuttle_step(sh)
-            self._shuttle_state(sh)
         for b in self.buffers:
             self._conveyor(b)
+        for rk in self.racks.values():
+            rk.step()
+        self._rack_states()
         for dk in self.docks.values():
             self._dock_step(dk)
         if self._n % self._pose_every == 0:
@@ -512,25 +446,25 @@ class Plant:
         self._finish_step(a)
 
     def _pallet_at(self, stop: str) -> str | None:
-        if stop.endswith("-OUT") and stop.startswith("L"):
+        if stop in self.buffers:
             return self.buffers[stop][4]
         q = self.stations.get(stop)
         return q[0] if q else None
 
     def _space_at(self, stop: str) -> bool:
-        if stop.endswith("-IN") and stop.startswith("L"):
+        if stop in self.buffers:
             return self.buffers[stop][4] is None
         return True
 
     def _take_from(self, stop: str) -> None:
-        if stop.startswith("L"):
+        if stop in self.buffers:
             self.buffers[stop][4] = None
             self._buffer_state(stop)
         else:
             self.stations[stop].popleft()
 
     def _put_to(self, stop: str, pallet: str) -> None:
-        if stop.startswith("L"):
+        if stop in self.buffers:
             self.buffers[stop][4] = pallet
             self._buffer_state(stop)
         elif stop.startswith("DP-OUT"):
@@ -592,153 +526,6 @@ class Plant:
         self._dock_state(dk)
 
     # ── 리프트 ──────────────────────────────────────────────────────────────
-    def _lift_step(self, lf: Lift) -> None:
-        if lf.cur is None:
-            if not lf.queue:
-                return
-            lf.cur, lf.phase, lf.waited = lf.queue.popleft(), "wait", 0.0
-            self.c.send("lift.evt", self._dev_evt("started", lf.cur), lf.id, corr=lf.cur["_corr"], t=self.t)
-        c, key = lf.cur, (lf.rail, lf.cur["level"])
-        if self.t < lf.busy_until:
-            if lf.moving:
-                frac = 1.0 - (lf.busy_until - self.t) / lf.m_dur
-                lf.level = lf.m_from + (lf.target - lf.m_from) * frac
-            return
-        buf_in, buf_out = f"L{lf.rail}-IN", f"L{lf.rail}-OUT"
-        if c["action"] == "lift_in":
-            seq = ["go0", "take_in", "up", "put_in", "done"]
-        else:
-            seq = ["go_lv", "take_out", "down", "put_out", "done"]
-        ph = lf.phase if lf.phase in seq else seq[0]
-        if lf.phase == "wait":
-            lf.phase = seq[0]
-            ph = seq[0]
-        if ph in ("go0", "up", "go_lv", "down"):
-            target = 0 if ph in ("go0", "down") else c["level"]
-            if abs(lf.level - target) > 1e-6 and lf.moving != ph:
-                lf.moving, lf.m_from, lf.target = ph, lf.level, target
-                lf.m_dur = LIFT_OVERHEAD + abs(target - lf.level) * G.LEVEL_H / LIFT_V
-                lf.busy_until = self.t + lf.m_dur
-                return
-            lf.level, lf.moving = target, None
-            lf.phase = seq[seq.index(ph) + 1]
-            return
-        if ph == "take_in":
-            if self.buffers[buf_in][0] != c["pallet"]:
-                return self._dev_wait(lf, "lift.evt", f"{buf_in} 1번 칸에 {c['pallet']} 없음")
-            self.buffers[buf_in][0], lf.pallet = None, c["pallet"]
-            self._buffer_state(buf_in)
-        elif ph == "put_in":
-            if self.handoff_in[key] is not None:
-                return self._dev_wait(lf, "lift.evt", "입고 이송점 사용 중")
-            self.handoff_in[key], lf.pallet = c["pallet"], None
-        elif ph == "take_out":
-            if self.handoff_out[key] != c["pallet"]:
-                return self._dev_wait(lf, "lift.evt", f"LV{c['level']:02d} 출고 이송점에 {c['pallet']} 없음")
-            self.handoff_out[key], lf.pallet = None, c["pallet"]
-        elif ph == "put_out":
-            if self.buffers[buf_out][0] is not None:
-                return self._dev_wait(lf, "lift.evt", f"{buf_out} 1번 칸 사용 중")
-            self.buffers[buf_out][0], lf.pallet = c["pallet"], None
-            self._buffer_state(buf_out)
-        elif ph == "done":
-            self.c.send("lift.evt", self._dev_evt("done", c), lf.id, corr=c["_corr"], t=self.t)
-            lf.cur, lf.phase = None, "idle"
-            return
-        lf.waited = 0.0
-        lf.busy_until = self.t + LIFT_XFER
-        lf.phase = seq[seq.index(ph) + 1]
-
-    def _dev_wait(self, dev: Device, evt_key: str, reason: str) -> None:
-        dev.waited += self.tick * self.scale
-        if dev.waited > PRECOND_TIMEOUT:
-            self.c.send(evt_key, self._dev_evt("failed", dev.cur, reason), dev.id, corr=dev.cur["_corr"], t=self.t)
-            dev.cur, dev.phase, dev.pallet = None, "idle", None
-
-    # ── 셔틀 ────────────────────────────────────────────────────────────────
-    def _shuttle_step(self, sh: Shuttle) -> None:
-        if sh.cur is None:
-            if not sh.queue:
-                return
-            sh.cur, sh.phase, sh.waited = sh.queue.popleft(), "start", 0.0
-            self.c.send("shuttle.evt", self._dev_evt("started", sh.cur), sh.id, corr=sh.cur["_corr"], t=self.t)
-        if self.t < sh.busy_until:
-            return
-        c, key = sh.cur, (sh.rail, sh.lv)
-        lane, pos = c.get("lane"), c.get("pos")
-        lift_y = G.lift_xy(f"L{sh.rail}")[1]
-        if lane and lane not in self.lanes:
-            self.lanes[lane] = [None] * ids.DEPTH
-        if c["action"] == "store":
-            if sh.phase == "start":
-                if self.handoff_in[key] != c["pallet"]:
-                    return self._dev_wait(sh, "shuttle.evt", "입고 이송점에 팔레트 없음")
-                self._move_mother(sh, lift_y, extra=SHUTTLE_XFER)
-                sh.phase = "take"
-            elif sh.phase == "take":
-                self.handoff_in[key], sh.pallet = None, c["pallet"]
-                self._to_lane(sh, lane, pos)
-                sh.phase = "place"
-            elif sh.phase == "place":
-                if self.lanes[lane][pos - 1] is not None:
-                    return self._dev_fail(sh, f"{lane} 위치 {pos} 이미 차 있음")
-                if any(self.lanes[lane][:pos - 1]):
-                    return self._dev_fail(sh, f"{lane} 위치 {pos} 앞에 팔레트가 있어 지나갈 수 없음")
-                self.lanes[lane][pos - 1], sh.pallet = c["pallet"], None
-                self._sat_back(sh, pos)
-                sh.phase = "done"
-            elif sh.phase == "done":
-                self._dev_done(sh)
-        elif c["action"] == "retrieve":
-            if sh.phase == "start":
-                self._to_lane(sh, lane, pos)
-                sh.phase = "take"
-            elif sh.phase == "take":
-                got = self.lanes[lane][pos - 1]
-                if got is None:
-                    return self._dev_fail(sh, f"{lane} 위치 {pos} 비어 있음")
-                if any(self.lanes[lane][:pos - 1]):
-                    return self._dev_fail(sh, f"{lane} 위치 {pos} 앞에 팔레트가 있어 꺼낼 수 없음")
-                self.lanes[lane][pos - 1], sh.pallet = None, c["pallet"]
-                self._sat_back(sh, pos)
-                sh.phase = "carry"
-            elif sh.phase == "carry":
-                self._move_mother(sh, lift_y, extra=0.0)
-                sh.phase = "give"
-            elif sh.phase == "give":
-                if self.handoff_out[key] is not None:
-                    return self._dev_wait(sh, "shuttle.evt", "출고 이송점 사용 중")
-                self.handoff_out[key], sh.pallet = c["pallet"], None
-                sh.busy_until = self.t + SHUTTLE_XFER
-                sh.phase = "done"
-            elif sh.phase == "done":
-                self._dev_done(sh)
-        else:
-            self._dev_fail(sh, f"{c['action']} 미구현 (가상 장비)")
-
-    def _move_mother(self, sh: Shuttle, y: float, extra: float) -> None:
-        dur = MOTHER_OVERHEAD + abs(sh.y - y) / MOTHER_V + extra
-        sh.y, sh.busy_until = y, self.t + dur
-
-    def _to_lane(self, sh: Shuttle, lane: str, pos: int) -> None:
-        y = G.lane_xyz(lane, pos)[1]
-        dur = MOTHER_OVERHEAD + abs(sh.y - y) / MOTHER_V + SAT_XFER + (pos - 0.5) * G.layout()["params"][
-            "slot_pitch"] / SAT_V
-        sh.y, sh.sat_lane, sh.sat_pos, sh.busy_until = y, lane, float(pos), self.t + dur
-
-    def _sat_back(self, sh: Shuttle, pos: int) -> None:
-        sh.busy_until = self.t + SAT_XFER + (pos - 0.5) * 1.3 / SAT_V
-        sh.sat_lane = sh.sat_pos = None
-
-    def _dev_done(self, dev: Device) -> None:
-        self.c.send("shuttle.evt", self._dev_evt("done", dev.cur), dev.id, corr=dev.cur["_corr"], t=self.t)
-        dev.cur, dev.phase = None, "idle"
-
-    def _dev_fail(self, dev: Device, reason: str) -> None:
-        self.c.send("shuttle.evt", self._dev_evt("failed", dev.cur, reason), dev.id, corr=dev.cur["_corr"],
-                    t=self.t)
-        dev.cur, dev.phase, dev.pallet = None, "idle", None
-
     # ── 2D LiDAR (건물 벽만) ───────────────────────────────────────────────
     def scan2d(self, a: Amr, beams: int = 72, rmax: float = 10.0) -> dict:
         out = []

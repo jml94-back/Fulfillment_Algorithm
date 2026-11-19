@@ -20,13 +20,18 @@ def test_demo_end_to_end(broker, tmp_path):
     assert any(r["type"] == "wms.job" and r["data"]["status"] == "held" and r["data"]["pallet"] == "P00000003"
                for r in held)
     assert any(r["type"] == "ctrl.evt" and r["data"]["event"] == "report" for r in held)
-    # 같은 SKU 입고는 같은 레인에 모인다 (레인은 SKU 1종 전용)
-    lanes = {j["lane"] for j in s["jobs"] if j["sku"] == "SKU101"}
-    assert len(lanes) == 1
-    # 명령 응답은 corr 로 원래 명령을 가리킨다
-    cmd_ids = {r["id"] for r in held if r["type"] in ("lift.cmd", "shuttle.cmd", "amr.cmd.mission")}
-    acks = [r for r in held if r["type"] in ("lift.evt", "shuttle.evt") and r["data"]["event"] == "accepted"]
+    # 같은 SKU 입고는 같은 채널에 모인다 (채널은 SKU 1종 전용, Unity 랙이 같은 SKU 채널을 먼저 고름)
+    chans = {j["channel"] for j in s["jobs"] if j["sku"] == "SKU101"}
+    assert len(chans) == 1
+    # 랙 응답은 corr 로 원래 rack.cmd 를 가리키고, done 에 채널·칸이 온다
+    cmd_ids = {r["id"] for r in held if r["type"] == "rack.cmd"}
+    acks = [r for r in held if r["type"] == "rack.evt" and r["data"]["event"] == "accepted"]
     assert acks and all(r["corr"] in cmd_ids for r in acks)
+    done = [r["data"] for r in held if r["type"] == "rack.evt" and r["data"]["event"] == "done"]
+    assert len(done) == 11 and all(d["channel"] and d["slot"] for d in done)
+    # 후입선출: 같은 채널에 넣은 순서대로 안쪽(14)부터 한 칸씩 앞으로
+    slots = [d["slot"] for d in done if d["action"] == "store" and d["sku"] == "SKU101"]
+    assert slots == list(range(14, 14 - len(slots), -1))
 
 
 def test_rl_velocity_and_expiry(broker):
@@ -79,7 +84,7 @@ def test_retained_state_for_late_joiner(broker):
     late.on("buffer.state", lambda env, p: states.__setitem__(p["buffer"], env.data["slots"]))
     late.start()
     try:
-        assert wait_until(lambda: len([k for k in states if k.startswith("AMR")]) == 4 and "L2-IN" in states, 3)
+        assert wait_until(lambda: len([k for k in states if k.startswith("AMR")]) == 4 and "R2-IN" in states, 3)
     finally:
         late.stop()
         plant.stop()
@@ -120,7 +125,7 @@ def test_demo_with_algorithm_planner(broker, tmp_path, monkeypatch):
 
     class D4Scheduler(Scheduler):
         def __init__(self, *a, **k):
-            super().__init__(*a, planner=D4Planner({}), **k)
+            super().__init__(*a, planner=D4Planner(), **k)
 
     monkeypatch.setattr(rd, "Scheduler", D4Scheduler)
     host, port = broker

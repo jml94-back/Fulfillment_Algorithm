@@ -37,7 +37,7 @@ flowchart LR
   end
   SEN["온도 센서·카메라<br/>(자리만 예약)"]
   U <-->|pose · scan2d · state · evt| B
-  S <-->|cmd/mission · lift/shuttle cmd<br/>job · inventory · reservations| B
+  S <-->|cmd/mission · rack cmd<br/>job · inventory · reservations| B
   RL <-->|pose · scan2d → cmd/vel| B
   C <-->|order · ctrl/cmd ↔ ctrl/evt · kpi| B
   SEN -.->|sensor/# · alert/#| B
@@ -49,7 +49,8 @@ flowchart LR
 | 프로토콜 | **MQTT v5** | 메시지 만료(Message Expiry)로 늦은 속도 명령을 브로커가 버림, 영구 세션 만료 시간, Content-Type |
 | 토픽 | `wh/v1/{장비종류}/{ID}/{채널}` | 장비 종류별 와일드카드 구독(`wh/v1/amr/+/state`), 버전을 토픽에 넣어 v2 와 공존 |
 | 본문 | UTF-8 JSON + 공통 봉투 | Unity(Newtonsoft)·Python·LangGraph 모두 바로 읽음. 디버깅이 쉬움 (`mosquitto_sub -v`) |
-| 원본 | **Unity = 장비 상태의 원본**, 스케줄러 = 작업·재고의 원본 | 같은 정보를 두 곳이 발행하지 않음 |
+| 원본 | **Unity = 장비 상태·랙 재고(채널·칸)의 원본**, 스케줄러 = 주문·작업의 원본 | 같은 정보를 두 곳이 발행하지 않음 |
+| 랙 안 제어 | **Unity `ShuttleRackSystem`(통로마다 1개)** 이 채널·칸 선택, 리프트·모셔틀 순서를 정함. 스케줄러는 통로(R1~R3)를 골라 `store`/`retrieve` 만 요청 | Unity 구현(2026-11-19 명세)이 이미 그렇게 동작함 |
 | 3D LiDAR | MQTT 로 보내지 않음 | 프레임당 수백 KB. Unity 안(ML-Agents 센서)에서만 사용. 2D LiDAR 72빔만 발행 |
 | RL 학습 | ML-Agents 직접 연결, **추론·데모 때만 MQTT** | 학습은 수십 배속 동기 실행이 필요해 브로커를 거치면 느림 (RL 스레드와 합의) |
 | 비상 대응 | 토픽·스키마 자리만 예약 (`sensor/#`, `alert/#`) | 현재 범위 밖 |
@@ -69,26 +70,28 @@ flowchart LR
 
 ## 3. 이름 규칙
 
-### 장비·위치 ID (Unity 배치 데이터 `unity/d4_layout.json` 과 같음)
+### 장비·위치 ID (Unity ShuttleRackSystem 이름, `unity/d4_layout.json` 과 같음)
 
 | 대상 | 형식 | 예 |
 |---|---|---|
 | AMR | `AMR01`~`AMR04` | `AMR02` |
-| 리프트 | `L1`~`L3` (레일마다 1기) | `L1` |
-| 셔틀 세트 (모셔틀 + 세틀라이트) | `MS-R{레일}-LV{층}` | `MS-R1-LV03` |
-| 레인 | `R{레일}-{W\|E}-LV{층}-N{줄}` (줄 01 = 남쪽) | `R1-W-LV03-N12` |
-| 레인 안 위치 | 1 = 레일 쪽 입·출구 ~ 14 = 벽 쪽 끝 (선입후출) | |
-| 층 | 0 = 바닥 P&D(버퍼), 1~10 = LV01~LV10 | |
+| 통로(랙) | `R1`~`R3` (= ShuttleRackSystem 1개) | `R2` |
+| 리프트 | `L1`~`L3` (통로마다 1기) | `L1` |
+| 모셔틀 (새틀라이트 포함) | `R{통로}-Shuttle_L{단}` | `R1-Shuttle_L03` |
+| 채널 (단별 레인) | `R{통로}-{W\|E}{줄}-L{단}` (줄 01 = 리프트 쪽 = 남쪽) | `R2-E07-L03` |
+| 칸 | `{채널}-{01~14}` (01 = 통로 쪽 앞칸 ~ 14 = 안쪽, 후입선출) | `R2-E07-L03-14` |
+| 단 | 1~10 (`L01`~`L10`), 단 n 레일 윗면 = 0.40 + 1.45 x (n-1) m | |
 | 도크 | `IN1`~`IN6`, `OUT1`~`OUT6` | `IN2` |
-| AMR 정지점 | 계량대 `SC-IN1~6`, 출고 하차대 `DP-OUT1~6`, 리프트 버퍼 `L1-IN`/`L1-OUT`, 충전기 `CHW1~3`/`CHE1~3`, 검수 `QC-IN`/`QC-OUT` | |
-| 버퍼 칸 | 1 = 리프트 바로 옆 ~ 5 = AMR 접점 | |
-| 팔레트 | `P` + 8자리 | `P00000003` |
+| AMR 정지점 | 계량대 `SC-IN1~6`, 출고 하차대 `DP-OUT1~6`, 리프트 버퍼 `R1-IN`/`R1-OUT`, 충전기 `CHW1~3`/`CHE1~3`, 검수 `QC-IN`/`QC-OUT`, 쉬는 자리 `WAIT1~4` | |
+| 버퍼 칸 | `IN1`~`IN5` / `OUT1`~`OUT5` (1 = 리프트 쪽, 5 = AMR 쪽). AMR 은 IN5 에 내려놓고 OUT5 에서 집음 | |
+| 팔레트 | 입고 트럭 `P` + 8자리, 랙 시작 재고 `R{통로}-` + 6자리 | `P00000003`, `R1-000123` |
 
 ### 좌표
 
-메시지 안 좌표는 모두 **도면 좌표**: 원점 = 건물 남서쪽 바닥 안쪽 모서리, `x` 동쪽(0~120 m), `y` 북쪽(0~80 m), `z` 위.
-방향 `theta` 는 동쪽에서 반시계(rad). Unity 로는 `Vector3(x, z, y)`, `yaw = 90° − theta` (`WhCoords.cs`).
-AMR 경로의 노드 id 는 `d4_layout.json` 의 `nav` 그래프 노드 그대로입니다 (`n_dock_IN2`, `n_aisle_IN2`, `n_buf_L1-IN` …).
+메시지 안 좌표는 모두 **도면 좌표**: 원점 = 서쪽 벽 외부면 · 남쪽 벽 안쪽면 · 바닥 윗면, `x` 동쪽(0~120.01 m), `y` 북쪽(0~80.01 m), `z` 위.
+방향 `theta` 는 동쪽에서 반시계(rad). **Unity 월드 = `Vector3(x, z, y) + (-60.005, 1.20, -39.705)`**, `yaw = 90° − theta`
+(`WhCoords.ToWorld`, `WorldToPlan`). AMR 경로의 노드 id 는 `d4_layout.json` 의 `nav` 그래프 노드 그대로입니다
+(`n_dock_IN2`, `n_aisle_IN2`, `n_buf_R1-IN` …).
 
 ### 시각
 
@@ -123,7 +126,7 @@ AMR 경로의 노드 id 는 `d4_layout.json` 의 `nav` 그래프 노드 그대�
 |---|---|---|---|---|
 | 고빈도 측정 (`pose`, `scan2d`) | 0 | X | 1 s | 10 Hz 로 계속 오므로 하나 잃어도 다음 값이 덮음. 밀린 옛 값은 의미 없음 |
 | 속도 명령 (`cmd/vel`) | 0 | X | 1 s + 본문 `ttl` 0.5 s | 늦은 속도 명령은 위험 → 브로커가 버리고, Unity 는 0.5 s 안에 새 명령이 없으면 정지 |
-| 명령 (`cmd/mission`, `lift/cmd`, `shuttle/cmd`, `ctrl/cmd`) | 1 | **X** | 30~60 s | 잃으면 안 되지만, retain 하면 재접속 때 옛 명령이 다시 실행됨 |
+| 명령 (`cmd/mission`, `rack/cmd`, `ctrl/cmd`) | 1 | **X** | 30~60 s | 잃으면 안 되지만, retain 하면 재접속 때 옛 명령이 다시 실행됨 |
 | 사건 (`evt`, `wms/job`, `wms/inventory/evt`) | 1 | X | | 잃으면 안 됨. 중복은 `id`/`event_id` 로 거름 |
 | 상태 (`*/state`, `sim/clock`, `snapshot`, `reservations`) | 1 | **O** | | 늦게 붙은 구독자(재시작한 관제, 새로 켠 대시보드)가 즉시 현재 상태를 받음 |
 | 접속 상태 (`sys/{id}/online`) | 1 | O | | Last Will 로 비정상 종료도 표시 |
@@ -141,7 +144,8 @@ AMR 경로의 노드 id 는 `d4_layout.json` 의 `nav` 그래프 노드 그대�
 |---|---|
 | 시스템 | `sys/{client}/online`, `sim/clock`, `sim/control` |
 | AMR | `amr/{amr}/pose`, `scan2d`, `state`, `evt`, `cmd/mission`, `cmd/vel`, `cmd/control` |
-| 리프트·셔틀·버퍼 | `lift/{lift}/state·cmd·evt`, `shuttle/{shuttle}/state·cmd·evt`, `buffer/{buffer}/state` |
+| 랙(통로) | `rack/{rail}/cmd·evt·state·inventory` |
+| 리프트·셔틀·버퍼 (상태만) | `lift/{lift}/state`, `shuttle/{shuttle}/state`, `buffer/{buffer}/state` |
 | 도크·계량·충전 | `dock/{dock}/state·evt`, `scale/{scale}/reading`, `charger/{charger}/state` |
 | 스케줄러 | `wms/order`, `wms/job`, `wms/inventory/evt`, `wms/inventory/snapshot`, `traffic/reservations`, `fleet/kpi` |
 | 관제 | `ctrl/cmd`, `ctrl/evt` |
@@ -160,13 +164,15 @@ AMR 경로의 노드 id 는 `d4_layout.json` 의 `nav` 그래프 노드 그대�
             {"node": "n_aisle_IN2",  "x": 7.5, "y": 16.8, "t_start": 24.38, "t_end": 28.38},
             {"node": "n_dock_IN2",   "x": 7.5, "y": 11.8, "t_start": 28.55, "t_end": 32.55}]},
   {"seq": 1, "action": "pick", "stop": "SC-IN2", "pallet": "P00000001", "path": [], "duration": 8.0, ...},
-  {"seq": 2, "action": "move", "stop": "L1-IN", ...},
-  {"seq": 3, "action": "drop", "stop": "L1-IN", "pallet": "P00000001", ...}]}
+  {"seq": 2, "action": "move", "stop": "R1-IN", ...},
+  {"seq": 3, "action": "drop", "stop": "R1-IN", "pallet": "P00000001", ...}]}
 ```
 
 - `path` 의 각 노드를 `t_start`~`t_end` 사이에 지나갑니다(그 노드 점유). scripted 주행은 `t_start` 전이면 그 노드 앞에서 기다리고,
   RL 정책은 "다음 경유점 + 그다음 경유점 + 도착 기한(`t_end`)"을 관측으로 씁니다.
 - `pick` 은 팔레트가 그 자리에 있을 때, `drop` 은 자리가 비었을 때 시작합니다(전제 조건이 될 때까지 대기).
+- `R1-IN` 에 `drop` 하는 것 = `ShuttleRackSystem.AcceptInbound` (IN5 가 비었을 때, `rack/R1/state` 의 `inbound_free`).
+  `R1-OUT` 에서 `pick` 하는 것 = `TakeOutbound` (OUT5 의 팔레트).
 - 통로 방향은 도면에서 고정하지 않고 이 시간 예약으로 나눠 씁니다. 예약표 전체는 `traffic/reservations` (retain).
 
 ## 7. 시퀀스
@@ -185,20 +191,21 @@ sequenceDiagram
   C->>S: wms/order (inbound, ASN: 팔레트·송장 무게)
   U-->>S: dock/IN2/evt truck_arrived
   U-->>S: scale/SC-IN2/reading (실측 무게)
-  Note over S: ±5% 이내 → 레인 배정 (같은 SKU 레인 우선, 무거우면 아래층)
+  Note over S: ±5% 이내 → 통로 고르기 (같은 SKU 채널이 있는 통로 우선, 그다음 작업이 적은 통로)
   S-->>C: wms/inventory/evt received · wms/job waiting
-  S->>U: amr/AMR01/cmd/mission (SC-IN2 → pick → L1-IN → drop, 노드별 시간 예약)
+  S->>U: amr/AMR01/cmd/mission (SC-IN2 → pick → R1-IN → drop, 노드별 시간 예약)
   S-->>B: traffic/reservations (retain)
   U-->>S: amr/AMR01/evt mission_accepted (corr = 미션 id)
   loop 10 Hz
     U-->>S: amr/AMR01/pose
   end
   U-->>S: amr/AMR01/evt step_done ×4 → mission_done
-  U-->>S: buffer/L1-IN/state (5번 칸 → 1번 칸)
-  S->>U: lift/L1/cmd lift_in (level 1)
-  U-->>S: lift/L1/evt accepted → started → done
-  S->>U: shuttle/MS-R1-LV01/cmd store (R1-W-LV01-N01, pos 14)
-  U-->>S: shuttle/MS-R1-LV01/evt accepted → started → done
+  S->>U: rack/R1/cmd store (pallet, sku)
+  Note over U: ShuttleRackSystem.RequestStore: 같은 SKU 채널 → 빈 채널 중 비용 최소, virtualCount 예약
+  U-->>S: rack/R1/evt accepted (channel R1-W01-L01)
+  Note over U: 컨베이어 IN5→IN1 · 리프트 · 모셔틀 · 새틀라이트 (가장 안쪽 빈칸)
+  U-->>S: rack/R1/evt started → done (slot 14)
+  U-->>S: lift/L1/state · shuttle/R1-Shuttle_L01/state · rack/R1/state (모니터링)
   S-->>C: wms/inventory/evt stored · wms/job done
 ```
 
@@ -211,13 +218,13 @@ sequenceDiagram
   participant S as 스케줄러
   participant U as Unity (장비)
   C->>S: wms/order (outbound, OUT3, SKU x 수량)
-  Note over S: SKU 레인 중 남은 수가 적은 레인의 맨 앞(pos 낮은 쪽) 팔레트
-  S->>U: shuttle/MS-R2-LV10/cmd retrieve (R2-E-LV10-N25, pos 3)
-  U-->>S: shuttle evt done (팔레트가 LV10 출고 이송점에)
+  Note over S: 그 SKU 재고가 있는 통로 중 작업이 적은 곳 (rack/+/inventory 기준)
+  S->>U: rack/R2/cmd retrieve (sku)
+  Note over U: ShuttleRackSystem.RequestRetrieve: 채널 고르고 virtualCount -1
+  U-->>S: rack/R2/evt accepted (channel R2-E25-L10) → started → done (slot 03, pallet)
   S-->>C: wms/inventory/evt retrieved
-  S->>U: lift/L2/cmd lift_out (level 10)
-  U-->>S: lift evt done · buffer/L2-OUT/state (1번 → 5번 칸)
-  S->>U: amr/AMR04/cmd/mission (L2-OUT → pick → DP-OUT3 → drop)
+  Note over U: 출고 버퍼 OUT1 → OUT5
+  S->>U: amr/AMR04/cmd/mission (R2-OUT → pick → DP-OUT3 → drop)
   U-->>S: amr evt mission_done · dock/OUT3/evt pallet_loaded
   S-->>C: wms/inventory/evt shipped · wms/job done
   U-->>C: dock/OUT3/evt truck_departed (다 실으면)
@@ -237,7 +244,7 @@ sequenceDiagram
   S-->>C: ctrl/evt report "완료 3건, 진행 8건 …" (corr)
   C->>S: ctrl/cmd release_hold {job_id}
   S-->>C: ctrl/evt ack (corr) · wms/inventory/evt released
-  S->>U: amr cmd/mission (QC-IN → L1-IN) → 이후 입고와 같음
+  S->>U: amr cmd/mission (QC-IN → R1-IN) → 이후 입고와 같음
 ```
 
 ### RL 주행 (추론)
@@ -286,7 +293,7 @@ sequenceDiagram
 | 그 밖의 상태·사건·명령 | 200~400 B | 합쳐서 수 Hz | 1~3 KB/s |
 | **전체** | | | **약 40 KB/s** |
 
-`traffic/reservations`(평균 3.3 KB)와 `wms/inventory/snapshot`(레인 1,980개 다 차면 약 80 KB)이 가장 큰 단일 메시지라
+`traffic/reservations`(평균 3.3 KB)와 `wms/inventory/snapshot`(채널 1,980개 다 차면 약 80 KB)이 가장 큰 단일 메시지라
 브로커 패킷 한도를 256 KB 로 잡았습니다. 2D LiDAR 를 360빔으로 늘려도 약 120 KB/s 로 LAN 에 부담이 없습니다.
 
 ## 9. 보안·권한
@@ -333,15 +340,19 @@ c.send("amr.cmd.vel", {"v": 0.8, "w": 0.0, "seq": 1, "ttl": 0.5}, "AMR01")      
 
 ### Unity
 
-[unity/WarehouseMqtt/](unity/WarehouseMqtt/) 의 C# 스크립트 5개를 `Assets/Scripts/WarehouseMqtt/` 에 복사합니다.
+[unity/WarehouseMqtt/](unity/WarehouseMqtt/) 의 C# 스크립트 7개를 `Assets/Scripts/WarehouseMqtt/` 에 복사합니다.
 
 1. **MQTTnet 4.3.7** (netstandard2.0 DLL) 을 `Assets/Plugins` 에 넣거나 NuGetForUnity 로 설치.
    MQTTnet 5.x 는 Unity 가 지원하지 않는 .NET 버전을 요구하므로 4.3.x 를 씁니다.
 2. Package Manager → *Add package by name* → `com.unity.nuget.newtonsoft-json`.
 3. 빈 GameObject `MQTT` 에 `WhMqttClient` 를 붙이고 Host(맥 IP 또는 127.0.0.1), username `unity`, 비밀번호 입력.
 4. AMR 프리팹에 `AmrMqttAgent` (amrId = AMR01…). 2D LiDAR 는 `Physics.Raycast` 72빔이라 벽·랙에 Collider 가 있어야 합니다.
-5. 리프트에 `LiftMqttAgent`, 셔틀 세트에 `ShuttleMqttAgent`. 팔레트 위치(버퍼 칸·이송점·레인)는
-   씬의 재고 모델이 `IRackModel` 을 구현해 연결합니다. 계량대·버퍼·하차대는 `IPalletPort` 를 구현해 `AmrMqttAgent.RegisterPort()`.
+5. 통로마다(`Rack_R1` 등) `RackMqttBridge` (railId = R1…) 를 붙이고, `ShuttleRackSystem` 을 감싸 `IRackSystem` 을 구현하는
+   얇은 연결 스크립트를 `rackSystem` 칸에 끼웁니다. `rack/{rail}/cmd` 를 `RequestStore`/`RequestRetrieve` 로 옮기고,
+   `TaskStarted`/`TaskCompleted` 를 `rack/{rail}/evt` 로, 공개 속성(`StoredCount`, `PendingTasks`, `InboundFree` …)과
+   리프트 `Status`/`Height`, 모셔틀 `Busy`/`Status` 를 `rack`·`lift`·`shuttle` state 로 내보냅니다 (바뀐 것만, 0.5초마다 확인).
+   `RackDemoDriver` 는 끕니다. 계량대·버퍼·하차대는 `IPalletPort` 를 구현해 `AmrMqttAgent.RegisterPort()`
+   (`R1-IN` 의 Put = `AcceptInbound`, `R1-OUT` 의 Take = `TakeOutbound`).
 6. 버퍼·도크·충전기 상태는 값이 바뀔 때 `FacilityMqtt.Buffer(...)`, `FacilityMqtt.Dock(...)` 등을 호출.
 
 | 스크립트 | 내용 |
@@ -349,32 +360,34 @@ c.send("amr.cmd.vel", {"v": 0.8, "w": 0.0, "seq": 1, "ttl": 0.5}, "AMR01")      
 | `WhMqttClient.cs` | 접속·Last Will·자동 재접속, 받은 메시지를 메인 스레드(Update)로 넘김, QoS 1 중복 제거, `sim/clock` 발행 |
 | `WhMessages.cs` | 봉투와 메시지 DTO (필드명 = JSON 키) |
 | `WhTopics.cs` | 토픽 문자열, 토픽별 QoS·retain·만료 |
-| `WhCoords.cs` | 도면 좌표 ↔ Unity 좌표·회전 |
+| `WhCoords.cs` | 도면 좌표 ↔ Unity 월드 좌표(원점 -60.005, 1.20, -39.705)·회전 |
+| `WhIds.cs` | 채널·칸·모셔틀 ID 와 단 높이 규칙 |
 | `AmrMqttAgent.cs` | AMR: pose·scan2d·state·evt 발행, 미션 수행(scripted), cmd/vel 주행(rl), 0.5 s 무명령 정지 |
-| `DeviceMqttAgents.cs` | 리프트·셔틀 명령 큐(FIFO)·evt·state, 버퍼·도크·계량·충전 상태 발행 도우미 |
+| `DeviceMqttAgents.cs` | `RackMqttBridge`(통로 1개 ↔ `rack/{rail}/*`, 리프트·셔틀·버퍼 상태), 도크·계량·충전 상태 발행 도우미 |
 
 확인한 것: Unity API 대역(stub)으로 **실제 MQTTnet 4.3.7 + Newtonsoft 13 에 대해 컴파일**,
-C# DTO 로 만든 메시지 15종이 Python 스키마를 **전부 통과**, C# 클라이언트가 Python 스케줄러의 미션을 받아 역직렬화하고
+C# DTO 로 만든 메시지 16종이 Python 스키마를 **전부 통과**, C# 클라이언트가 Python 스케줄러의 미션을 받아 역직렬화하고
 응답을 돌려보내는 왕복 (`tools/cs_interop/`). 실제 Unity 에디터에서의 실행은 아직 확인하지 못했습니다.
 
 ## 11. 알고리즘과 연결
 
 [sim/scheduler_bridge.py](sim/scheduler_bridge.py) 가 MQTT 와 알고리즘 사이의 다리입니다.
-알고리즘 판단은 `Planner` 클래스 세 함수에만 모여 있습니다.
+알고리즘 판단은 `Planner` 클래스 세 함수에만 모여 있습니다. 채널·칸은 Unity 랙이 정하므로 스케줄러는 **통로**까지만 고릅니다
+(Unity 명세 7장 4번 "통로 간 배분은 WMS 몫").
 
 | 함수 | 지금(예제 규칙) | 바꿀 대상 |
 |---|---|---|
-| `assign_lane(sku, weight, lift_load)` | 같은 SKU 레인 → 빈 레인 중 리프트 가깝고 무거우면 아래층 | 알고리즘 스레드의 레인 할당(ABC·무게) |
-| `pick_lane(sku, lift_load)` | 남은 수가 적은 레인의 맨 앞 | 레인 선입후출 출고 규칙 |
+| `choose_rail(sku, weight, load, stock)` | 같은 SKU 재고가 있는 통로 → 진행 중 작업이 적은 통로 | 통로 간 균형·회전율 |
+| `pick_rail(sku, load, stock)` | 그 SKU 재고가 있는 통로 중 작업이 적은 곳, 같으면 재고가 많은 곳 | 출고 통로 선택 |
 | `choose_amr(amrs, src)` | 가장 가까운 유휴 AMR | 할당(헝가리안 등) |
 
-알고리즘 스레드의 구현이 이미 붙어 있습니다: `Scheduler(host, port, planner=D4Planner({}))`
-(`warehouse/d4/comm_planner.py`, 층별 허용 하중·회전율·리프트 부하 반영). 이 조합으로도 데모 11/11 완료, 스키마 위반 0건입니다
-(`tests/test_e2e.py::test_demo_with_algorithm_planner`).
+`stock` 은 Unity 가 retain 으로 내보내는 `rack/{rail}/inventory` 와 `rack/{rail}/evt` 로 맞춥니다 (시작 재고 `PrefillRandom` 포함).
+알고리즘 스레드의 규칙도 붙어 있습니다: `Scheduler(host, port, planner=D4Planner())` (`warehouse/d4/comm_planner.py`).
+이 조합으로도 데모 11/11 완료, 스키마 위반 0건입니다 (`tests/test_e2e.py::test_demo_with_algorithm_planner`).
 
-레인 안 위치(`pos`)는 셔틀에 store 명령을 보내는 순간 정합니다(이미 들어갔거나 들어갈 팔레트 바로 앞 칸).
-보류 팔레트처럼 도착 순서가 바뀌어도 세틀라이트가 다른 팔레트를 넘어가지 않게 하기 위해서이고,
-가상 장비도 앞에 팔레트가 있으면 store·retrieve 를 실패로 돌려 이를 검사합니다.
+가상 장비(`sim/rack_model.py`)는 Unity `ShuttleRackSystem` 규칙을 흉내 냅니다: 같은 SKU 채널 → 빈 채널 중
+(리프트 시간 + 모셔틀 시간 + 그 단 대기 작업 x 20 s + 빈칸 x 0.1) 최소, 요청 때 virtualCount 예약, 실행 때 칸 결정
+(입고 가장 안쪽 빈칸, 출고 맨 앞), 단별 FIFO, 리프트 한 작업씩(liftOwner), 장비 속도·가속도는 명세 4장 값.
 
 AMR 경로·시간 예약은 `Scheduler._mission()` 이 nav 그래프 최단 경로 + 노드 예약 충돌 시 출발 지연으로 만듭니다.
 알고리즘의 Cooperative A*(시공간 예약)로 바꾸면 미션의 `path[].t_start/t_end` 에 그대로 들어갑니다.
@@ -391,8 +404,8 @@ comm/
 ├ examples/               type 별 실제 메시지 예시 32개
 ├ broker/                 mosquitto.conf, acl(자동 생성), setup_mac.sh, docker-compose.yml
 ├ whmqtt/                 Python 라이브러리: ids, topics, envelope, schemas, geometry, client, export
-├ sim/                    virtual_plant(Unity 대역), scheduler_bridge, monitor, run_demo, timeline
-├ unity/WarehouseMqtt/    Unity C# 스크립트 6개
+├ sim/                    virtual_plant(Unity 대역), rack_model(ShuttleRackSystem 대역), scheduler_bridge, monitor, run_demo, timeline
+├ unity/WarehouseMqtt/    Unity C# 스크립트 7개
 ├ tools/                  C# 컴파일·상호 운용 확인 프로젝트
 ├ tests/                  pytest 18개
 └ out/                    demo_log.jsonl, demo_summary.json, demo_timeline.png
@@ -402,7 +415,7 @@ comm/
 
 - 가상 장비(`virtual_plant`)는 AMR 끼리의 물리 충돌을 흉내 내지 않습니다. 충돌 회피는 스케줄러의 노드 시간 예약(교차 이동·간선 충돌은 아직 미검사)과
   RL 정책 몫입니다. 알고리즘의 Cooperative A* 를 붙이면 간선 충돌까지 막힙니다.
-- 스케줄러 브리지의 레인·AMR 선택은 예제 규칙입니다 (11장 참고).
-- 셔틀의 레인 간 이동(`relocate`)은 스키마만 있고 가상 장비에는 없습니다.
+- 스케줄러 브리지의 통로·AMR 선택은 예제 규칙입니다 (11장 참고).
+- Unity 쪽 MQTT 연결(`IRackSystem` 구현)과 버퍼 칸 공개(`inBuf`/`outBuf`)는 Unity 팀원 몫입니다. 목록은 `docs/unity-interface.md`.
 - 브로커 TLS 는 LAN 전용이라 넣지 않았습니다. 외부망에 열게 되면 `listener 8883` + 인증서를 추가하세요.
 - 비상 대응(`alert/#`, `sensor/#`)은 자리만 있습니다.

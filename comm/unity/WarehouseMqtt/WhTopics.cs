@@ -24,11 +24,12 @@ namespace Warehouse.Mqtt
             { "amr.scan2d",      new TopicSpec(0, false, 1) },
             { "amr.state",       new TopicSpec(1, true) },
             { "amr.evt",         new TopicSpec(1, false) },
+            { "rack.evt",        new TopicSpec(1, false) },
+            { "rack.state",      new TopicSpec(1, true) },
+            { "rack.inventory",  new TopicSpec(1, true) },
             { "lift.state",      new TopicSpec(1, true) },
-            { "lift.evt",        new TopicSpec(1, false) },
             { "buffer.state",    new TopicSpec(1, true) },
             { "shuttle.state",   new TopicSpec(1, true) },
-            { "shuttle.evt",     new TopicSpec(1, false) },
             { "dock.state",      new TopicSpec(1, true) },
             { "dock.evt",        new TopicSpec(1, false) },
             { "scale.reading",   new TopicSpec(1, false) },
@@ -47,13 +48,15 @@ namespace Warehouse.Mqtt
         public static string AmrVel(string amr) => $"{Root}/amr/{amr}/cmd/vel";
         public static string AmrControl(string amr) => $"{Root}/amr/{amr}/cmd/control";
 
+        // 랙 = 통로(R1~R3) 1개 = ShuttleRackSystem 1개. 명령은 rack/{rail}/cmd 하나뿐이고
+        // 리프트·모셔틀은 랙이 직접 움직이므로 상태만 내보낸다.
+        public static string RackCmd(string rail) => $"{Root}/rack/{rail}/cmd";
+        public static string RackEvt(string rail) => $"{Root}/rack/{rail}/evt";
+        public static string RackState(string rail) => $"{Root}/rack/{rail}/state";
+        public static string RackInventory(string rail) => $"{Root}/rack/{rail}/inventory";
         public static string LiftState(string lift) => $"{Root}/lift/{lift}/state";
-        public static string LiftCmd(string lift) => $"{Root}/lift/{lift}/cmd";
-        public static string LiftEvt(string lift) => $"{Root}/lift/{lift}/evt";
-        public static string BufferState(string buf) => $"{Root}/buffer/{buf}/state";
-        public static string ShuttleState(string sh) => $"{Root}/shuttle/{sh}/state";
-        public static string ShuttleCmd(string sh) => $"{Root}/shuttle/{sh}/cmd";
-        public static string ShuttleEvt(string sh) => $"{Root}/shuttle/{sh}/evt";
+        public static string BufferState(string buf) => $"{Root}/buffer/{buf}/state";       // R1-IN, R1-OUT …
+        public static string ShuttleState(string sh) => $"{Root}/shuttle/{sh}/state";      // R1-Shuttle_L01 …
 
         public static string DockState(string dock) => $"{Root}/dock/{dock}/state";
         public static string DockEvt(string dock) => $"{Root}/dock/{dock}/evt";

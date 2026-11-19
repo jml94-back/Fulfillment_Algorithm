@@ -42,51 +42,42 @@
   "data": {
    "type": "object",
    "properties": {
-    "mode": {
-     "type": "string",
-     "enum": [
-      "idle",
-      "moving",
-      "transferring",
-      "paused",
-      "error"
-     ]
+    "status": {
+     "type": "string"
+    },
+    "height": {
+     "type": "number",
+     "description": "리프트 바닥 높이 (m, 창고 바닥 윗면 기준). 버퍼 0.50, 단 n = 0.40 + 1.45 x (n-1)"
     },
     "level": {
-     "type": "number",
-     "minimum": 0,
-     "maximum": 10,
-     "description": "현재 높이(층 단위, 이동 중 소수)"
+     "anyOf": [
+      {
+       "type": "integer",
+       "minimum": 1,
+       "maximum": 10,
+       "description": "멈춰 있는 단 (버퍼 높이·이동 중이면 null)"
+      },
+      {
+       "type": "null"
+      }
+     ]
     },
     "pallet": {
      "anyOf": [
       {
        "type": "string",
-       "pattern": "^P\\d{8}$"
+       "pattern": "^(P\\d{8}|R[1-3]-\\d{6})$"
       },
       {
        "type": "null"
       }
      ]
     },
-    "cmd_id": {
+    "owner": {
      "anyOf": [
       {
-       "type": "string"
-      },
-      {
-       "type": "null"
-      }
-     ]
-    },
-    "queue": {
-     "type": "integer",
-     "minimum": 0
-    },
-    "error": {
-     "anyOf": [
-      {
-       "type": "string"
+       "type": "string",
+       "description": "리프트를 점유한 작업 id (liftOwner)"
       },
       {
        "type": "null"
@@ -95,12 +86,11 @@
     }
    },
    "required": [
-    "mode",
+    "status",
+    "height",
     "level",
     "pallet",
-    "cmd_id",
-    "queue",
-    "error"
+    "owner"
    ],
    "additionalProperties": false
   }

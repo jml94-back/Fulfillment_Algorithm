@@ -2,7 +2,8 @@
 
 규칙
 - 단위: 거리 m, 시간 s, 각도 rad, 무게 kg, 속도 m/s · rad/s, 배터리 0~100 %.
-- 좌표: 도면 좌표 (geometry.py 참고). x 동쪽, y 북쪽, z 위.
+- 좌표: 도면(배치도) 좌표 (geometry.py 참고). x = 서쪽 벽 외부면에서 동쪽, y = 남쪽 벽 안쪽면에서 북쪽, z = 바닥 윗면에서 위.
+  Unity 월드 = (x - 60.005, z + 1.20, y - 39.705).
 - 시간 필드(t_start, t_end, deadline 등)는 시뮬레이션 시각(초) = 봉투 t 와 같은 시계.
 - 보내는 쪽은 스키마를 지킨다(테스트에서 additionalProperties=false 로 검사).
   받는 쪽은 모르는 필드를 무시한다 → 필드 추가는 v1 안에서 가능, 삭제·의미 변경은 v2 토픽으로.
@@ -12,6 +13,8 @@
 from __future__ import annotations
 
 from .ids import PATTERNS
+
+PATTERNS_STOP = PATTERNS["stop"]
 
 NUM = {"type": "number"}
 NNUM = {"type": "number", "minimum": 0}
@@ -41,9 +44,9 @@ def obj(props: dict, required: list[str] | None = None, desc: str | None = None)
 
 
 PALLET = pat("pallet")
-LANE = pat("lane")
-POS = {"type": "integer", "minimum": 1, "maximum": 14, "description": "레인 안 위치, 1 = 레일 쪽 입·출구"}
-LEVEL = {"type": "integer", "minimum": 0, "maximum": 10, "description": "0 = 바닥 P&D(버퍼), 1~10 = LV01~LV10"}
+CHANNEL = pat("channel")
+SLOT = {"type": "integer", "minimum": 1, "maximum": 14, "description": "채널 안 칸, 1 = 통로 쪽 맨 앞, 14 = 가장 안쪽"}
+LEVEL = {"type": "integer", "minimum": 1, "maximum": 10, "description": "단 1~10 (Unity ShuttleController.level)"}
 CMD_ID = {"type": "string", "minLength": 1, "maxLength": 64}
 REASON = nul(STR)
 
@@ -76,7 +79,8 @@ WAYPOINT = obj({
 MISSION_STEP = obj({
     "seq": {"type": "integer", "minimum": 0},
     "action": enum("move", "pick", "drop", "charge", "wait"),
-    "stop": nul({"type": "string", "description": "정지점 ID: SC-INn, DP-OUTn, Ln-IN, Ln-OUT, CH*, QC-IN, QC-OUT"}),
+    "stop": nul({"type": "string", "pattern": PATTERNS_STOP,
+                 "description": "정지점 ID: SC-INn, DP-OUTn, Rn-IN, Rn-OUT, CH*, QC-IN, QC-OUT, WAITn"}),
     "pallet": nul(PALLET),
     "path": {"type": "array", "items": WAYPOINT, "description": "move 단계의 경유점 (첫 점 = 현재 위치 노드)"},
     "theta": nul(NUM),
@@ -149,55 +153,64 @@ DATA: dict[str, dict] = {
         "drive_mode": nul(enum("scripted", "rl")),
         "charger": nul(pat("charger")),
     }),
-    "lift.state": obj({
-        "mode": enum("idle", "moving", "transferring", "paused", "error"),
-        "level": {"type": "number", "minimum": 0, "maximum": 10, "description": "현재 높이(층 단위, 이동 중 소수)"},
-        "pallet": nul(PALLET),
-        "cmd_id": nul(STR),
-        "queue": {"type": "integer", "minimum": 0},
-        "error": REASON,
-    }),
-    "lift.cmd": obj({
+    "rack.cmd": obj({
         "cmd_id": CMD_ID,
         "job_id": nul(STR),
-        "action": enum("lift_in", "lift_out", "cancel"),
+        "action": enum("store", "retrieve"),
+        "pallet": nul({**PALLET, "description": "store: 입고 버퍼에 놓인 팔레트. retrieve: null (랙이 맨 앞 팔레트를 고른다)"}),
+        "sku": STR,
+        "weight_kg": nul(NNUM),
+    }),
+    "rack.evt": obj({
+        "event": enum("accepted", "rejected", "started", "done", "failed"),
+        "cmd_id": nul(STR),
+        "job_id": nul(STR),
+        "action": enum("store", "retrieve"),
         "pallet": nul(PALLET),
-        "level": {"type": "integer", "minimum": 1, "maximum": 10},
+        "sku": STR,
+        "channel": nul({**CHANNEL, "description": "accepted 부터 = 예약한 채널"}),
+        "slot": nul({**SLOT, "description": "done 에만 = 실제로 넣거나 꺼낸 칸 (실행 시점에 결정)"}),
+        "reason": REASON,
+    }),
+    "rack.state": obj({
+        "stored": {"type": "integer", "minimum": 0},
+        "capacity": {"type": "integer", "minimum": 0},
+        "pending": {"type": "integer", "minimum": 0, "description": "대기·진행 중 작업 수 (PendingTasks)"},
+        "inbound_free": {"type": "boolean", "description": "입고 버퍼 끝칸(IN5)이 비어 AMR 이 내려놓을 수 있음 (InboundFree)"},
+        "total_stored": {"type": "integer", "minimum": 0},
+        "total_retrieved": {"type": "integer", "minimum": 0},
+        "avg_cycle_s": nul(NNUM),
+    }),
+    "rack.inventory": obj({
+        "channels": {"type": "array", "items": {
+            "type": "array", "prefixItems": [CHANNEL, STR, {"type": "integer", "minimum": 0, "maximum": 14},
+                                             {"type": "integer", "minimum": 0, "maximum": 14}],
+            "items": False, "minItems": 4, "description": "[채널, SKU, 실제 수량, 가상 수량(예약 반영)]"}},
+        "stored": {"type": "integer", "minimum": 0},
+        "capacity": {"type": "integer", "minimum": 0},
+    }),
+    "lift.state": obj({
+        "status": STR,
+        "height": {"type": "number", "description": "리프트 바닥 높이 (m, 창고 바닥 윗면 기준). 버퍼 0.50, 단 n = 0.40 + 1.45 x (n-1)"},
+        "level": nul({**LEVEL, "description": "멈춰 있는 단 (버퍼 높이·이동 중이면 null)"}),
+        "pallet": nul(PALLET),
+        "owner": nul({"type": "string", "description": "리프트를 점유한 작업 id (liftOwner)"}),
     }),
     "shuttle.state": obj({
-        "mode": enum("idle", "moving", "in_lane", "transferring", "paused", "error"),
-        "y": {"type": "number", "description": "모셔틀의 레일 방향 위치(도면 y, m). 리프트 이송점 = 20.4"},
+        "busy": BOOL,
+        "status": STR,
+        "level": LEVEL,
+        "y": {"type": "number", "description": "모셔틀의 통로 방향 위치(도면 y, m). 리프트와 주고받는 위치 = 리프트 중심 + 2.0"},
         "satellite": obj({
             "where": enum("docked", "in_lane"),
-            "lane": nul(LANE),
-            "pos": nul({"type": "number", "minimum": 0, "maximum": 14}),
+            "channel": nul(CHANNEL),
+            "depth_m": nul({"type": "number", "minimum": 0, "description": "통로 중심에서 들어간 거리"}),
         }),
         "pallet": nul(PALLET),
-        "cmd_id": nul(STR),
-        "queue": {"type": "integer", "minimum": 0},
-        "battery": nul({"type": "number", "minimum": 0, "maximum": 100}),
-        "error": REASON,
-    }),
-    "shuttle.cmd": obj({
-        "cmd_id": CMD_ID,
-        "job_id": nul(STR),
-        "action": enum("store", "retrieve", "relocate", "cancel"),
-        "pallet": nul(PALLET),
-        "lane": nul(LANE),
-        "pos": nul(POS),
-        "to_lane": nul(LANE),
-        "to_pos": nul(POS),
-    }),
-    "device.evt": obj({
-        "event": enum("accepted", "rejected", "started", "done", "failed", "canceled"),
-        "cmd_id": STR,
-        "job_id": nul(STR),
-        "pallet": nul(PALLET),
-        "reason": REASON,
     }),
     "buffer.state": obj({
         "slots": {"type": "array", "items": nul(PALLET), "minItems": 5, "maxItems": 5,
-                  "description": "0번 = 1번 칸(리프트 바로 옆), 4번 = 5번 칸(AMR 접점)"},
+                  "description": "0번 = IN1/OUT1(리프트 쪽), 4번 = IN5/OUT5(AMR 쪽)"},
         "blocked": BOOL,
     }),
     "dock.state": obj({
@@ -242,16 +255,14 @@ DATA: dict[str, dict] = {
     "wms.job": obj({
         "job_id": CMD_ID,
         "order_id": nul(STR),
-        "kind": enum("inbound", "outbound", "relocate"),
-        "status": enum("planned", "waiting", "amr_assigned", "lifting", "shuttling", "done", "held", "failed",
-                       "canceled"),
+        "kind": enum("inbound", "outbound"),
+        "status": enum("planned", "waiting", "amr_assigned", "in_rack", "done", "held", "failed", "canceled"),
         "pallet": nul(PALLET),
         "sku": STR,
         "dock": nul(pat("dock")),
-        "lane": nul(LANE),
-        "pos": nul(POS),
-        "lift": nul(pat("lift")),
-        "shuttle": nul(pat("shuttle")),
+        "rail": nul(pat("rail")),
+        "channel": nul(CHANNEL),
+        "slot": nul(SLOT),
         "amr": nul(pat("amr")),
         "eta": nul(NUM),
         "created": NUM,
@@ -262,15 +273,15 @@ DATA: dict[str, dict] = {
         "event": enum("received", "held", "released", "stored", "retrieved", "shipped", "adjusted"),
         "pallet": PALLET,
         "sku": STR,
-        "lane": nul(LANE),
-        "pos": nul(POS),
+        "channel": nul(CHANNEL),
+        "slot": nul(SLOT),
         "weight_kg": nul(NNUM),
         "job_id": nul(STR),
     }),
     "wms.snapshot": obj({
-        "lanes": {"type": "array", "items": {
-            "type": "array", "prefixItems": [LANE, STR, {"type": "integer", "minimum": 0, "maximum": 14}],
-            "items": False, "minItems": 3, "description": "[레인 ID, SKU, 팔레트 수]"}},
+        "channels": {"type": "array", "items": {
+            "type": "array", "prefixItems": [CHANNEL, STR, {"type": "integer", "minimum": 0, "maximum": 14}],
+            "items": False, "minItems": 3, "description": "[채널, SKU, 팔레트 수]"}},
         "pallets": {"type": "integer", "minimum": 0},
         "capacity": {"type": "integer", "minimum": 0},
         "held": {"type": "integer", "minimum": 0},
@@ -311,9 +322,6 @@ DATA: dict[str, dict] = {
                   "radius_m": NNUM, "active": BOOL}),
 }
 
-# lift.evt, shuttle.evt 는 같은 본문
-DATA["lift.evt"] = DATA["device.evt"]
-DATA["shuttle.evt"] = DATA["device.evt"]
 
 
 def full_schema(key: str) -> dict:
