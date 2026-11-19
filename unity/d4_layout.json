@@ -1,0 +1,11722 @@
+{
+ "meta": {
+  "name": "물류창고 배치 D4",
+  "version": "1.0",
+  "source": "plans/d_plan.py (geometry, 상수)",
+  "units": "meter",
+  "coordinate_system": {
+   "handedness": "Unity left-handed, Y-up",
+   "origin": "창고 바닥 남서쪽 안쪽 모서리 (0,0,0)",
+   "+X": "동쪽 (도면 x, 0~120)",
+   "+Y": "위 (높이)",
+   "+Z": "북쪽 (도면 y, 0~80)",
+   "note": "Top 뷰가 도면과 같은 방향. 남쪽 벽 바깥 트럭 칸은 Z<0. 각 box는 center(x,y,z)와 size(x,y,z), 회전 없음."
+  },
+  "assumed_heights": {
+   "wall_thickness": 0.3,
+   "dock_door_height": 4.5,
+   "office_floor_height": 4.0,
+   "conveyor_height": 0.6,
+   "weigh_station_height": 0.1,
+   "dock_leveler_height": 0.05,
+   "charger_height": 1.5,
+   "lift_height": 16.0,
+   "facility_wall_height": 2.5,
+   "marking_height": 0.01,
+   "pallet_load_height": 1.2
+  }
+ },
+ "params": {
+  "width_x": 120.0,
+  "depth_z": 80.0,
+  "building_height": 25.0,
+  "rack_height": 15.0,
+  "levels": 10,
+  "level_height": 1.5,
+  "pallet": [
+   1.1,
+   1.1
+  ],
+  "slot_pitch": 1.3,
+  "lane_width": 1.4,
+  "lane_depth": 14,
+  "rail_width": 1.8,
+  "rails": 3,
+  "lanes_per_side": 33,
+  "floor_lanes": 198,
+  "lanes_total": 1980,
+  "pallet_positions": 27720,
+  "shuttle_sets": 30,
+  "lift_buffer_slots_each_side": 5,
+  "staging_slots_per_dock": 28,
+  "amr_count": 4,
+  "chargers": 6,
+  "bands_z": {
+   "dock_staging": [
+    0,
+    14.4
+   ],
+   "amr_aisle": [
+    14.4,
+    19.2
+   ],
+   "lift_row": [
+    19.2,
+    21.6
+   ],
+   "inspection_band": [
+    21.6,
+    31.4
+   ],
+   "lanes": [
+    31.4,
+    77.6
+   ],
+   "north_margin": [
+    77.6,
+    80.0
+   ]
+  }
+ },
+ "docks": [
+  {
+   "id": "IN1",
+   "kind": "in",
+   "index": 1,
+   "door_center": [
+    2.5,
+    0.0,
+    0.0
+   ],
+   "station_id": "SC-IN1",
+   "station_center": [
+    2.5,
+    0.0,
+    11.8
+   ],
+   "station_type": "weigh_station",
+   "amr_contact": [
+    2.5,
+    0.0,
+    13.6
+   ],
+   "truck_bay_center": [
+    2.5,
+    0.0,
+    -8.5
+   ],
+   "staging_slots": [
+    "dock_IN1_stage_11",
+    "dock_IN1_stage_12",
+    "dock_IN1_stage_13",
+    "dock_IN1_stage_14",
+    "dock_IN1_stage_15",
+    "dock_IN1_stage_16",
+    "dock_IN1_stage_17",
+    "dock_IN1_stage_21",
+    "dock_IN1_stage_22",
+    "dock_IN1_stage_23",
+    "dock_IN1_stage_24",
+    "dock_IN1_stage_25",
+    "dock_IN1_stage_26",
+    "dock_IN1_stage_27",
+    "dock_IN1_stage_31",
+    "dock_IN1_stage_32",
+    "dock_IN1_stage_33",
+    "dock_IN1_stage_34",
+    "dock_IN1_stage_35",
+    "dock_IN1_stage_36",
+    "dock_IN1_stage_37",
+    "dock_IN1_stage_41",
+    "dock_IN1_stage_42",
+    "dock_IN1_stage_43",
+    "dock_IN1_stage_44",
+    "dock_IN1_stage_45",
+    "dock_IN1_stage_46",
+    "dock_IN1_stage_47"
+   ]
+  },
+  {
+   "id": "IN2",
+   "kind": "in",
+   "index": 2,
+   "door_center": [
+    7.5,
+    0.0,
+    0.0
+   ],
+   "station_id": "SC-IN2",
+   "station_center": [
+    7.5,
+    0.0,
+    11.8
+   ],
+   "station_type": "weigh_station",
+   "amr_contact": [
+    7.5,
+    0.0,
+    13.6
+   ],
+   "truck_bay_center": [
+    7.5,
+    0.0,
+    -8.5
+   ],
+   "staging_slots": [
+    "dock_IN2_stage_11",
+    "dock_IN2_stage_12",
+    "dock_IN2_stage_13",
+    "dock_IN2_stage_14",
+    "dock_IN2_stage_15",
+    "dock_IN2_stage_16",
+    "dock_IN2_stage_17",
+    "dock_IN2_stage_21",
+    "dock_IN2_stage_22",
+    "dock_IN2_stage_23",
+    "dock_IN2_stage_24",
+    "dock_IN2_stage_25",
+    "dock_IN2_stage_26",
+    "dock_IN2_stage_27",
+    "dock_IN2_stage_31",
+    "dock_IN2_stage_32",
+    "dock_IN2_stage_33",
+    "dock_IN2_stage_34",
+    "dock_IN2_stage_35",
+    "dock_IN2_stage_36",
+    "dock_IN2_stage_37",
+    "dock_IN2_stage_41",
+    "dock_IN2_stage_42",
+    "dock_IN2_stage_43",
+    "dock_IN2_stage_44",
+    "dock_IN2_stage_45",
+    "dock_IN2_stage_46",
+    "dock_IN2_stage_47"
+   ]
+  },
+  {
+   "id": "IN3",
+   "kind": "in",
+   "index": 3,
+   "door_center": [
+    12.5,
+    0.0,
+    0.0
+   ],
+   "station_id": "SC-IN3",
+   "station_center": [
+    12.5,
+    0.0,
+    11.8
+   ],
+   "station_type": "weigh_station",
+   "amr_contact": [
+    12.5,
+    0.0,
+    13.6
+   ],
+   "truck_bay_center": [
+    12.5,
+    0.0,
+    -8.5
+   ],
+   "staging_slots": [
+    "dock_IN3_stage_11",
+    "dock_IN3_stage_12",
+    "dock_IN3_stage_13",
+    "dock_IN3_stage_14",
+    "dock_IN3_stage_15",
+    "dock_IN3_stage_16",
+    "dock_IN3_stage_17",
+    "dock_IN3_stage_21",
+    "dock_IN3_stage_22",
+    "dock_IN3_stage_23",
+    "dock_IN3_stage_24",
+    "dock_IN3_stage_25",
+    "dock_IN3_stage_26",
+    "dock_IN3_stage_27",
+    "dock_IN3_stage_31",
+    "dock_IN3_stage_32",
+    "dock_IN3_stage_33",
+    "dock_IN3_stage_34",
+    "dock_IN3_stage_35",
+    "dock_IN3_stage_36",
+    "dock_IN3_stage_37",
+    "dock_IN3_stage_41",
+    "dock_IN3_stage_42",
+    "dock_IN3_stage_43",
+    "dock_IN3_stage_44",
+    "dock_IN3_stage_45",
+    "dock_IN3_stage_46",
+    "dock_IN3_stage_47"
+   ]
+  },
+  {
+   "id": "IN4",
+   "kind": "in",
+   "index": 4,
+   "door_center": [
+    27.5,
+    0.0,
+    0.0
+   ],
+   "station_id": "SC-IN4",
+   "station_center": [
+    27.5,
+    0.0,
+    11.8
+   ],
+   "station_type": "weigh_station",
+   "amr_contact": [
+    27.5,
+    0.0,
+    13.6
+   ],
+   "truck_bay_center": [
+    27.5,
+    0.0,
+    -8.5
+   ],
+   "staging_slots": [
+    "dock_IN4_stage_11",
+    "dock_IN4_stage_12",
+    "dock_IN4_stage_13",
+    "dock_IN4_stage_14",
+    "dock_IN4_stage_15",
+    "dock_IN4_stage_16",
+    "dock_IN4_stage_17",
+    "dock_IN4_stage_21",
+    "dock_IN4_stage_22",
+    "dock_IN4_stage_23",
+    "dock_IN4_stage_24",
+    "dock_IN4_stage_25",
+    "dock_IN4_stage_26",
+    "dock_IN4_stage_27",
+    "dock_IN4_stage_31",
+    "dock_IN4_stage_32",
+    "dock_IN4_stage_33",
+    "dock_IN4_stage_34",
+    "dock_IN4_stage_35",
+    "dock_IN4_stage_36",
+    "dock_IN4_stage_37",
+    "dock_IN4_stage_41",
+    "dock_IN4_stage_42",
+    "dock_IN4_stage_43",
+    "dock_IN4_stage_44",
+    "dock_IN4_stage_45",
+    "dock_IN4_stage_46",
+    "dock_IN4_stage_47"
+   ]
+  },
+  {
+   "id": "IN5",
+   "kind": "in",
+   "index": 5,
+   "door_center": [
+    32.5,
+    0.0,
+    0.0
+   ],
+   "station_id": "SC-IN5",
+   "station_center": [
+    32.5,
+    0.0,
+    11.8
+   ],
+   "station_type": "weigh_station",
+   "amr_contact": [
+    32.5,
+    0.0,
+    13.6
+   ],
+   "truck_bay_center": [
+    32.5,
+    0.0,
+    -8.5
+   ],
+   "staging_slots": [
+    "dock_IN5_stage_11",
+    "dock_IN5_stage_12",
+    "dock_IN5_stage_13",
+    "dock_IN5_stage_14",
+    "dock_IN5_stage_15",
+    "dock_IN5_stage_16",
+    "dock_IN5_stage_17",
+    "dock_IN5_stage_21",
+    "dock_IN5_stage_22",
+    "dock_IN5_stage_23",
+    "dock_IN5_stage_24",
+    "dock_IN5_stage_25",
+    "dock_IN5_stage_26",
+    "dock_IN5_stage_27",
+    "dock_IN5_stage_31",
+    "dock_IN5_stage_32",
+    "dock_IN5_stage_33",
+    "dock_IN5_stage_34",
+    "dock_IN5_stage_35",
+    "dock_IN5_stage_36",
+    "dock_IN5_stage_37",
+    "dock_IN5_stage_41",
+    "dock_IN5_stage_42",
+    "dock_IN5_stage_43",
+    "dock_IN5_stage_44",
+    "dock_IN5_stage_45",
+    "dock_IN5_stage_46",
+    "dock_IN5_stage_47"
+   ]
+  },
+  {
+   "id": "IN6",
+   "kind": "in",
+   "index": 6,
+   "door_center": [
+    37.5,
+    0.0,
+    0.0
+   ],
+   "station_id": "SC-IN6",
+   "station_center": [
+    37.5,
+    0.0,
+    11.8
+   ],
+   "station_type": "weigh_station",
+   "amr_contact": [
+    37.5,
+    0.0,
+    13.6
+   ],
+   "truck_bay_center": [
+    37.5,
+    0.0,
+    -8.5
+   ],
+   "staging_slots": [
+    "dock_IN6_stage_11",
+    "dock_IN6_stage_12",
+    "dock_IN6_stage_13",
+    "dock_IN6_stage_14",
+    "dock_IN6_stage_15",
+    "dock_IN6_stage_16",
+    "dock_IN6_stage_17",
+    "dock_IN6_stage_21",
+    "dock_IN6_stage_22",
+    "dock_IN6_stage_23",
+    "dock_IN6_stage_24",
+    "dock_IN6_stage_25",
+    "dock_IN6_stage_26",
+    "dock_IN6_stage_27",
+    "dock_IN6_stage_31",
+    "dock_IN6_stage_32",
+    "dock_IN6_stage_33",
+    "dock_IN6_stage_34",
+    "dock_IN6_stage_35",
+    "dock_IN6_stage_36",
+    "dock_IN6_stage_37",
+    "dock_IN6_stage_41",
+    "dock_IN6_stage_42",
+    "dock_IN6_stage_43",
+    "dock_IN6_stage_44",
+    "dock_IN6_stage_45",
+    "dock_IN6_stage_46",
+    "dock_IN6_stage_47"
+   ]
+  },
+  {
+   "id": "OUT1",
+   "kind": "out",
+   "index": 1,
+   "door_center": [
+    117.5,
+    0.0,
+    0.0
+   ],
+   "station_id": "DP-OUT1",
+   "station_center": [
+    117.5,
+    0.0,
+    11.8
+   ],
+   "station_type": "drop_station",
+   "amr_contact": [
+    117.5,
+    0.0,
+    13.6
+   ],
+   "truck_bay_center": [
+    117.5,
+    0.0,
+    -8.5
+   ],
+   "staging_slots": [
+    "dock_OUT1_stage_11",
+    "dock_OUT1_stage_12",
+    "dock_OUT1_stage_13",
+    "dock_OUT1_stage_14",
+    "dock_OUT1_stage_15",
+    "dock_OUT1_stage_16",
+    "dock_OUT1_stage_17",
+    "dock_OUT1_stage_21",
+    "dock_OUT1_stage_22",
+    "dock_OUT1_stage_23",
+    "dock_OUT1_stage_24",
+    "dock_OUT1_stage_25",
+    "dock_OUT1_stage_26",
+    "dock_OUT1_stage_27",
+    "dock_OUT1_stage_31",
+    "dock_OUT1_stage_32",
+    "dock_OUT1_stage_33",
+    "dock_OUT1_stage_34",
+    "dock_OUT1_stage_35",
+    "dock_OUT1_stage_36",
+    "dock_OUT1_stage_37",
+    "dock_OUT1_stage_41",
+    "dock_OUT1_stage_42",
+    "dock_OUT1_stage_43",
+    "dock_OUT1_stage_44",
+    "dock_OUT1_stage_45",
+    "dock_OUT1_stage_46",
+    "dock_OUT1_stage_47"
+   ]
+  },
+  {
+   "id": "OUT2",
+   "kind": "out",
+   "index": 2,
+   "door_center": [
+    112.5,
+    0.0,
+    0.0
+   ],
+   "station_id": "DP-OUT2",
+   "station_center": [
+    112.5,
+    0.0,
+    11.8
+   ],
+   "station_type": "drop_station",
+   "amr_contact": [
+    112.5,
+    0.0,
+    13.6
+   ],
+   "truck_bay_center": [
+    112.5,
+    0.0,
+    -8.5
+   ],
+   "staging_slots": [
+    "dock_OUT2_stage_11",
+    "dock_OUT2_stage_12",
+    "dock_OUT2_stage_13",
+    "dock_OUT2_stage_14",
+    "dock_OUT2_stage_15",
+    "dock_OUT2_stage_16",
+    "dock_OUT2_stage_17",
+    "dock_OUT2_stage_21",
+    "dock_OUT2_stage_22",
+    "dock_OUT2_stage_23",
+    "dock_OUT2_stage_24",
+    "dock_OUT2_stage_25",
+    "dock_OUT2_stage_26",
+    "dock_OUT2_stage_27",
+    "dock_OUT2_stage_31",
+    "dock_OUT2_stage_32",
+    "dock_OUT2_stage_33",
+    "dock_OUT2_stage_34",
+    "dock_OUT2_stage_35",
+    "dock_OUT2_stage_36",
+    "dock_OUT2_stage_37",
+    "dock_OUT2_stage_41",
+    "dock_OUT2_stage_42",
+    "dock_OUT2_stage_43",
+    "dock_OUT2_stage_44",
+    "dock_OUT2_stage_45",
+    "dock_OUT2_stage_46",
+    "dock_OUT2_stage_47"
+   ]
+  },
+  {
+   "id": "OUT3",
+   "kind": "out",
+   "index": 3,
+   "door_center": [
+    107.5,
+    0.0,
+    0.0
+   ],
+   "station_id": "DP-OUT3",
+   "station_center": [
+    107.5,
+    0.0,
+    11.8
+   ],
+   "station_type": "drop_station",
+   "amr_contact": [
+    107.5,
+    0.0,
+    13.6
+   ],
+   "truck_bay_center": [
+    107.5,
+    0.0,
+    -8.5
+   ],
+   "staging_slots": [
+    "dock_OUT3_stage_11",
+    "dock_OUT3_stage_12",
+    "dock_OUT3_stage_13",
+    "dock_OUT3_stage_14",
+    "dock_OUT3_stage_15",
+    "dock_OUT3_stage_16",
+    "dock_OUT3_stage_17",
+    "dock_OUT3_stage_21",
+    "dock_OUT3_stage_22",
+    "dock_OUT3_stage_23",
+    "dock_OUT3_stage_24",
+    "dock_OUT3_stage_25",
+    "dock_OUT3_stage_26",
+    "dock_OUT3_stage_27",
+    "dock_OUT3_stage_31",
+    "dock_OUT3_stage_32",
+    "dock_OUT3_stage_33",
+    "dock_OUT3_stage_34",
+    "dock_OUT3_stage_35",
+    "dock_OUT3_stage_36",
+    "dock_OUT3_stage_37",
+    "dock_OUT3_stage_41",
+    "dock_OUT3_stage_42",
+    "dock_OUT3_stage_43",
+    "dock_OUT3_stage_44",
+    "dock_OUT3_stage_45",
+    "dock_OUT3_stage_46",
+    "dock_OUT3_stage_47"
+   ]
+  },
+  {
+   "id": "OUT4",
+   "kind": "out",
+   "index": 4,
+   "door_center": [
+    92.5,
+    0.0,
+    0.0
+   ],
+   "station_id": "DP-OUT4",
+   "station_center": [
+    92.5,
+    0.0,
+    11.8
+   ],
+   "station_type": "drop_station",
+   "amr_contact": [
+    92.5,
+    0.0,
+    13.6
+   ],
+   "truck_bay_center": [
+    92.5,
+    0.0,
+    -8.5
+   ],
+   "staging_slots": [
+    "dock_OUT4_stage_11",
+    "dock_OUT4_stage_12",
+    "dock_OUT4_stage_13",
+    "dock_OUT4_stage_14",
+    "dock_OUT4_stage_15",
+    "dock_OUT4_stage_16",
+    "dock_OUT4_stage_17",
+    "dock_OUT4_stage_21",
+    "dock_OUT4_stage_22",
+    "dock_OUT4_stage_23",
+    "dock_OUT4_stage_24",
+    "dock_OUT4_stage_25",
+    "dock_OUT4_stage_26",
+    "dock_OUT4_stage_27",
+    "dock_OUT4_stage_31",
+    "dock_OUT4_stage_32",
+    "dock_OUT4_stage_33",
+    "dock_OUT4_stage_34",
+    "dock_OUT4_stage_35",
+    "dock_OUT4_stage_36",
+    "dock_OUT4_stage_37",
+    "dock_OUT4_stage_41",
+    "dock_OUT4_stage_42",
+    "dock_OUT4_stage_43",
+    "dock_OUT4_stage_44",
+    "dock_OUT4_stage_45",
+    "dock_OUT4_stage_46",
+    "dock_OUT4_stage_47"
+   ]
+  },
+  {
+   "id": "OUT5",
+   "kind": "out",
+   "index": 5,
+   "door_center": [
+    87.5,
+    0.0,
+    0.0
+   ],
+   "station_id": "DP-OUT5",
+   "station_center": [
+    87.5,
+    0.0,
+    11.8
+   ],
+   "station_type": "drop_station",
+   "amr_contact": [
+    87.5,
+    0.0,
+    13.6
+   ],
+   "truck_bay_center": [
+    87.5,
+    0.0,
+    -8.5
+   ],
+   "staging_slots": [
+    "dock_OUT5_stage_11",
+    "dock_OUT5_stage_12",
+    "dock_OUT5_stage_13",
+    "dock_OUT5_stage_14",
+    "dock_OUT5_stage_15",
+    "dock_OUT5_stage_16",
+    "dock_OUT5_stage_17",
+    "dock_OUT5_stage_21",
+    "dock_OUT5_stage_22",
+    "dock_OUT5_stage_23",
+    "dock_OUT5_stage_24",
+    "dock_OUT5_stage_25",
+    "dock_OUT5_stage_26",
+    "dock_OUT5_stage_27",
+    "dock_OUT5_stage_31",
+    "dock_OUT5_stage_32",
+    "dock_OUT5_stage_33",
+    "dock_OUT5_stage_34",
+    "dock_OUT5_stage_35",
+    "dock_OUT5_stage_36",
+    "dock_OUT5_stage_37",
+    "dock_OUT5_stage_41",
+    "dock_OUT5_stage_42",
+    "dock_OUT5_stage_43",
+    "dock_OUT5_stage_44",
+    "dock_OUT5_stage_45",
+    "dock_OUT5_stage_46",
+    "dock_OUT5_stage_47"
+   ]
+  },
+  {
+   "id": "OUT6",
+   "kind": "out",
+   "index": 6,
+   "door_center": [
+    82.5,
+    0.0,
+    0.0
+   ],
+   "station_id": "DP-OUT6",
+   "station_center": [
+    82.5,
+    0.0,
+    11.8
+   ],
+   "station_type": "drop_station",
+   "amr_contact": [
+    82.5,
+    0.0,
+    13.6
+   ],
+   "truck_bay_center": [
+    82.5,
+    0.0,
+    -8.5
+   ],
+   "staging_slots": [
+    "dock_OUT6_stage_11",
+    "dock_OUT6_stage_12",
+    "dock_OUT6_stage_13",
+    "dock_OUT6_stage_14",
+    "dock_OUT6_stage_15",
+    "dock_OUT6_stage_16",
+    "dock_OUT6_stage_17",
+    "dock_OUT6_stage_21",
+    "dock_OUT6_stage_22",
+    "dock_OUT6_stage_23",
+    "dock_OUT6_stage_24",
+    "dock_OUT6_stage_25",
+    "dock_OUT6_stage_26",
+    "dock_OUT6_stage_27",
+    "dock_OUT6_stage_31",
+    "dock_OUT6_stage_32",
+    "dock_OUT6_stage_33",
+    "dock_OUT6_stage_34",
+    "dock_OUT6_stage_35",
+    "dock_OUT6_stage_36",
+    "dock_OUT6_stage_37",
+    "dock_OUT6_stage_41",
+    "dock_OUT6_stage_42",
+    "dock_OUT6_stage_43",
+    "dock_OUT6_stage_44",
+    "dock_OUT6_stage_45",
+    "dock_OUT6_stage_46",
+    "dock_OUT6_stage_47"
+   ]
+  }
+ ],
+ "rails": [
+  {
+   "id": "R1",
+   "x_range": [
+    20.9,
+    22.7
+   ],
+   "z_range": [
+    21.6,
+    77.6
+   ],
+   "center_x": 21.8,
+   "levels": 10,
+   "level_height": 1.5,
+   "levels_id": [
+    "LV01",
+    "LV02",
+    "LV03",
+    "LV04",
+    "LV05",
+    "LV06",
+    "LV07",
+    "LV08",
+    "LV09",
+    "LV10"
+   ],
+   "mother_shuttles": [
+    "MS-R1-LV01",
+    "MS-R1-LV02",
+    "MS-R1-LV03",
+    "MS-R1-LV04",
+    "MS-R1-LV05",
+    "MS-R1-LV06",
+    "MS-R1-LV07",
+    "MS-R1-LV08",
+    "MS-R1-LV09",
+    "MS-R1-LV10"
+   ],
+   "satellites": [
+    "SAT-R1-LV01",
+    "SAT-R1-LV02",
+    "SAT-R1-LV03",
+    "SAT-R1-LV04",
+    "SAT-R1-LV05",
+    "SAT-R1-LV06",
+    "SAT-R1-LV07",
+    "SAT-R1-LV08",
+    "SAT-R1-LV09",
+    "SAT-R1-LV10"
+   ]
+  },
+  {
+   "id": "R2",
+   "x_range": [
+    59.1,
+    60.9
+   ],
+   "z_range": [
+    21.6,
+    77.6
+   ],
+   "center_x": 60.0,
+   "levels": 10,
+   "level_height": 1.5,
+   "levels_id": [
+    "LV01",
+    "LV02",
+    "LV03",
+    "LV04",
+    "LV05",
+    "LV06",
+    "LV07",
+    "LV08",
+    "LV09",
+    "LV10"
+   ],
+   "mother_shuttles": [
+    "MS-R2-LV01",
+    "MS-R2-LV02",
+    "MS-R2-LV03",
+    "MS-R2-LV04",
+    "MS-R2-LV05",
+    "MS-R2-LV06",
+    "MS-R2-LV07",
+    "MS-R2-LV08",
+    "MS-R2-LV09",
+    "MS-R2-LV10"
+   ],
+   "satellites": [
+    "SAT-R2-LV01",
+    "SAT-R2-LV02",
+    "SAT-R2-LV03",
+    "SAT-R2-LV04",
+    "SAT-R2-LV05",
+    "SAT-R2-LV06",
+    "SAT-R2-LV07",
+    "SAT-R2-LV08",
+    "SAT-R2-LV09",
+    "SAT-R2-LV10"
+   ]
+  },
+  {
+   "id": "R3",
+   "x_range": [
+    97.3,
+    99.1
+   ],
+   "z_range": [
+    21.6,
+    77.6
+   ],
+   "center_x": 98.2,
+   "levels": 10,
+   "level_height": 1.5,
+   "levels_id": [
+    "LV01",
+    "LV02",
+    "LV03",
+    "LV04",
+    "LV05",
+    "LV06",
+    "LV07",
+    "LV08",
+    "LV09",
+    "LV10"
+   ],
+   "mother_shuttles": [
+    "MS-R3-LV01",
+    "MS-R3-LV02",
+    "MS-R3-LV03",
+    "MS-R3-LV04",
+    "MS-R3-LV05",
+    "MS-R3-LV06",
+    "MS-R3-LV07",
+    "MS-R3-LV08",
+    "MS-R3-LV09",
+    "MS-R3-LV10"
+   ],
+   "satellites": [
+    "SAT-R3-LV01",
+    "SAT-R3-LV02",
+    "SAT-R3-LV03",
+    "SAT-R3-LV04",
+    "SAT-R3-LV05",
+    "SAT-R3-LV06",
+    "SAT-R3-LV07",
+    "SAT-R3-LV08",
+    "SAT-R3-LV09",
+    "SAT-R3-LV10"
+   ]
+  }
+ ],
+ "lifts": [
+  {
+   "id": "L1",
+   "rail": "R1",
+   "center": [
+    21.8,
+    0.0,
+    20.4
+   ],
+   "serves_levels": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ]
+  },
+  {
+   "id": "L2",
+   "rail": "R2",
+   "center": [
+    60.0,
+    0.0,
+    20.4
+   ],
+   "serves_levels": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ]
+  },
+  {
+   "id": "L3",
+   "rail": "R3",
+   "center": [
+    98.2,
+    0.0,
+    20.4
+   ],
+   "serves_levels": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ]
+  }
+ ],
+ "buffers": [
+  {
+   "id": "L1-IN",
+   "lift": "L1",
+   "kind": "in",
+   "slots_from_lift": [
+    "L1-IN-1",
+    "L1-IN-2",
+    "L1-IN-3",
+    "L1-IN-4",
+    "L1-IN-5"
+   ],
+   "flow": "AMR→리프트 (서쪽 끝에서 넣음)",
+   "amr_contact": [
+    14.75,
+    0.0,
+    18.6
+   ]
+  },
+  {
+   "id": "L1-OUT",
+   "lift": "L1",
+   "kind": "out",
+   "slots_from_lift": [
+    "L1-OUT-1",
+    "L1-OUT-2",
+    "L1-OUT-3",
+    "L1-OUT-4",
+    "L1-OUT-5"
+   ],
+   "flow": "리프트→AMR (동쪽 끝에서 꺼냄)",
+   "amr_contact": [
+    28.85,
+    0.0,
+    18.6
+   ]
+  },
+  {
+   "id": "L2-IN",
+   "lift": "L2",
+   "kind": "in",
+   "slots_from_lift": [
+    "L2-IN-1",
+    "L2-IN-2",
+    "L2-IN-3",
+    "L2-IN-4",
+    "L2-IN-5"
+   ],
+   "flow": "AMR→리프트 (서쪽 끝에서 넣음)",
+   "amr_contact": [
+    52.95,
+    0.0,
+    18.6
+   ]
+  },
+  {
+   "id": "L2-OUT",
+   "lift": "L2",
+   "kind": "out",
+   "slots_from_lift": [
+    "L2-OUT-1",
+    "L2-OUT-2",
+    "L2-OUT-3",
+    "L2-OUT-4",
+    "L2-OUT-5"
+   ],
+   "flow": "리프트→AMR (동쪽 끝에서 꺼냄)",
+   "amr_contact": [
+    67.05,
+    0.0,
+    18.6
+   ]
+  },
+  {
+   "id": "L3-IN",
+   "lift": "L3",
+   "kind": "in",
+   "slots_from_lift": [
+    "L3-IN-1",
+    "L3-IN-2",
+    "L3-IN-3",
+    "L3-IN-4",
+    "L3-IN-5"
+   ],
+   "flow": "AMR→리프트 (서쪽 끝에서 넣음)",
+   "amr_contact": [
+    91.15,
+    0.0,
+    18.6
+   ]
+  },
+  {
+   "id": "L3-OUT",
+   "lift": "L3",
+   "kind": "out",
+   "slots_from_lift": [
+    "L3-OUT-1",
+    "L3-OUT-2",
+    "L3-OUT-3",
+    "L3-OUT-4",
+    "L3-OUT-5"
+   ],
+   "flow": "리프트→AMR (동쪽 끝에서 꺼냄)",
+   "amr_contact": [
+    105.25,
+    0.0,
+    18.6
+   ]
+  }
+ ],
+ "facilities": [
+  {
+   "id": "fac_maintenance",
+   "label": "셔틀·리프트 정비",
+   "amr_contact": [
+    15.3,
+    0.0,
+    21.8
+   ]
+  },
+  {
+   "id": "QC-IN",
+   "label": "입고 검수·보류 (무게 불일치)",
+   "amr_contact": [
+    40.9,
+    0.0,
+    21.8
+   ]
+  },
+  {
+   "id": "QC-OUT",
+   "label": "포장·라벨링·출고 검수",
+   "amr_contact": [
+    79.1,
+    0.0,
+    21.8
+   ]
+  },
+  {
+   "id": "fac_spare_parts",
+   "label": "예비 셔틀·부품",
+   "amr_contact": [
+    104.7,
+    0.0,
+    21.8
+   ]
+  }
+ ],
+ "chargers": [
+  {
+   "id": "CHW1",
+   "wall": "W",
+   "park_center": [
+    1.5,
+    0.0,
+    23.6
+   ],
+   "heading_deg": 270.0
+  },
+  {
+   "id": "CHW2",
+   "wall": "W",
+   "park_center": [
+    1.5,
+    0.0,
+    26.5
+   ],
+   "heading_deg": 270.0
+  },
+  {
+   "id": "CHW3",
+   "wall": "W",
+   "park_center": [
+    1.5,
+    0.0,
+    29.4
+   ],
+   "heading_deg": 270.0
+  },
+  {
+   "id": "CHE1",
+   "wall": "E",
+   "park_center": [
+    118.5,
+    0.0,
+    23.6
+   ],
+   "heading_deg": 90.0
+  },
+  {
+   "id": "CHE2",
+   "wall": "E",
+   "park_center": [
+    118.5,
+    0.0,
+    26.5
+   ],
+   "heading_deg": 90.0
+  },
+  {
+   "id": "CHE3",
+   "wall": "E",
+   "park_center": [
+    118.5,
+    0.0,
+    29.4
+   ],
+   "heading_deg": 90.0
+  }
+ ],
+ "wait_spots": [
+  {
+   "id": "WAIT1",
+   "center": [
+    33.0,
+    0.0,
+    19.8
+   ]
+  },
+  {
+   "id": "WAIT2",
+   "center": [
+    36.6,
+    0.0,
+    19.8
+   ]
+  },
+  {
+   "id": "WAIT3",
+   "center": [
+    84.6,
+    0.0,
+    19.8
+   ]
+  },
+  {
+   "id": "WAIT4",
+   "center": [
+    87.0,
+    0.0,
+    19.8
+   ]
+  }
+ ],
+ "amrs": [
+  {
+   "id": "AMR01",
+   "home_charger": "CHW1",
+   "spawn": [
+    1.5,
+    0.0,
+    23.6
+   ]
+  },
+  {
+   "id": "AMR02",
+   "home_charger": "CHW2",
+   "spawn": [
+    1.5,
+    0.0,
+    26.5
+   ]
+  },
+  {
+   "id": "AMR03",
+   "home_charger": "CHE1",
+   "spawn": [
+    118.5,
+    0.0,
+    23.6
+   ]
+  },
+  {
+   "id": "AMR04",
+   "home_charger": "CHE2",
+   "spawn": [
+    118.5,
+    0.0,
+    26.5
+   ]
+  }
+ ],
+ "storage": {
+  "id_rule": "층별 레인 ID = R{레일}-{W|E}-LV{층 01~10}-N{줄 01~33, 남쪽부터}. 레인 안 위치 P = 1(레일 쪽 입·출구)~14.",
+  "slot_rule": "위치 P(1~depth) 중심 x = slot0_x + (P-1)*slot_step_x, z = center_z. 층 LVnn 의 팔레트 바닥 y = (nn-1)*level_height. 위치 1이 레일 쪽 입·출구(선입후출).",
+  "lanes": [
+   {
+    "id": "R1-W-N01",
+    "rail": "R1",
+    "side": "W",
+    "row": 1,
+    "center_z": 32.1,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N02",
+    "rail": "R1",
+    "side": "W",
+    "row": 2,
+    "center_z": 33.5,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N03",
+    "rail": "R1",
+    "side": "W",
+    "row": 3,
+    "center_z": 34.9,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N04",
+    "rail": "R1",
+    "side": "W",
+    "row": 4,
+    "center_z": 36.3,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N05",
+    "rail": "R1",
+    "side": "W",
+    "row": 5,
+    "center_z": 37.7,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N06",
+    "rail": "R1",
+    "side": "W",
+    "row": 6,
+    "center_z": 39.1,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N07",
+    "rail": "R1",
+    "side": "W",
+    "row": 7,
+    "center_z": 40.5,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N08",
+    "rail": "R1",
+    "side": "W",
+    "row": 8,
+    "center_z": 41.9,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N09",
+    "rail": "R1",
+    "side": "W",
+    "row": 9,
+    "center_z": 43.3,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N10",
+    "rail": "R1",
+    "side": "W",
+    "row": 10,
+    "center_z": 44.7,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N11",
+    "rail": "R1",
+    "side": "W",
+    "row": 11,
+    "center_z": 46.1,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N12",
+    "rail": "R1",
+    "side": "W",
+    "row": 12,
+    "center_z": 47.5,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N13",
+    "rail": "R1",
+    "side": "W",
+    "row": 13,
+    "center_z": 48.9,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N14",
+    "rail": "R1",
+    "side": "W",
+    "row": 14,
+    "center_z": 50.3,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N15",
+    "rail": "R1",
+    "side": "W",
+    "row": 15,
+    "center_z": 51.7,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N16",
+    "rail": "R1",
+    "side": "W",
+    "row": 16,
+    "center_z": 53.1,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N17",
+    "rail": "R1",
+    "side": "W",
+    "row": 17,
+    "center_z": 54.5,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N18",
+    "rail": "R1",
+    "side": "W",
+    "row": 18,
+    "center_z": 55.9,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N19",
+    "rail": "R1",
+    "side": "W",
+    "row": 19,
+    "center_z": 57.3,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N20",
+    "rail": "R1",
+    "side": "W",
+    "row": 20,
+    "center_z": 58.7,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N21",
+    "rail": "R1",
+    "side": "W",
+    "row": 21,
+    "center_z": 60.1,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N22",
+    "rail": "R1",
+    "side": "W",
+    "row": 22,
+    "center_z": 61.5,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N23",
+    "rail": "R1",
+    "side": "W",
+    "row": 23,
+    "center_z": 62.9,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N24",
+    "rail": "R1",
+    "side": "W",
+    "row": 24,
+    "center_z": 64.3,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N25",
+    "rail": "R1",
+    "side": "W",
+    "row": 25,
+    "center_z": 65.7,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N26",
+    "rail": "R1",
+    "side": "W",
+    "row": 26,
+    "center_z": 67.1,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N27",
+    "rail": "R1",
+    "side": "W",
+    "row": 27,
+    "center_z": 68.5,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N28",
+    "rail": "R1",
+    "side": "W",
+    "row": 28,
+    "center_z": 69.9,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N29",
+    "rail": "R1",
+    "side": "W",
+    "row": 29,
+    "center_z": 71.3,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N30",
+    "rail": "R1",
+    "side": "W",
+    "row": 30,
+    "center_z": 72.7,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N31",
+    "rail": "R1",
+    "side": "W",
+    "row": 31,
+    "center_z": 74.1,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N32",
+    "rail": "R1",
+    "side": "W",
+    "row": 32,
+    "center_z": 75.5,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-W-N33",
+    "rail": "R1",
+    "side": "W",
+    "row": 33,
+    "center_z": 76.9,
+    "slot0_x": 20.25,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R1-E-N01",
+    "rail": "R1",
+    "side": "E",
+    "row": 1,
+    "center_z": 32.1,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N02",
+    "rail": "R1",
+    "side": "E",
+    "row": 2,
+    "center_z": 33.5,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N03",
+    "rail": "R1",
+    "side": "E",
+    "row": 3,
+    "center_z": 34.9,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N04",
+    "rail": "R1",
+    "side": "E",
+    "row": 4,
+    "center_z": 36.3,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N05",
+    "rail": "R1",
+    "side": "E",
+    "row": 5,
+    "center_z": 37.7,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N06",
+    "rail": "R1",
+    "side": "E",
+    "row": 6,
+    "center_z": 39.1,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N07",
+    "rail": "R1",
+    "side": "E",
+    "row": 7,
+    "center_z": 40.5,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N08",
+    "rail": "R1",
+    "side": "E",
+    "row": 8,
+    "center_z": 41.9,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N09",
+    "rail": "R1",
+    "side": "E",
+    "row": 9,
+    "center_z": 43.3,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N10",
+    "rail": "R1",
+    "side": "E",
+    "row": 10,
+    "center_z": 44.7,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N11",
+    "rail": "R1",
+    "side": "E",
+    "row": 11,
+    "center_z": 46.1,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N12",
+    "rail": "R1",
+    "side": "E",
+    "row": 12,
+    "center_z": 47.5,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N13",
+    "rail": "R1",
+    "side": "E",
+    "row": 13,
+    "center_z": 48.9,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N14",
+    "rail": "R1",
+    "side": "E",
+    "row": 14,
+    "center_z": 50.3,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N15",
+    "rail": "R1",
+    "side": "E",
+    "row": 15,
+    "center_z": 51.7,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N16",
+    "rail": "R1",
+    "side": "E",
+    "row": 16,
+    "center_z": 53.1,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N17",
+    "rail": "R1",
+    "side": "E",
+    "row": 17,
+    "center_z": 54.5,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N18",
+    "rail": "R1",
+    "side": "E",
+    "row": 18,
+    "center_z": 55.9,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N19",
+    "rail": "R1",
+    "side": "E",
+    "row": 19,
+    "center_z": 57.3,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N20",
+    "rail": "R1",
+    "side": "E",
+    "row": 20,
+    "center_z": 58.7,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N21",
+    "rail": "R1",
+    "side": "E",
+    "row": 21,
+    "center_z": 60.1,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N22",
+    "rail": "R1",
+    "side": "E",
+    "row": 22,
+    "center_z": 61.5,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N23",
+    "rail": "R1",
+    "side": "E",
+    "row": 23,
+    "center_z": 62.9,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N24",
+    "rail": "R1",
+    "side": "E",
+    "row": 24,
+    "center_z": 64.3,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N25",
+    "rail": "R1",
+    "side": "E",
+    "row": 25,
+    "center_z": 65.7,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N26",
+    "rail": "R1",
+    "side": "E",
+    "row": 26,
+    "center_z": 67.1,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N27",
+    "rail": "R1",
+    "side": "E",
+    "row": 27,
+    "center_z": 68.5,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N28",
+    "rail": "R1",
+    "side": "E",
+    "row": 28,
+    "center_z": 69.9,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N29",
+    "rail": "R1",
+    "side": "E",
+    "row": 29,
+    "center_z": 71.3,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N30",
+    "rail": "R1",
+    "side": "E",
+    "row": 30,
+    "center_z": 72.7,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N31",
+    "rail": "R1",
+    "side": "E",
+    "row": 31,
+    "center_z": 74.1,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N32",
+    "rail": "R1",
+    "side": "E",
+    "row": 32,
+    "center_z": 75.5,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R1-E-N33",
+    "rail": "R1",
+    "side": "E",
+    "row": 33,
+    "center_z": 76.9,
+    "slot0_x": 23.35,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-W-N01",
+    "rail": "R2",
+    "side": "W",
+    "row": 1,
+    "center_z": 32.1,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N02",
+    "rail": "R2",
+    "side": "W",
+    "row": 2,
+    "center_z": 33.5,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N03",
+    "rail": "R2",
+    "side": "W",
+    "row": 3,
+    "center_z": 34.9,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N04",
+    "rail": "R2",
+    "side": "W",
+    "row": 4,
+    "center_z": 36.3,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N05",
+    "rail": "R2",
+    "side": "W",
+    "row": 5,
+    "center_z": 37.7,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N06",
+    "rail": "R2",
+    "side": "W",
+    "row": 6,
+    "center_z": 39.1,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N07",
+    "rail": "R2",
+    "side": "W",
+    "row": 7,
+    "center_z": 40.5,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N08",
+    "rail": "R2",
+    "side": "W",
+    "row": 8,
+    "center_z": 41.9,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N09",
+    "rail": "R2",
+    "side": "W",
+    "row": 9,
+    "center_z": 43.3,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N10",
+    "rail": "R2",
+    "side": "W",
+    "row": 10,
+    "center_z": 44.7,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N11",
+    "rail": "R2",
+    "side": "W",
+    "row": 11,
+    "center_z": 46.1,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N12",
+    "rail": "R2",
+    "side": "W",
+    "row": 12,
+    "center_z": 47.5,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N13",
+    "rail": "R2",
+    "side": "W",
+    "row": 13,
+    "center_z": 48.9,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N14",
+    "rail": "R2",
+    "side": "W",
+    "row": 14,
+    "center_z": 50.3,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N15",
+    "rail": "R2",
+    "side": "W",
+    "row": 15,
+    "center_z": 51.7,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N16",
+    "rail": "R2",
+    "side": "W",
+    "row": 16,
+    "center_z": 53.1,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N17",
+    "rail": "R2",
+    "side": "W",
+    "row": 17,
+    "center_z": 54.5,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N18",
+    "rail": "R2",
+    "side": "W",
+    "row": 18,
+    "center_z": 55.9,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N19",
+    "rail": "R2",
+    "side": "W",
+    "row": 19,
+    "center_z": 57.3,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N20",
+    "rail": "R2",
+    "side": "W",
+    "row": 20,
+    "center_z": 58.7,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N21",
+    "rail": "R2",
+    "side": "W",
+    "row": 21,
+    "center_z": 60.1,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N22",
+    "rail": "R2",
+    "side": "W",
+    "row": 22,
+    "center_z": 61.5,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N23",
+    "rail": "R2",
+    "side": "W",
+    "row": 23,
+    "center_z": 62.9,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N24",
+    "rail": "R2",
+    "side": "W",
+    "row": 24,
+    "center_z": 64.3,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N25",
+    "rail": "R2",
+    "side": "W",
+    "row": 25,
+    "center_z": 65.7,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N26",
+    "rail": "R2",
+    "side": "W",
+    "row": 26,
+    "center_z": 67.1,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N27",
+    "rail": "R2",
+    "side": "W",
+    "row": 27,
+    "center_z": 68.5,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N28",
+    "rail": "R2",
+    "side": "W",
+    "row": 28,
+    "center_z": 69.9,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N29",
+    "rail": "R2",
+    "side": "W",
+    "row": 29,
+    "center_z": 71.3,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N30",
+    "rail": "R2",
+    "side": "W",
+    "row": 30,
+    "center_z": 72.7,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N31",
+    "rail": "R2",
+    "side": "W",
+    "row": 31,
+    "center_z": 74.1,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N32",
+    "rail": "R2",
+    "side": "W",
+    "row": 32,
+    "center_z": 75.5,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-W-N33",
+    "rail": "R2",
+    "side": "W",
+    "row": 33,
+    "center_z": 76.9,
+    "slot0_x": 58.45,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R2-E-N01",
+    "rail": "R2",
+    "side": "E",
+    "row": 1,
+    "center_z": 32.1,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N02",
+    "rail": "R2",
+    "side": "E",
+    "row": 2,
+    "center_z": 33.5,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N03",
+    "rail": "R2",
+    "side": "E",
+    "row": 3,
+    "center_z": 34.9,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N04",
+    "rail": "R2",
+    "side": "E",
+    "row": 4,
+    "center_z": 36.3,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N05",
+    "rail": "R2",
+    "side": "E",
+    "row": 5,
+    "center_z": 37.7,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N06",
+    "rail": "R2",
+    "side": "E",
+    "row": 6,
+    "center_z": 39.1,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N07",
+    "rail": "R2",
+    "side": "E",
+    "row": 7,
+    "center_z": 40.5,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N08",
+    "rail": "R2",
+    "side": "E",
+    "row": 8,
+    "center_z": 41.9,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N09",
+    "rail": "R2",
+    "side": "E",
+    "row": 9,
+    "center_z": 43.3,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N10",
+    "rail": "R2",
+    "side": "E",
+    "row": 10,
+    "center_z": 44.7,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N11",
+    "rail": "R2",
+    "side": "E",
+    "row": 11,
+    "center_z": 46.1,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N12",
+    "rail": "R2",
+    "side": "E",
+    "row": 12,
+    "center_z": 47.5,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N13",
+    "rail": "R2",
+    "side": "E",
+    "row": 13,
+    "center_z": 48.9,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N14",
+    "rail": "R2",
+    "side": "E",
+    "row": 14,
+    "center_z": 50.3,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N15",
+    "rail": "R2",
+    "side": "E",
+    "row": 15,
+    "center_z": 51.7,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N16",
+    "rail": "R2",
+    "side": "E",
+    "row": 16,
+    "center_z": 53.1,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N17",
+    "rail": "R2",
+    "side": "E",
+    "row": 17,
+    "center_z": 54.5,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N18",
+    "rail": "R2",
+    "side": "E",
+    "row": 18,
+    "center_z": 55.9,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N19",
+    "rail": "R2",
+    "side": "E",
+    "row": 19,
+    "center_z": 57.3,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N20",
+    "rail": "R2",
+    "side": "E",
+    "row": 20,
+    "center_z": 58.7,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N21",
+    "rail": "R2",
+    "side": "E",
+    "row": 21,
+    "center_z": 60.1,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N22",
+    "rail": "R2",
+    "side": "E",
+    "row": 22,
+    "center_z": 61.5,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N23",
+    "rail": "R2",
+    "side": "E",
+    "row": 23,
+    "center_z": 62.9,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N24",
+    "rail": "R2",
+    "side": "E",
+    "row": 24,
+    "center_z": 64.3,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N25",
+    "rail": "R2",
+    "side": "E",
+    "row": 25,
+    "center_z": 65.7,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N26",
+    "rail": "R2",
+    "side": "E",
+    "row": 26,
+    "center_z": 67.1,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N27",
+    "rail": "R2",
+    "side": "E",
+    "row": 27,
+    "center_z": 68.5,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N28",
+    "rail": "R2",
+    "side": "E",
+    "row": 28,
+    "center_z": 69.9,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N29",
+    "rail": "R2",
+    "side": "E",
+    "row": 29,
+    "center_z": 71.3,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N30",
+    "rail": "R2",
+    "side": "E",
+    "row": 30,
+    "center_z": 72.7,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N31",
+    "rail": "R2",
+    "side": "E",
+    "row": 31,
+    "center_z": 74.1,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N32",
+    "rail": "R2",
+    "side": "E",
+    "row": 32,
+    "center_z": 75.5,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R2-E-N33",
+    "rail": "R2",
+    "side": "E",
+    "row": 33,
+    "center_z": 76.9,
+    "slot0_x": 61.55,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-W-N01",
+    "rail": "R3",
+    "side": "W",
+    "row": 1,
+    "center_z": 32.1,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N02",
+    "rail": "R3",
+    "side": "W",
+    "row": 2,
+    "center_z": 33.5,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N03",
+    "rail": "R3",
+    "side": "W",
+    "row": 3,
+    "center_z": 34.9,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N04",
+    "rail": "R3",
+    "side": "W",
+    "row": 4,
+    "center_z": 36.3,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N05",
+    "rail": "R3",
+    "side": "W",
+    "row": 5,
+    "center_z": 37.7,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N06",
+    "rail": "R3",
+    "side": "W",
+    "row": 6,
+    "center_z": 39.1,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N07",
+    "rail": "R3",
+    "side": "W",
+    "row": 7,
+    "center_z": 40.5,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N08",
+    "rail": "R3",
+    "side": "W",
+    "row": 8,
+    "center_z": 41.9,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N09",
+    "rail": "R3",
+    "side": "W",
+    "row": 9,
+    "center_z": 43.3,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N10",
+    "rail": "R3",
+    "side": "W",
+    "row": 10,
+    "center_z": 44.7,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N11",
+    "rail": "R3",
+    "side": "W",
+    "row": 11,
+    "center_z": 46.1,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N12",
+    "rail": "R3",
+    "side": "W",
+    "row": 12,
+    "center_z": 47.5,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N13",
+    "rail": "R3",
+    "side": "W",
+    "row": 13,
+    "center_z": 48.9,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N14",
+    "rail": "R3",
+    "side": "W",
+    "row": 14,
+    "center_z": 50.3,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N15",
+    "rail": "R3",
+    "side": "W",
+    "row": 15,
+    "center_z": 51.7,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N16",
+    "rail": "R3",
+    "side": "W",
+    "row": 16,
+    "center_z": 53.1,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N17",
+    "rail": "R3",
+    "side": "W",
+    "row": 17,
+    "center_z": 54.5,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N18",
+    "rail": "R3",
+    "side": "W",
+    "row": 18,
+    "center_z": 55.9,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N19",
+    "rail": "R3",
+    "side": "W",
+    "row": 19,
+    "center_z": 57.3,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N20",
+    "rail": "R3",
+    "side": "W",
+    "row": 20,
+    "center_z": 58.7,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N21",
+    "rail": "R3",
+    "side": "W",
+    "row": 21,
+    "center_z": 60.1,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N22",
+    "rail": "R3",
+    "side": "W",
+    "row": 22,
+    "center_z": 61.5,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N23",
+    "rail": "R3",
+    "side": "W",
+    "row": 23,
+    "center_z": 62.9,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N24",
+    "rail": "R3",
+    "side": "W",
+    "row": 24,
+    "center_z": 64.3,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N25",
+    "rail": "R3",
+    "side": "W",
+    "row": 25,
+    "center_z": 65.7,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N26",
+    "rail": "R3",
+    "side": "W",
+    "row": 26,
+    "center_z": 67.1,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N27",
+    "rail": "R3",
+    "side": "W",
+    "row": 27,
+    "center_z": 68.5,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N28",
+    "rail": "R3",
+    "side": "W",
+    "row": 28,
+    "center_z": 69.9,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N29",
+    "rail": "R3",
+    "side": "W",
+    "row": 29,
+    "center_z": 71.3,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N30",
+    "rail": "R3",
+    "side": "W",
+    "row": 30,
+    "center_z": 72.7,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N31",
+    "rail": "R3",
+    "side": "W",
+    "row": 31,
+    "center_z": 74.1,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N32",
+    "rail": "R3",
+    "side": "W",
+    "row": 32,
+    "center_z": 75.5,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-W-N33",
+    "rail": "R3",
+    "side": "W",
+    "row": 33,
+    "center_z": 76.9,
+    "slot0_x": 96.65,
+    "slot_step_x": -1.3
+   },
+   {
+    "id": "R3-E-N01",
+    "rail": "R3",
+    "side": "E",
+    "row": 1,
+    "center_z": 32.1,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N02",
+    "rail": "R3",
+    "side": "E",
+    "row": 2,
+    "center_z": 33.5,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N03",
+    "rail": "R3",
+    "side": "E",
+    "row": 3,
+    "center_z": 34.9,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N04",
+    "rail": "R3",
+    "side": "E",
+    "row": 4,
+    "center_z": 36.3,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N05",
+    "rail": "R3",
+    "side": "E",
+    "row": 5,
+    "center_z": 37.7,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N06",
+    "rail": "R3",
+    "side": "E",
+    "row": 6,
+    "center_z": 39.1,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N07",
+    "rail": "R3",
+    "side": "E",
+    "row": 7,
+    "center_z": 40.5,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N08",
+    "rail": "R3",
+    "side": "E",
+    "row": 8,
+    "center_z": 41.9,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N09",
+    "rail": "R3",
+    "side": "E",
+    "row": 9,
+    "center_z": 43.3,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N10",
+    "rail": "R3",
+    "side": "E",
+    "row": 10,
+    "center_z": 44.7,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N11",
+    "rail": "R3",
+    "side": "E",
+    "row": 11,
+    "center_z": 46.1,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N12",
+    "rail": "R3",
+    "side": "E",
+    "row": 12,
+    "center_z": 47.5,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N13",
+    "rail": "R3",
+    "side": "E",
+    "row": 13,
+    "center_z": 48.9,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N14",
+    "rail": "R3",
+    "side": "E",
+    "row": 14,
+    "center_z": 50.3,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N15",
+    "rail": "R3",
+    "side": "E",
+    "row": 15,
+    "center_z": 51.7,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N16",
+    "rail": "R3",
+    "side": "E",
+    "row": 16,
+    "center_z": 53.1,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N17",
+    "rail": "R3",
+    "side": "E",
+    "row": 17,
+    "center_z": 54.5,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N18",
+    "rail": "R3",
+    "side": "E",
+    "row": 18,
+    "center_z": 55.9,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N19",
+    "rail": "R3",
+    "side": "E",
+    "row": 19,
+    "center_z": 57.3,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N20",
+    "rail": "R3",
+    "side": "E",
+    "row": 20,
+    "center_z": 58.7,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N21",
+    "rail": "R3",
+    "side": "E",
+    "row": 21,
+    "center_z": 60.1,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N22",
+    "rail": "R3",
+    "side": "E",
+    "row": 22,
+    "center_z": 61.5,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N23",
+    "rail": "R3",
+    "side": "E",
+    "row": 23,
+    "center_z": 62.9,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N24",
+    "rail": "R3",
+    "side": "E",
+    "row": 24,
+    "center_z": 64.3,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N25",
+    "rail": "R3",
+    "side": "E",
+    "row": 25,
+    "center_z": 65.7,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N26",
+    "rail": "R3",
+    "side": "E",
+    "row": 26,
+    "center_z": 67.1,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N27",
+    "rail": "R3",
+    "side": "E",
+    "row": 27,
+    "center_z": 68.5,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N28",
+    "rail": "R3",
+    "side": "E",
+    "row": 28,
+    "center_z": 69.9,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N29",
+    "rail": "R3",
+    "side": "E",
+    "row": 29,
+    "center_z": 71.3,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N30",
+    "rail": "R3",
+    "side": "E",
+    "row": 30,
+    "center_z": 72.7,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N31",
+    "rail": "R3",
+    "side": "E",
+    "row": 31,
+    "center_z": 74.1,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N32",
+    "rail": "R3",
+    "side": "E",
+    "row": 32,
+    "center_z": 75.5,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   },
+   {
+    "id": "R3-E-N33",
+    "rail": "R3",
+    "side": "E",
+    "row": 33,
+    "center_z": 76.9,
+    "slot0_x": 99.75,
+    "slot_step_x": 1.3
+   }
+  ]
+ },
+ "nav": {
+  "note": "AMR 바닥 경로 그래프. 통로는 양방향이며 진행 방향은 알고리즘이 시간 예약으로 정한다. edge = {from, to, length(m)}, 양방향.",
+  "aisle_center_z": 16.8,
+  "nodes": [
+   {
+    "id": "n_dock_IN1",
+    "pos": [
+     2.5,
+     0.0,
+     11.8
+    ],
+    "kind": "weigh_station"
+   },
+   {
+    "id": "n_aisle_IN1",
+    "pos": [
+     2.5,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_dock_IN2",
+    "pos": [
+     7.5,
+     0.0,
+     11.8
+    ],
+    "kind": "weigh_station"
+   },
+   {
+    "id": "n_aisle_IN2",
+    "pos": [
+     7.5,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_dock_IN3",
+    "pos": [
+     12.5,
+     0.0,
+     11.8
+    ],
+    "kind": "weigh_station"
+   },
+   {
+    "id": "n_aisle_IN3",
+    "pos": [
+     12.5,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_dock_IN4",
+    "pos": [
+     27.5,
+     0.0,
+     11.8
+    ],
+    "kind": "weigh_station"
+   },
+   {
+    "id": "n_aisle_IN4",
+    "pos": [
+     27.5,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_dock_IN5",
+    "pos": [
+     32.5,
+     0.0,
+     11.8
+    ],
+    "kind": "weigh_station"
+   },
+   {
+    "id": "n_aisle_IN5",
+    "pos": [
+     32.5,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_dock_IN6",
+    "pos": [
+     37.5,
+     0.0,
+     11.8
+    ],
+    "kind": "weigh_station"
+   },
+   {
+    "id": "n_aisle_IN6",
+    "pos": [
+     37.5,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_dock_OUT1",
+    "pos": [
+     117.5,
+     0.0,
+     11.8
+    ],
+    "kind": "drop_station"
+   },
+   {
+    "id": "n_aisle_OUT1",
+    "pos": [
+     117.5,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_dock_OUT2",
+    "pos": [
+     112.5,
+     0.0,
+     11.8
+    ],
+    "kind": "drop_station"
+   },
+   {
+    "id": "n_aisle_OUT2",
+    "pos": [
+     112.5,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_dock_OUT3",
+    "pos": [
+     107.5,
+     0.0,
+     11.8
+    ],
+    "kind": "drop_station"
+   },
+   {
+    "id": "n_aisle_OUT3",
+    "pos": [
+     107.5,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_dock_OUT4",
+    "pos": [
+     92.5,
+     0.0,
+     11.8
+    ],
+    "kind": "drop_station"
+   },
+   {
+    "id": "n_aisle_OUT4",
+    "pos": [
+     92.5,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_dock_OUT5",
+    "pos": [
+     87.5,
+     0.0,
+     11.8
+    ],
+    "kind": "drop_station"
+   },
+   {
+    "id": "n_aisle_OUT5",
+    "pos": [
+     87.5,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_dock_OUT6",
+    "pos": [
+     82.5,
+     0.0,
+     11.8
+    ],
+    "kind": "drop_station"
+   },
+   {
+    "id": "n_aisle_OUT6",
+    "pos": [
+     82.5,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_buf_L1-IN",
+    "pos": [
+     14.75,
+     0.0,
+     18.6
+    ],
+    "kind": "buffer_in"
+   },
+   {
+    "id": "n_aisle_L1-IN",
+    "pos": [
+     14.75,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_buf_L1-OUT",
+    "pos": [
+     28.85,
+     0.0,
+     18.6
+    ],
+    "kind": "buffer_out"
+   },
+   {
+    "id": "n_aisle_L1-OUT",
+    "pos": [
+     28.85,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_buf_L2-IN",
+    "pos": [
+     52.95,
+     0.0,
+     18.6
+    ],
+    "kind": "buffer_in"
+   },
+   {
+    "id": "n_aisle_L2-IN",
+    "pos": [
+     52.95,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_buf_L2-OUT",
+    "pos": [
+     67.05,
+     0.0,
+     18.6
+    ],
+    "kind": "buffer_out"
+   },
+   {
+    "id": "n_aisle_L2-OUT",
+    "pos": [
+     67.05,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_buf_L3-IN",
+    "pos": [
+     91.15,
+     0.0,
+     18.6
+    ],
+    "kind": "buffer_in"
+   },
+   {
+    "id": "n_aisle_L3-IN",
+    "pos": [
+     91.15,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_buf_L3-OUT",
+    "pos": [
+     105.25,
+     0.0,
+     18.6
+    ],
+    "kind": "buffer_out"
+   },
+   {
+    "id": "n_aisle_L3-OUT",
+    "pos": [
+     105.25,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_aisle_CH_W",
+    "pos": [
+     4.5,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_jn_CHW1",
+    "pos": [
+     4.5,
+     0.0,
+     23.6
+    ],
+    "kind": "junction"
+   },
+   {
+    "id": "n_CHW1",
+    "pos": [
+     1.5,
+     0.0,
+     23.6
+    ],
+    "kind": "charger"
+   },
+   {
+    "id": "n_jn_CHW2",
+    "pos": [
+     4.5,
+     0.0,
+     26.5
+    ],
+    "kind": "junction"
+   },
+   {
+    "id": "n_CHW2",
+    "pos": [
+     1.5,
+     0.0,
+     26.5
+    ],
+    "kind": "charger"
+   },
+   {
+    "id": "n_jn_CHW3",
+    "pos": [
+     4.5,
+     0.0,
+     29.4
+    ],
+    "kind": "junction"
+   },
+   {
+    "id": "n_CHW3",
+    "pos": [
+     1.5,
+     0.0,
+     29.4
+    ],
+    "kind": "charger"
+   },
+   {
+    "id": "n_aisle_CH_E",
+    "pos": [
+     115.5,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_jn_CHE1",
+    "pos": [
+     115.5,
+     0.0,
+     23.6
+    ],
+    "kind": "junction"
+   },
+   {
+    "id": "n_CHE1",
+    "pos": [
+     118.5,
+     0.0,
+     23.6
+    ],
+    "kind": "charger"
+   },
+   {
+    "id": "n_jn_CHE2",
+    "pos": [
+     115.5,
+     0.0,
+     26.5
+    ],
+    "kind": "junction"
+   },
+   {
+    "id": "n_CHE2",
+    "pos": [
+     118.5,
+     0.0,
+     26.5
+    ],
+    "kind": "charger"
+   },
+   {
+    "id": "n_jn_CHE3",
+    "pos": [
+     115.5,
+     0.0,
+     29.4
+    ],
+    "kind": "junction"
+   },
+   {
+    "id": "n_CHE3",
+    "pos": [
+     118.5,
+     0.0,
+     29.4
+    ],
+    "kind": "charger"
+   },
+   {
+    "id": "n_inbound_qc",
+    "pos": [
+     40.9,
+     0.0,
+     21.8
+    ],
+    "kind": "inbound_qc"
+   },
+   {
+    "id": "n_aisle_inbound_qc",
+    "pos": [
+     40.9,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_outbound_qc",
+    "pos": [
+     79.1,
+     0.0,
+     21.8
+    ],
+    "kind": "outbound_qc"
+   },
+   {
+    "id": "n_aisle_outbound_qc",
+    "pos": [
+     79.1,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_WAIT1",
+    "pos": [
+     33.0,
+     0.0,
+     19.8
+    ],
+    "kind": "wait"
+   },
+   {
+    "id": "n_aisle_WAIT1",
+    "pos": [
+     33.0,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_WAIT2",
+    "pos": [
+     36.6,
+     0.0,
+     19.8
+    ],
+    "kind": "wait"
+   },
+   {
+    "id": "n_aisle_WAIT2",
+    "pos": [
+     36.6,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_WAIT3",
+    "pos": [
+     84.6,
+     0.0,
+     19.8
+    ],
+    "kind": "wait"
+   },
+   {
+    "id": "n_aisle_WAIT3",
+    "pos": [
+     84.6,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   },
+   {
+    "id": "n_WAIT4",
+    "pos": [
+     87.0,
+     0.0,
+     19.8
+    ],
+    "kind": "wait"
+   },
+   {
+    "id": "n_aisle_WAIT4",
+    "pos": [
+     87.0,
+     0.0,
+     16.8
+    ],
+    "kind": "aisle"
+   }
+  ],
+  "edges": [
+   {
+    "from": "n_dock_IN1",
+    "to": "n_aisle_IN1",
+    "length": 5.0
+   },
+   {
+    "from": "n_dock_IN2",
+    "to": "n_aisle_IN2",
+    "length": 5.0
+   },
+   {
+    "from": "n_dock_IN3",
+    "to": "n_aisle_IN3",
+    "length": 5.0
+   },
+   {
+    "from": "n_dock_IN4",
+    "to": "n_aisle_IN4",
+    "length": 5.0
+   },
+   {
+    "from": "n_dock_IN5",
+    "to": "n_aisle_IN5",
+    "length": 5.0
+   },
+   {
+    "from": "n_dock_IN6",
+    "to": "n_aisle_IN6",
+    "length": 5.0
+   },
+   {
+    "from": "n_dock_OUT1",
+    "to": "n_aisle_OUT1",
+    "length": 5.0
+   },
+   {
+    "from": "n_dock_OUT2",
+    "to": "n_aisle_OUT2",
+    "length": 5.0
+   },
+   {
+    "from": "n_dock_OUT3",
+    "to": "n_aisle_OUT3",
+    "length": 5.0
+   },
+   {
+    "from": "n_dock_OUT4",
+    "to": "n_aisle_OUT4",
+    "length": 5.0
+   },
+   {
+    "from": "n_dock_OUT5",
+    "to": "n_aisle_OUT5",
+    "length": 5.0
+   },
+   {
+    "from": "n_dock_OUT6",
+    "to": "n_aisle_OUT6",
+    "length": 5.0
+   },
+   {
+    "from": "n_buf_L1-IN",
+    "to": "n_aisle_L1-IN",
+    "length": 1.8
+   },
+   {
+    "from": "n_buf_L1-OUT",
+    "to": "n_aisle_L1-OUT",
+    "length": 1.8
+   },
+   {
+    "from": "n_buf_L2-IN",
+    "to": "n_aisle_L2-IN",
+    "length": 1.8
+   },
+   {
+    "from": "n_buf_L2-OUT",
+    "to": "n_aisle_L2-OUT",
+    "length": 1.8
+   },
+   {
+    "from": "n_buf_L3-IN",
+    "to": "n_aisle_L3-IN",
+    "length": 1.8
+   },
+   {
+    "from": "n_buf_L3-OUT",
+    "to": "n_aisle_L3-OUT",
+    "length": 1.8
+   },
+   {
+    "from": "n_aisle_CH_W",
+    "to": "n_jn_CHW1",
+    "length": 6.8
+   },
+   {
+    "from": "n_jn_CHW1",
+    "to": "n_CHW1",
+    "length": 3.0
+   },
+   {
+    "from": "n_jn_CHW1",
+    "to": "n_jn_CHW2",
+    "length": 2.9
+   },
+   {
+    "from": "n_jn_CHW2",
+    "to": "n_CHW2",
+    "length": 3.0
+   },
+   {
+    "from": "n_jn_CHW2",
+    "to": "n_jn_CHW3",
+    "length": 2.9
+   },
+   {
+    "from": "n_jn_CHW3",
+    "to": "n_CHW3",
+    "length": 3.0
+   },
+   {
+    "from": "n_aisle_CH_E",
+    "to": "n_jn_CHE1",
+    "length": 6.8
+   },
+   {
+    "from": "n_jn_CHE1",
+    "to": "n_CHE1",
+    "length": 3.0
+   },
+   {
+    "from": "n_jn_CHE1",
+    "to": "n_jn_CHE2",
+    "length": 2.9
+   },
+   {
+    "from": "n_jn_CHE2",
+    "to": "n_CHE2",
+    "length": 3.0
+   },
+   {
+    "from": "n_jn_CHE2",
+    "to": "n_jn_CHE3",
+    "length": 2.9
+   },
+   {
+    "from": "n_jn_CHE3",
+    "to": "n_CHE3",
+    "length": 3.0
+   },
+   {
+    "from": "n_inbound_qc",
+    "to": "n_aisle_inbound_qc",
+    "length": 5.0
+   },
+   {
+    "from": "n_outbound_qc",
+    "to": "n_aisle_outbound_qc",
+    "length": 5.0
+   },
+   {
+    "from": "n_WAIT1",
+    "to": "n_aisle_WAIT1",
+    "length": 3.0
+   },
+   {
+    "from": "n_WAIT2",
+    "to": "n_aisle_WAIT2",
+    "length": 3.0
+   },
+   {
+    "from": "n_WAIT3",
+    "to": "n_aisle_WAIT3",
+    "length": 3.0
+   },
+   {
+    "from": "n_WAIT4",
+    "to": "n_aisle_WAIT4",
+    "length": 3.0
+   },
+   {
+    "from": "n_aisle_IN1",
+    "to": "n_aisle_CH_W",
+    "length": 2.0
+   },
+   {
+    "from": "n_aisle_CH_W",
+    "to": "n_aisle_IN2",
+    "length": 3.0
+   },
+   {
+    "from": "n_aisle_IN2",
+    "to": "n_aisle_IN3",
+    "length": 5.0
+   },
+   {
+    "from": "n_aisle_IN3",
+    "to": "n_aisle_L1-IN",
+    "length": 2.25
+   },
+   {
+    "from": "n_aisle_L1-IN",
+    "to": "n_aisle_IN4",
+    "length": 12.75
+   },
+   {
+    "from": "n_aisle_IN4",
+    "to": "n_aisle_L1-OUT",
+    "length": 1.35
+   },
+   {
+    "from": "n_aisle_L1-OUT",
+    "to": "n_aisle_IN5",
+    "length": 3.65
+   },
+   {
+    "from": "n_aisle_IN5",
+    "to": "n_aisle_WAIT1",
+    "length": 0.5
+   },
+   {
+    "from": "n_aisle_WAIT1",
+    "to": "n_aisle_WAIT2",
+    "length": 3.6
+   },
+   {
+    "from": "n_aisle_WAIT2",
+    "to": "n_aisle_IN6",
+    "length": 0.9
+   },
+   {
+    "from": "n_aisle_IN6",
+    "to": "n_aisle_inbound_qc",
+    "length": 3.4
+   },
+   {
+    "from": "n_aisle_inbound_qc",
+    "to": "n_aisle_L2-IN",
+    "length": 12.05
+   },
+   {
+    "from": "n_aisle_L2-IN",
+    "to": "n_aisle_L2-OUT",
+    "length": 14.1
+   },
+   {
+    "from": "n_aisle_L2-OUT",
+    "to": "n_aisle_outbound_qc",
+    "length": 12.05
+   },
+   {
+    "from": "n_aisle_outbound_qc",
+    "to": "n_aisle_OUT6",
+    "length": 3.4
+   },
+   {
+    "from": "n_aisle_OUT6",
+    "to": "n_aisle_WAIT3",
+    "length": 2.1
+   },
+   {
+    "from": "n_aisle_WAIT3",
+    "to": "n_aisle_WAIT4",
+    "length": 2.4
+   },
+   {
+    "from": "n_aisle_WAIT4",
+    "to": "n_aisle_OUT5",
+    "length": 0.5
+   },
+   {
+    "from": "n_aisle_OUT5",
+    "to": "n_aisle_L3-IN",
+    "length": 3.65
+   },
+   {
+    "from": "n_aisle_L3-IN",
+    "to": "n_aisle_OUT4",
+    "length": 1.35
+   },
+   {
+    "from": "n_aisle_OUT4",
+    "to": "n_aisle_L3-OUT",
+    "length": 12.75
+   },
+   {
+    "from": "n_aisle_L3-OUT",
+    "to": "n_aisle_OUT3",
+    "length": 2.25
+   },
+   {
+    "from": "n_aisle_OUT3",
+    "to": "n_aisle_OUT2",
+    "length": 5.0
+   },
+   {
+    "from": "n_aisle_OUT2",
+    "to": "n_aisle_CH_E",
+    "length": 3.0
+   },
+   {
+    "from": "n_aisle_CH_E",
+    "to": "n_aisle_OUT1",
+    "length": 2.0
+   }
+  ]
+ },
+ "boxes": [
+  {
+   "id": "floor",
+   "type": "floor",
+   "label": "바닥 120 x 80",
+   "center": [
+    60.0,
+    -0.05,
+    40.0
+   ],
+   "size": [
+    120.0,
+    0.1,
+    80.0
+   ],
+   "color": "#f3f2ee"
+  },
+  {
+   "id": "wall_N",
+   "type": "wall",
+   "label": "북쪽 벽",
+   "center": [
+    60.0,
+    12.5,
+    80.15
+   ],
+   "size": [
+    120.6,
+    25.0,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_W",
+   "type": "wall",
+   "label": "서쪽 벽",
+   "center": [
+    -0.15,
+    12.5,
+    40.0
+   ],
+   "size": [
+    0.3,
+    25.0,
+    80.0
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_E",
+   "type": "wall",
+   "label": "동쪽 벽",
+   "center": [
+    120.15,
+    12.5,
+    40.0
+   ],
+   "size": [
+    0.3,
+    25.0,
+    80.0
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S01",
+   "type": "wall",
+   "label": "남쪽 벽",
+   "center": [
+    0.2,
+    12.5,
+    -0.15
+   ],
+   "size": [
+    1.0,
+    25.0,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S02",
+   "type": "wall",
+   "label": "남쪽 벽",
+   "center": [
+    5.0,
+    12.5,
+    -0.15
+   ],
+   "size": [
+    1.4,
+    25.0,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S03",
+   "type": "wall",
+   "label": "남쪽 벽",
+   "center": [
+    10.0,
+    12.5,
+    -0.15
+   ],
+   "size": [
+    1.4,
+    25.0,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S04",
+   "type": "wall",
+   "label": "남쪽 벽",
+   "center": [
+    20.0,
+    12.5,
+    -0.15
+   ],
+   "size": [
+    11.4,
+    25.0,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S05",
+   "type": "wall",
+   "label": "남쪽 벽",
+   "center": [
+    30.0,
+    12.5,
+    -0.15
+   ],
+   "size": [
+    1.4,
+    25.0,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S06",
+   "type": "wall",
+   "label": "남쪽 벽",
+   "center": [
+    35.0,
+    12.5,
+    -0.15
+   ],
+   "size": [
+    1.4,
+    25.0,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S07",
+   "type": "wall",
+   "label": "남쪽 벽",
+   "center": [
+    60.0,
+    12.5,
+    -0.15
+   ],
+   "size": [
+    41.4,
+    25.0,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S08",
+   "type": "wall",
+   "label": "남쪽 벽",
+   "center": [
+    85.0,
+    12.5,
+    -0.15
+   ],
+   "size": [
+    1.4,
+    25.0,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S09",
+   "type": "wall",
+   "label": "남쪽 벽",
+   "center": [
+    90.0,
+    12.5,
+    -0.15
+   ],
+   "size": [
+    1.4,
+    25.0,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S10",
+   "type": "wall",
+   "label": "남쪽 벽",
+   "center": [
+    100.0,
+    12.5,
+    -0.15
+   ],
+   "size": [
+    11.4,
+    25.0,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S11",
+   "type": "wall",
+   "label": "남쪽 벽",
+   "center": [
+    110.0,
+    12.5,
+    -0.15
+   ],
+   "size": [
+    1.4,
+    25.0,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S12",
+   "type": "wall",
+   "label": "남쪽 벽",
+   "center": [
+    115.0,
+    12.5,
+    -0.15
+   ],
+   "size": [
+    1.4,
+    25.0,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S13",
+   "type": "wall",
+   "label": "남쪽 벽",
+   "center": [
+    119.8,
+    12.5,
+    -0.15
+   ],
+   "size": [
+    1.0,
+    25.0,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S_lintel_2.5",
+   "type": "wall",
+   "label": "도크 문 위 벽",
+   "center": [
+    2.5,
+    14.75,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    20.5,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S_lintel_7.5",
+   "type": "wall",
+   "label": "도크 문 위 벽",
+   "center": [
+    7.5,
+    14.75,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    20.5,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S_lintel_12.5",
+   "type": "wall",
+   "label": "도크 문 위 벽",
+   "center": [
+    12.5,
+    14.75,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    20.5,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S_lintel_27.5",
+   "type": "wall",
+   "label": "도크 문 위 벽",
+   "center": [
+    27.5,
+    14.75,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    20.5,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S_lintel_32.5",
+   "type": "wall",
+   "label": "도크 문 위 벽",
+   "center": [
+    32.5,
+    14.75,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    20.5,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S_lintel_37.5",
+   "type": "wall",
+   "label": "도크 문 위 벽",
+   "center": [
+    37.5,
+    14.75,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    20.5,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S_lintel_82.5",
+   "type": "wall",
+   "label": "도크 문 위 벽",
+   "center": [
+    82.5,
+    14.75,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    20.5,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S_lintel_87.5",
+   "type": "wall",
+   "label": "도크 문 위 벽",
+   "center": [
+    87.5,
+    14.75,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    20.5,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S_lintel_92.5",
+   "type": "wall",
+   "label": "도크 문 위 벽",
+   "center": [
+    92.5,
+    14.75,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    20.5,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S_lintel_107.5",
+   "type": "wall",
+   "label": "도크 문 위 벽",
+   "center": [
+    107.5,
+    14.75,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    20.5,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S_lintel_112.5",
+   "type": "wall",
+   "label": "도크 문 위 벽",
+   "center": [
+    112.5,
+    14.75,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    20.5,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "wall_S_lintel_117.5",
+   "type": "wall",
+   "label": "도크 문 위 벽",
+   "center": [
+    117.5,
+    14.75,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    20.5,
+    0.3
+   ],
+   "color": "#3a3936"
+  },
+  {
+   "id": "zone_inbound",
+   "type": "zone",
+   "label": "입고·검수 구역",
+   "center": [
+    20.0,
+    0.005,
+    7.2
+   ],
+   "size": [
+    40.0,
+    0.01,
+    14.4
+   ],
+   "color": "#d7f0e6"
+  },
+  {
+   "id": "zone_outbound",
+   "type": "zone",
+   "label": "출고 스테이징 구역",
+   "center": [
+    100.0,
+    0.005,
+    7.2
+   ],
+   "size": [
+    40.0,
+    0.01,
+    14.4
+   ],
+   "color": "#fbe1d6"
+  },
+  {
+   "id": "office",
+   "type": "office",
+   "label": "사무실·관제실·휴게 (2층)",
+   "center": [
+    60.0,
+    4.0,
+    7.2
+   ],
+   "size": [
+    40.0,
+    8.0,
+    14.4
+   ],
+   "color": "#ecebe7",
+   "floors": 2,
+   "floor_height": 4.0
+  },
+  {
+   "id": "spare_IN",
+   "type": "spare_area",
+   "label": "입고 예비 구역 (초과 적치·검수 대기)",
+   "center": [
+    20.0,
+    0.005,
+    6.0
+   ],
+   "size": [
+    9.0,
+    0.01,
+    8.4
+   ],
+   "color": "#ffffff"
+  },
+  {
+   "id": "spare_OUT",
+   "type": "spare_area",
+   "label": "출고 예비 구역 (초과 적치·합포장 대기)",
+   "center": [
+    100.0,
+    0.005,
+    6.0
+   ],
+   "size": [
+    9.0,
+    0.01,
+    8.4
+   ],
+   "color": "#ffffff"
+  },
+  {
+   "id": "dock_IN1_door",
+   "type": "dock_door",
+   "label": "도크 IN1 문 (3.6 m)",
+   "center": [
+    2.5,
+    2.25,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    4.5,
+    0.3
+   ],
+   "color": "#1baf7a",
+   "opening": true
+  },
+  {
+   "id": "dock_IN1_leveler",
+   "type": "dock_leveler",
+   "label": "도크 IN1 레벨러",
+   "center": [
+    2.5,
+    0.025,
+    0.6
+   ],
+   "size": [
+    3.6,
+    0.05,
+    1.2
+   ],
+   "color": "#1baf7a"
+  },
+  {
+   "id": "dock_IN1_truck",
+   "type": "truck_bay",
+   "label": "도크 IN1 트럭 정차 칸 (건물 밖)",
+   "center": [
+    2.5,
+    0.005,
+    -8.5
+   ],
+   "size": [
+    2.5,
+    0.01,
+    14.0
+   ],
+   "color": "#d9d8d3",
+   "outdoor": true
+  },
+  {
+   "id": "SC-IN1",
+   "type": "weigh_station",
+   "label": "도크 IN1 계량대",
+   "center": [
+    2.5,
+    0.05,
+    11.8
+   ],
+   "size": [
+    2.4,
+    0.1,
+    2.4
+   ],
+   "color": "#1baf7a"
+  },
+  {
+   "id": "dock_IN1_stage_11",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 1-1",
+   "center": [
+    0.7,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_12",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 1-2",
+   "center": [
+    0.7,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_13",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 1-3",
+   "center": [
+    0.7,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_14",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 1-4",
+   "center": [
+    0.7,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_15",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 1-5",
+   "center": [
+    0.7,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_16",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 1-6",
+   "center": [
+    0.7,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_17",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 1-7",
+   "center": [
+    0.7,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_21",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 2-1",
+   "center": [
+    1.9,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_22",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 2-2",
+   "center": [
+    1.9,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_23",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 2-3",
+   "center": [
+    1.9,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_24",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 2-4",
+   "center": [
+    1.9,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_25",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 2-5",
+   "center": [
+    1.9,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_26",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 2-6",
+   "center": [
+    1.9,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_27",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 2-7",
+   "center": [
+    1.9,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_31",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 3-1",
+   "center": [
+    3.1,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_32",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 3-2",
+   "center": [
+    3.1,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_33",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 3-3",
+   "center": [
+    3.1,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_34",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 3-4",
+   "center": [
+    3.1,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_35",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 3-5",
+   "center": [
+    3.1,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_36",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 3-6",
+   "center": [
+    3.1,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_37",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 3-7",
+   "center": [
+    3.1,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_41",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 4-1",
+   "center": [
+    4.3,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_42",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 4-2",
+   "center": [
+    4.3,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_43",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 4-3",
+   "center": [
+    4.3,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_44",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 4-4",
+   "center": [
+    4.3,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_45",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 4-5",
+   "center": [
+    4.3,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_46",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 4-6",
+   "center": [
+    4.3,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN1_stage_47",
+   "type": "staging_slot",
+   "label": "도크 IN1 적치 칸 4-7",
+   "center": [
+    4.3,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_door",
+   "type": "dock_door",
+   "label": "도크 IN2 문 (3.6 m)",
+   "center": [
+    7.5,
+    2.25,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    4.5,
+    0.3
+   ],
+   "color": "#1baf7a",
+   "opening": true
+  },
+  {
+   "id": "dock_IN2_leveler",
+   "type": "dock_leveler",
+   "label": "도크 IN2 레벨러",
+   "center": [
+    7.5,
+    0.025,
+    0.6
+   ],
+   "size": [
+    3.6,
+    0.05,
+    1.2
+   ],
+   "color": "#1baf7a"
+  },
+  {
+   "id": "dock_IN2_truck",
+   "type": "truck_bay",
+   "label": "도크 IN2 트럭 정차 칸 (건물 밖)",
+   "center": [
+    7.5,
+    0.005,
+    -8.5
+   ],
+   "size": [
+    2.5,
+    0.01,
+    14.0
+   ],
+   "color": "#d9d8d3",
+   "outdoor": true
+  },
+  {
+   "id": "SC-IN2",
+   "type": "weigh_station",
+   "label": "도크 IN2 계량대",
+   "center": [
+    7.5,
+    0.05,
+    11.8
+   ],
+   "size": [
+    2.4,
+    0.1,
+    2.4
+   ],
+   "color": "#1baf7a"
+  },
+  {
+   "id": "dock_IN2_stage_11",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 1-1",
+   "center": [
+    5.7,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_12",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 1-2",
+   "center": [
+    5.7,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_13",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 1-3",
+   "center": [
+    5.7,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_14",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 1-4",
+   "center": [
+    5.7,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_15",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 1-5",
+   "center": [
+    5.7,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_16",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 1-6",
+   "center": [
+    5.7,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_17",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 1-7",
+   "center": [
+    5.7,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_21",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 2-1",
+   "center": [
+    6.9,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_22",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 2-2",
+   "center": [
+    6.9,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_23",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 2-3",
+   "center": [
+    6.9,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_24",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 2-4",
+   "center": [
+    6.9,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_25",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 2-5",
+   "center": [
+    6.9,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_26",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 2-6",
+   "center": [
+    6.9,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_27",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 2-7",
+   "center": [
+    6.9,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_31",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 3-1",
+   "center": [
+    8.1,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_32",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 3-2",
+   "center": [
+    8.1,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_33",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 3-3",
+   "center": [
+    8.1,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_34",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 3-4",
+   "center": [
+    8.1,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_35",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 3-5",
+   "center": [
+    8.1,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_36",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 3-6",
+   "center": [
+    8.1,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_37",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 3-7",
+   "center": [
+    8.1,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_41",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 4-1",
+   "center": [
+    9.3,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_42",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 4-2",
+   "center": [
+    9.3,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_43",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 4-3",
+   "center": [
+    9.3,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_44",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 4-4",
+   "center": [
+    9.3,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_45",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 4-5",
+   "center": [
+    9.3,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_46",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 4-6",
+   "center": [
+    9.3,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN2_stage_47",
+   "type": "staging_slot",
+   "label": "도크 IN2 적치 칸 4-7",
+   "center": [
+    9.3,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_door",
+   "type": "dock_door",
+   "label": "도크 IN3 문 (3.6 m)",
+   "center": [
+    12.5,
+    2.25,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    4.5,
+    0.3
+   ],
+   "color": "#1baf7a",
+   "opening": true
+  },
+  {
+   "id": "dock_IN3_leveler",
+   "type": "dock_leveler",
+   "label": "도크 IN3 레벨러",
+   "center": [
+    12.5,
+    0.025,
+    0.6
+   ],
+   "size": [
+    3.6,
+    0.05,
+    1.2
+   ],
+   "color": "#1baf7a"
+  },
+  {
+   "id": "dock_IN3_truck",
+   "type": "truck_bay",
+   "label": "도크 IN3 트럭 정차 칸 (건물 밖)",
+   "center": [
+    12.5,
+    0.005,
+    -8.5
+   ],
+   "size": [
+    2.5,
+    0.01,
+    14.0
+   ],
+   "color": "#d9d8d3",
+   "outdoor": true
+  },
+  {
+   "id": "SC-IN3",
+   "type": "weigh_station",
+   "label": "도크 IN3 계량대",
+   "center": [
+    12.5,
+    0.05,
+    11.8
+   ],
+   "size": [
+    2.4,
+    0.1,
+    2.4
+   ],
+   "color": "#1baf7a"
+  },
+  {
+   "id": "dock_IN3_stage_11",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 1-1",
+   "center": [
+    10.7,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_12",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 1-2",
+   "center": [
+    10.7,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_13",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 1-3",
+   "center": [
+    10.7,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_14",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 1-4",
+   "center": [
+    10.7,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_15",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 1-5",
+   "center": [
+    10.7,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_16",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 1-6",
+   "center": [
+    10.7,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_17",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 1-7",
+   "center": [
+    10.7,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_21",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 2-1",
+   "center": [
+    11.9,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_22",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 2-2",
+   "center": [
+    11.9,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_23",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 2-3",
+   "center": [
+    11.9,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_24",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 2-4",
+   "center": [
+    11.9,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_25",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 2-5",
+   "center": [
+    11.9,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_26",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 2-6",
+   "center": [
+    11.9,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_27",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 2-7",
+   "center": [
+    11.9,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_31",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 3-1",
+   "center": [
+    13.1,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_32",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 3-2",
+   "center": [
+    13.1,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_33",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 3-3",
+   "center": [
+    13.1,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_34",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 3-4",
+   "center": [
+    13.1,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_35",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 3-5",
+   "center": [
+    13.1,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_36",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 3-6",
+   "center": [
+    13.1,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_37",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 3-7",
+   "center": [
+    13.1,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_41",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 4-1",
+   "center": [
+    14.3,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_42",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 4-2",
+   "center": [
+    14.3,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_43",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 4-3",
+   "center": [
+    14.3,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_44",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 4-4",
+   "center": [
+    14.3,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_45",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 4-5",
+   "center": [
+    14.3,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_46",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 4-6",
+   "center": [
+    14.3,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN3_stage_47",
+   "type": "staging_slot",
+   "label": "도크 IN3 적치 칸 4-7",
+   "center": [
+    14.3,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_door",
+   "type": "dock_door",
+   "label": "도크 IN4 문 (3.6 m)",
+   "center": [
+    27.5,
+    2.25,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    4.5,
+    0.3
+   ],
+   "color": "#1baf7a",
+   "opening": true
+  },
+  {
+   "id": "dock_IN4_leveler",
+   "type": "dock_leveler",
+   "label": "도크 IN4 레벨러",
+   "center": [
+    27.5,
+    0.025,
+    0.6
+   ],
+   "size": [
+    3.6,
+    0.05,
+    1.2
+   ],
+   "color": "#1baf7a"
+  },
+  {
+   "id": "dock_IN4_truck",
+   "type": "truck_bay",
+   "label": "도크 IN4 트럭 정차 칸 (건물 밖)",
+   "center": [
+    27.5,
+    0.005,
+    -8.5
+   ],
+   "size": [
+    2.5,
+    0.01,
+    14.0
+   ],
+   "color": "#d9d8d3",
+   "outdoor": true
+  },
+  {
+   "id": "SC-IN4",
+   "type": "weigh_station",
+   "label": "도크 IN4 계량대",
+   "center": [
+    27.5,
+    0.05,
+    11.8
+   ],
+   "size": [
+    2.4,
+    0.1,
+    2.4
+   ],
+   "color": "#1baf7a"
+  },
+  {
+   "id": "dock_IN4_stage_11",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 1-1",
+   "center": [
+    25.7,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_12",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 1-2",
+   "center": [
+    25.7,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_13",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 1-3",
+   "center": [
+    25.7,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_14",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 1-4",
+   "center": [
+    25.7,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_15",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 1-5",
+   "center": [
+    25.7,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_16",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 1-6",
+   "center": [
+    25.7,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_17",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 1-7",
+   "center": [
+    25.7,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_21",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 2-1",
+   "center": [
+    26.9,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_22",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 2-2",
+   "center": [
+    26.9,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_23",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 2-3",
+   "center": [
+    26.9,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_24",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 2-4",
+   "center": [
+    26.9,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_25",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 2-5",
+   "center": [
+    26.9,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_26",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 2-6",
+   "center": [
+    26.9,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_27",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 2-7",
+   "center": [
+    26.9,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_31",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 3-1",
+   "center": [
+    28.1,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_32",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 3-2",
+   "center": [
+    28.1,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_33",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 3-3",
+   "center": [
+    28.1,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_34",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 3-4",
+   "center": [
+    28.1,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_35",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 3-5",
+   "center": [
+    28.1,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_36",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 3-6",
+   "center": [
+    28.1,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_37",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 3-7",
+   "center": [
+    28.1,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_41",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 4-1",
+   "center": [
+    29.3,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_42",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 4-2",
+   "center": [
+    29.3,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_43",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 4-3",
+   "center": [
+    29.3,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_44",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 4-4",
+   "center": [
+    29.3,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_45",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 4-5",
+   "center": [
+    29.3,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_46",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 4-6",
+   "center": [
+    29.3,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN4_stage_47",
+   "type": "staging_slot",
+   "label": "도크 IN4 적치 칸 4-7",
+   "center": [
+    29.3,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_door",
+   "type": "dock_door",
+   "label": "도크 IN5 문 (3.6 m)",
+   "center": [
+    32.5,
+    2.25,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    4.5,
+    0.3
+   ],
+   "color": "#1baf7a",
+   "opening": true
+  },
+  {
+   "id": "dock_IN5_leveler",
+   "type": "dock_leveler",
+   "label": "도크 IN5 레벨러",
+   "center": [
+    32.5,
+    0.025,
+    0.6
+   ],
+   "size": [
+    3.6,
+    0.05,
+    1.2
+   ],
+   "color": "#1baf7a"
+  },
+  {
+   "id": "dock_IN5_truck",
+   "type": "truck_bay",
+   "label": "도크 IN5 트럭 정차 칸 (건물 밖)",
+   "center": [
+    32.5,
+    0.005,
+    -8.5
+   ],
+   "size": [
+    2.5,
+    0.01,
+    14.0
+   ],
+   "color": "#d9d8d3",
+   "outdoor": true
+  },
+  {
+   "id": "SC-IN5",
+   "type": "weigh_station",
+   "label": "도크 IN5 계량대",
+   "center": [
+    32.5,
+    0.05,
+    11.8
+   ],
+   "size": [
+    2.4,
+    0.1,
+    2.4
+   ],
+   "color": "#1baf7a"
+  },
+  {
+   "id": "dock_IN5_stage_11",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 1-1",
+   "center": [
+    30.7,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_12",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 1-2",
+   "center": [
+    30.7,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_13",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 1-3",
+   "center": [
+    30.7,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_14",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 1-4",
+   "center": [
+    30.7,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_15",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 1-5",
+   "center": [
+    30.7,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_16",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 1-6",
+   "center": [
+    30.7,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_17",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 1-7",
+   "center": [
+    30.7,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_21",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 2-1",
+   "center": [
+    31.9,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_22",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 2-2",
+   "center": [
+    31.9,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_23",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 2-3",
+   "center": [
+    31.9,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_24",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 2-4",
+   "center": [
+    31.9,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_25",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 2-5",
+   "center": [
+    31.9,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_26",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 2-6",
+   "center": [
+    31.9,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_27",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 2-7",
+   "center": [
+    31.9,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_31",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 3-1",
+   "center": [
+    33.1,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_32",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 3-2",
+   "center": [
+    33.1,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_33",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 3-3",
+   "center": [
+    33.1,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_34",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 3-4",
+   "center": [
+    33.1,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_35",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 3-5",
+   "center": [
+    33.1,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_36",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 3-6",
+   "center": [
+    33.1,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_37",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 3-7",
+   "center": [
+    33.1,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_41",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 4-1",
+   "center": [
+    34.3,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_42",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 4-2",
+   "center": [
+    34.3,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_43",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 4-3",
+   "center": [
+    34.3,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_44",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 4-4",
+   "center": [
+    34.3,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_45",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 4-5",
+   "center": [
+    34.3,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_46",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 4-6",
+   "center": [
+    34.3,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN5_stage_47",
+   "type": "staging_slot",
+   "label": "도크 IN5 적치 칸 4-7",
+   "center": [
+    34.3,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_door",
+   "type": "dock_door",
+   "label": "도크 IN6 문 (3.6 m)",
+   "center": [
+    37.5,
+    2.25,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    4.5,
+    0.3
+   ],
+   "color": "#1baf7a",
+   "opening": true
+  },
+  {
+   "id": "dock_IN6_leveler",
+   "type": "dock_leveler",
+   "label": "도크 IN6 레벨러",
+   "center": [
+    37.5,
+    0.025,
+    0.6
+   ],
+   "size": [
+    3.6,
+    0.05,
+    1.2
+   ],
+   "color": "#1baf7a"
+  },
+  {
+   "id": "dock_IN6_truck",
+   "type": "truck_bay",
+   "label": "도크 IN6 트럭 정차 칸 (건물 밖)",
+   "center": [
+    37.5,
+    0.005,
+    -8.5
+   ],
+   "size": [
+    2.5,
+    0.01,
+    14.0
+   ],
+   "color": "#d9d8d3",
+   "outdoor": true
+  },
+  {
+   "id": "SC-IN6",
+   "type": "weigh_station",
+   "label": "도크 IN6 계량대",
+   "center": [
+    37.5,
+    0.05,
+    11.8
+   ],
+   "size": [
+    2.4,
+    0.1,
+    2.4
+   ],
+   "color": "#1baf7a"
+  },
+  {
+   "id": "dock_IN6_stage_11",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 1-1",
+   "center": [
+    35.7,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_12",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 1-2",
+   "center": [
+    35.7,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_13",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 1-3",
+   "center": [
+    35.7,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_14",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 1-4",
+   "center": [
+    35.7,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_15",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 1-5",
+   "center": [
+    35.7,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_16",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 1-6",
+   "center": [
+    35.7,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_17",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 1-7",
+   "center": [
+    35.7,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_21",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 2-1",
+   "center": [
+    36.9,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_22",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 2-2",
+   "center": [
+    36.9,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_23",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 2-3",
+   "center": [
+    36.9,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_24",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 2-4",
+   "center": [
+    36.9,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_25",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 2-5",
+   "center": [
+    36.9,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_26",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 2-6",
+   "center": [
+    36.9,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_27",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 2-7",
+   "center": [
+    36.9,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_31",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 3-1",
+   "center": [
+    38.1,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_32",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 3-2",
+   "center": [
+    38.1,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_33",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 3-3",
+   "center": [
+    38.1,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_34",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 3-4",
+   "center": [
+    38.1,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_35",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 3-5",
+   "center": [
+    38.1,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_36",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 3-6",
+   "center": [
+    38.1,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_37",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 3-7",
+   "center": [
+    38.1,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_41",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 4-1",
+   "center": [
+    39.3,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_42",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 4-2",
+   "center": [
+    39.3,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_43",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 4-3",
+   "center": [
+    39.3,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_44",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 4-4",
+   "center": [
+    39.3,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_45",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 4-5",
+   "center": [
+    39.3,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_46",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 4-6",
+   "center": [
+    39.3,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_IN6_stage_47",
+   "type": "staging_slot",
+   "label": "도크 IN6 적치 칸 4-7",
+   "center": [
+    39.3,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "dock_OUT1_door",
+   "type": "dock_door",
+   "label": "도크 OUT1 문 (3.6 m)",
+   "center": [
+    117.5,
+    2.25,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    4.5,
+    0.3
+   ],
+   "color": "#eb6834",
+   "opening": true
+  },
+  {
+   "id": "dock_OUT1_leveler",
+   "type": "dock_leveler",
+   "label": "도크 OUT1 레벨러",
+   "center": [
+    117.5,
+    0.025,
+    0.6
+   ],
+   "size": [
+    3.6,
+    0.05,
+    1.2
+   ],
+   "color": "#eb6834"
+  },
+  {
+   "id": "dock_OUT1_truck",
+   "type": "truck_bay",
+   "label": "도크 OUT1 트럭 정차 칸 (건물 밖)",
+   "center": [
+    117.5,
+    0.005,
+    -8.5
+   ],
+   "size": [
+    2.5,
+    0.01,
+    14.0
+   ],
+   "color": "#d9d8d3",
+   "outdoor": true
+  },
+  {
+   "id": "DP-OUT1",
+   "type": "drop_station",
+   "label": "도크 OUT1 하차대",
+   "center": [
+    117.5,
+    0.05,
+    11.8
+   ],
+   "size": [
+    2.4,
+    0.1,
+    2.4
+   ],
+   "color": "#eb6834"
+  },
+  {
+   "id": "dock_OUT1_stage_11",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 1-1",
+   "center": [
+    115.7,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_12",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 1-2",
+   "center": [
+    115.7,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_13",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 1-3",
+   "center": [
+    115.7,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_14",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 1-4",
+   "center": [
+    115.7,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_15",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 1-5",
+   "center": [
+    115.7,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_16",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 1-6",
+   "center": [
+    115.7,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_17",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 1-7",
+   "center": [
+    115.7,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_21",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 2-1",
+   "center": [
+    116.9,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_22",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 2-2",
+   "center": [
+    116.9,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_23",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 2-3",
+   "center": [
+    116.9,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_24",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 2-4",
+   "center": [
+    116.9,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_25",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 2-5",
+   "center": [
+    116.9,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_26",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 2-6",
+   "center": [
+    116.9,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_27",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 2-7",
+   "center": [
+    116.9,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_31",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 3-1",
+   "center": [
+    118.1,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_32",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 3-2",
+   "center": [
+    118.1,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_33",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 3-3",
+   "center": [
+    118.1,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_34",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 3-4",
+   "center": [
+    118.1,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_35",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 3-5",
+   "center": [
+    118.1,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_36",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 3-6",
+   "center": [
+    118.1,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_37",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 3-7",
+   "center": [
+    118.1,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_41",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 4-1",
+   "center": [
+    119.3,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_42",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 4-2",
+   "center": [
+    119.3,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_43",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 4-3",
+   "center": [
+    119.3,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_44",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 4-4",
+   "center": [
+    119.3,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_45",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 4-5",
+   "center": [
+    119.3,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_46",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 4-6",
+   "center": [
+    119.3,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT1_stage_47",
+   "type": "staging_slot",
+   "label": "도크 OUT1 적치 칸 4-7",
+   "center": [
+    119.3,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_door",
+   "type": "dock_door",
+   "label": "도크 OUT2 문 (3.6 m)",
+   "center": [
+    112.5,
+    2.25,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    4.5,
+    0.3
+   ],
+   "color": "#eb6834",
+   "opening": true
+  },
+  {
+   "id": "dock_OUT2_leveler",
+   "type": "dock_leveler",
+   "label": "도크 OUT2 레벨러",
+   "center": [
+    112.5,
+    0.025,
+    0.6
+   ],
+   "size": [
+    3.6,
+    0.05,
+    1.2
+   ],
+   "color": "#eb6834"
+  },
+  {
+   "id": "dock_OUT2_truck",
+   "type": "truck_bay",
+   "label": "도크 OUT2 트럭 정차 칸 (건물 밖)",
+   "center": [
+    112.5,
+    0.005,
+    -8.5
+   ],
+   "size": [
+    2.5,
+    0.01,
+    14.0
+   ],
+   "color": "#d9d8d3",
+   "outdoor": true
+  },
+  {
+   "id": "DP-OUT2",
+   "type": "drop_station",
+   "label": "도크 OUT2 하차대",
+   "center": [
+    112.5,
+    0.05,
+    11.8
+   ],
+   "size": [
+    2.4,
+    0.1,
+    2.4
+   ],
+   "color": "#eb6834"
+  },
+  {
+   "id": "dock_OUT2_stage_11",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 1-1",
+   "center": [
+    110.7,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_12",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 1-2",
+   "center": [
+    110.7,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_13",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 1-3",
+   "center": [
+    110.7,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_14",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 1-4",
+   "center": [
+    110.7,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_15",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 1-5",
+   "center": [
+    110.7,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_16",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 1-6",
+   "center": [
+    110.7,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_17",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 1-7",
+   "center": [
+    110.7,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_21",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 2-1",
+   "center": [
+    111.9,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_22",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 2-2",
+   "center": [
+    111.9,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_23",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 2-3",
+   "center": [
+    111.9,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_24",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 2-4",
+   "center": [
+    111.9,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_25",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 2-5",
+   "center": [
+    111.9,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_26",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 2-6",
+   "center": [
+    111.9,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_27",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 2-7",
+   "center": [
+    111.9,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_31",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 3-1",
+   "center": [
+    113.1,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_32",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 3-2",
+   "center": [
+    113.1,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_33",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 3-3",
+   "center": [
+    113.1,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_34",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 3-4",
+   "center": [
+    113.1,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_35",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 3-5",
+   "center": [
+    113.1,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_36",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 3-6",
+   "center": [
+    113.1,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_37",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 3-7",
+   "center": [
+    113.1,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_41",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 4-1",
+   "center": [
+    114.3,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_42",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 4-2",
+   "center": [
+    114.3,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_43",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 4-3",
+   "center": [
+    114.3,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_44",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 4-4",
+   "center": [
+    114.3,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_45",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 4-5",
+   "center": [
+    114.3,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_46",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 4-6",
+   "center": [
+    114.3,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT2_stage_47",
+   "type": "staging_slot",
+   "label": "도크 OUT2 적치 칸 4-7",
+   "center": [
+    114.3,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_door",
+   "type": "dock_door",
+   "label": "도크 OUT3 문 (3.6 m)",
+   "center": [
+    107.5,
+    2.25,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    4.5,
+    0.3
+   ],
+   "color": "#eb6834",
+   "opening": true
+  },
+  {
+   "id": "dock_OUT3_leveler",
+   "type": "dock_leveler",
+   "label": "도크 OUT3 레벨러",
+   "center": [
+    107.5,
+    0.025,
+    0.6
+   ],
+   "size": [
+    3.6,
+    0.05,
+    1.2
+   ],
+   "color": "#eb6834"
+  },
+  {
+   "id": "dock_OUT3_truck",
+   "type": "truck_bay",
+   "label": "도크 OUT3 트럭 정차 칸 (건물 밖)",
+   "center": [
+    107.5,
+    0.005,
+    -8.5
+   ],
+   "size": [
+    2.5,
+    0.01,
+    14.0
+   ],
+   "color": "#d9d8d3",
+   "outdoor": true
+  },
+  {
+   "id": "DP-OUT3",
+   "type": "drop_station",
+   "label": "도크 OUT3 하차대",
+   "center": [
+    107.5,
+    0.05,
+    11.8
+   ],
+   "size": [
+    2.4,
+    0.1,
+    2.4
+   ],
+   "color": "#eb6834"
+  },
+  {
+   "id": "dock_OUT3_stage_11",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 1-1",
+   "center": [
+    105.7,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_12",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 1-2",
+   "center": [
+    105.7,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_13",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 1-3",
+   "center": [
+    105.7,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_14",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 1-4",
+   "center": [
+    105.7,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_15",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 1-5",
+   "center": [
+    105.7,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_16",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 1-6",
+   "center": [
+    105.7,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_17",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 1-7",
+   "center": [
+    105.7,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_21",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 2-1",
+   "center": [
+    106.9,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_22",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 2-2",
+   "center": [
+    106.9,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_23",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 2-3",
+   "center": [
+    106.9,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_24",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 2-4",
+   "center": [
+    106.9,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_25",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 2-5",
+   "center": [
+    106.9,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_26",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 2-6",
+   "center": [
+    106.9,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_27",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 2-7",
+   "center": [
+    106.9,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_31",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 3-1",
+   "center": [
+    108.1,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_32",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 3-2",
+   "center": [
+    108.1,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_33",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 3-3",
+   "center": [
+    108.1,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_34",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 3-4",
+   "center": [
+    108.1,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_35",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 3-5",
+   "center": [
+    108.1,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_36",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 3-6",
+   "center": [
+    108.1,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_37",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 3-7",
+   "center": [
+    108.1,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_41",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 4-1",
+   "center": [
+    109.3,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_42",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 4-2",
+   "center": [
+    109.3,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_43",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 4-3",
+   "center": [
+    109.3,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_44",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 4-4",
+   "center": [
+    109.3,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_45",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 4-5",
+   "center": [
+    109.3,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_46",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 4-6",
+   "center": [
+    109.3,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT3_stage_47",
+   "type": "staging_slot",
+   "label": "도크 OUT3 적치 칸 4-7",
+   "center": [
+    109.3,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_door",
+   "type": "dock_door",
+   "label": "도크 OUT4 문 (3.6 m)",
+   "center": [
+    92.5,
+    2.25,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    4.5,
+    0.3
+   ],
+   "color": "#eb6834",
+   "opening": true
+  },
+  {
+   "id": "dock_OUT4_leveler",
+   "type": "dock_leveler",
+   "label": "도크 OUT4 레벨러",
+   "center": [
+    92.5,
+    0.025,
+    0.6
+   ],
+   "size": [
+    3.6,
+    0.05,
+    1.2
+   ],
+   "color": "#eb6834"
+  },
+  {
+   "id": "dock_OUT4_truck",
+   "type": "truck_bay",
+   "label": "도크 OUT4 트럭 정차 칸 (건물 밖)",
+   "center": [
+    92.5,
+    0.005,
+    -8.5
+   ],
+   "size": [
+    2.5,
+    0.01,
+    14.0
+   ],
+   "color": "#d9d8d3",
+   "outdoor": true
+  },
+  {
+   "id": "DP-OUT4",
+   "type": "drop_station",
+   "label": "도크 OUT4 하차대",
+   "center": [
+    92.5,
+    0.05,
+    11.8
+   ],
+   "size": [
+    2.4,
+    0.1,
+    2.4
+   ],
+   "color": "#eb6834"
+  },
+  {
+   "id": "dock_OUT4_stage_11",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 1-1",
+   "center": [
+    90.7,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_12",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 1-2",
+   "center": [
+    90.7,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_13",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 1-3",
+   "center": [
+    90.7,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_14",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 1-4",
+   "center": [
+    90.7,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_15",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 1-5",
+   "center": [
+    90.7,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_16",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 1-6",
+   "center": [
+    90.7,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_17",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 1-7",
+   "center": [
+    90.7,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_21",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 2-1",
+   "center": [
+    91.9,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_22",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 2-2",
+   "center": [
+    91.9,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_23",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 2-3",
+   "center": [
+    91.9,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_24",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 2-4",
+   "center": [
+    91.9,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_25",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 2-5",
+   "center": [
+    91.9,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_26",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 2-6",
+   "center": [
+    91.9,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_27",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 2-7",
+   "center": [
+    91.9,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_31",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 3-1",
+   "center": [
+    93.1,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_32",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 3-2",
+   "center": [
+    93.1,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_33",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 3-3",
+   "center": [
+    93.1,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_34",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 3-4",
+   "center": [
+    93.1,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_35",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 3-5",
+   "center": [
+    93.1,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_36",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 3-6",
+   "center": [
+    93.1,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_37",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 3-7",
+   "center": [
+    93.1,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_41",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 4-1",
+   "center": [
+    94.3,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_42",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 4-2",
+   "center": [
+    94.3,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_43",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 4-3",
+   "center": [
+    94.3,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_44",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 4-4",
+   "center": [
+    94.3,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_45",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 4-5",
+   "center": [
+    94.3,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_46",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 4-6",
+   "center": [
+    94.3,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT4_stage_47",
+   "type": "staging_slot",
+   "label": "도크 OUT4 적치 칸 4-7",
+   "center": [
+    94.3,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_door",
+   "type": "dock_door",
+   "label": "도크 OUT5 문 (3.6 m)",
+   "center": [
+    87.5,
+    2.25,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    4.5,
+    0.3
+   ],
+   "color": "#eb6834",
+   "opening": true
+  },
+  {
+   "id": "dock_OUT5_leveler",
+   "type": "dock_leveler",
+   "label": "도크 OUT5 레벨러",
+   "center": [
+    87.5,
+    0.025,
+    0.6
+   ],
+   "size": [
+    3.6,
+    0.05,
+    1.2
+   ],
+   "color": "#eb6834"
+  },
+  {
+   "id": "dock_OUT5_truck",
+   "type": "truck_bay",
+   "label": "도크 OUT5 트럭 정차 칸 (건물 밖)",
+   "center": [
+    87.5,
+    0.005,
+    -8.5
+   ],
+   "size": [
+    2.5,
+    0.01,
+    14.0
+   ],
+   "color": "#d9d8d3",
+   "outdoor": true
+  },
+  {
+   "id": "DP-OUT5",
+   "type": "drop_station",
+   "label": "도크 OUT5 하차대",
+   "center": [
+    87.5,
+    0.05,
+    11.8
+   ],
+   "size": [
+    2.4,
+    0.1,
+    2.4
+   ],
+   "color": "#eb6834"
+  },
+  {
+   "id": "dock_OUT5_stage_11",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 1-1",
+   "center": [
+    85.7,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_12",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 1-2",
+   "center": [
+    85.7,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_13",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 1-3",
+   "center": [
+    85.7,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_14",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 1-4",
+   "center": [
+    85.7,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_15",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 1-5",
+   "center": [
+    85.7,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_16",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 1-6",
+   "center": [
+    85.7,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_17",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 1-7",
+   "center": [
+    85.7,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_21",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 2-1",
+   "center": [
+    86.9,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_22",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 2-2",
+   "center": [
+    86.9,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_23",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 2-3",
+   "center": [
+    86.9,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_24",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 2-4",
+   "center": [
+    86.9,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_25",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 2-5",
+   "center": [
+    86.9,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_26",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 2-6",
+   "center": [
+    86.9,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_27",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 2-7",
+   "center": [
+    86.9,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_31",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 3-1",
+   "center": [
+    88.1,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_32",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 3-2",
+   "center": [
+    88.1,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_33",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 3-3",
+   "center": [
+    88.1,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_34",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 3-4",
+   "center": [
+    88.1,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_35",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 3-5",
+   "center": [
+    88.1,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_36",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 3-6",
+   "center": [
+    88.1,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_37",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 3-7",
+   "center": [
+    88.1,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_41",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 4-1",
+   "center": [
+    89.3,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_42",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 4-2",
+   "center": [
+    89.3,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_43",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 4-3",
+   "center": [
+    89.3,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_44",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 4-4",
+   "center": [
+    89.3,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_45",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 4-5",
+   "center": [
+    89.3,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_46",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 4-6",
+   "center": [
+    89.3,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT5_stage_47",
+   "type": "staging_slot",
+   "label": "도크 OUT5 적치 칸 4-7",
+   "center": [
+    89.3,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_door",
+   "type": "dock_door",
+   "label": "도크 OUT6 문 (3.6 m)",
+   "center": [
+    82.5,
+    2.25,
+    -0.15
+   ],
+   "size": [
+    3.6,
+    4.5,
+    0.3
+   ],
+   "color": "#eb6834",
+   "opening": true
+  },
+  {
+   "id": "dock_OUT6_leveler",
+   "type": "dock_leveler",
+   "label": "도크 OUT6 레벨러",
+   "center": [
+    82.5,
+    0.025,
+    0.6
+   ],
+   "size": [
+    3.6,
+    0.05,
+    1.2
+   ],
+   "color": "#eb6834"
+  },
+  {
+   "id": "dock_OUT6_truck",
+   "type": "truck_bay",
+   "label": "도크 OUT6 트럭 정차 칸 (건물 밖)",
+   "center": [
+    82.5,
+    0.005,
+    -8.5
+   ],
+   "size": [
+    2.5,
+    0.01,
+    14.0
+   ],
+   "color": "#d9d8d3",
+   "outdoor": true
+  },
+  {
+   "id": "DP-OUT6",
+   "type": "drop_station",
+   "label": "도크 OUT6 하차대",
+   "center": [
+    82.5,
+    0.05,
+    11.8
+   ],
+   "size": [
+    2.4,
+    0.1,
+    2.4
+   ],
+   "color": "#eb6834"
+  },
+  {
+   "id": "dock_OUT6_stage_11",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 1-1",
+   "center": [
+    80.7,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_12",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 1-2",
+   "center": [
+    80.7,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_13",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 1-3",
+   "center": [
+    80.7,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_14",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 1-4",
+   "center": [
+    80.7,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_15",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 1-5",
+   "center": [
+    80.7,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_16",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 1-6",
+   "center": [
+    80.7,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_17",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 1-7",
+   "center": [
+    80.7,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_21",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 2-1",
+   "center": [
+    81.9,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_22",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 2-2",
+   "center": [
+    81.9,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_23",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 2-3",
+   "center": [
+    81.9,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_24",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 2-4",
+   "center": [
+    81.9,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_25",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 2-5",
+   "center": [
+    81.9,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_26",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 2-6",
+   "center": [
+    81.9,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_27",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 2-7",
+   "center": [
+    81.9,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_31",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 3-1",
+   "center": [
+    83.1,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_32",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 3-2",
+   "center": [
+    83.1,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_33",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 3-3",
+   "center": [
+    83.1,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_34",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 3-4",
+   "center": [
+    83.1,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_35",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 3-5",
+   "center": [
+    83.1,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_36",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 3-6",
+   "center": [
+    83.1,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_37",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 3-7",
+   "center": [
+    83.1,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_41",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 4-1",
+   "center": [
+    84.3,
+    0.005,
+    2.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_42",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 4-2",
+   "center": [
+    84.3,
+    0.005,
+    3.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_43",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 4-3",
+   "center": [
+    84.3,
+    0.005,
+    4.75
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_44",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 4-4",
+   "center": [
+    84.3,
+    0.005,
+    5.95
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_45",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 4-5",
+   "center": [
+    84.3,
+    0.005,
+    7.15
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_46",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 4-6",
+   "center": [
+    84.3,
+    0.005,
+    8.35
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "dock_OUT6_stage_47",
+   "type": "staging_slot",
+   "label": "도크 OUT6 적치 칸 4-7",
+   "center": [
+    84.3,
+    0.005,
+    9.55
+   ],
+   "size": [
+    1.1,
+    0.01,
+    1.1
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "amr_aisle",
+   "type": "amr_aisle",
+   "label": "AMR 통로 4.8 m (양방향, 방향은 알고리즘이 시간 예약으로 결정)",
+   "center": [
+    60.0,
+    0.005,
+    16.8
+   ],
+   "size": [
+    120.0,
+    0.01,
+    4.8
+   ],
+   "color": "#fff7e0"
+  },
+  {
+   "id": "R1",
+   "type": "rail",
+   "label": "모셔틀 레일 R1 (층마다 모셔틀 1대)",
+   "center": [
+    21.8,
+    7.5,
+    49.6
+   ],
+   "size": [
+    1.8,
+    15.0,
+    56.0
+   ],
+   "color": "#6250d6",
+   "levels": 10
+  },
+  {
+   "id": "L1",
+   "type": "lift",
+   "label": "수직 리프트 L1 (입·출고 겸용)",
+   "center": [
+    21.8,
+    8.0,
+    20.4
+   ],
+   "size": [
+    2.4,
+    16.0,
+    2.4
+   ],
+   "color": "#6250d6"
+  },
+  {
+   "id": "L1-IN-1",
+   "type": "conveyor_slot",
+   "label": "L1 입고 버퍼 1",
+   "center": [
+    19.95,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "L1-IN-2",
+   "type": "conveyor_slot",
+   "label": "L1 입고 버퍼 2",
+   "center": [
+    18.65,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "L1-IN-3",
+   "type": "conveyor_slot",
+   "label": "L1 입고 버퍼 3",
+   "center": [
+    17.35,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "L1-IN-4",
+   "type": "conveyor_slot",
+   "label": "L1 입고 버퍼 4",
+   "center": [
+    16.05,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "L1-IN-5",
+   "type": "conveyor_slot",
+   "label": "L1 입고 버퍼 5",
+   "center": [
+    14.75,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "L1-OUT-1",
+   "type": "conveyor_slot",
+   "label": "L1 출고 버퍼 1",
+   "center": [
+    23.65,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "L1-OUT-2",
+   "type": "conveyor_slot",
+   "label": "L1 출고 버퍼 2",
+   "center": [
+    24.95,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "L1-OUT-3",
+   "type": "conveyor_slot",
+   "label": "L1 출고 버퍼 3",
+   "center": [
+    26.25,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "L1-OUT-4",
+   "type": "conveyor_slot",
+   "label": "L1 출고 버퍼 4",
+   "center": [
+    27.55,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "L1-OUT-5",
+   "type": "conveyor_slot",
+   "label": "L1 출고 버퍼 5",
+   "center": [
+    28.85,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "R2",
+   "type": "rail",
+   "label": "모셔틀 레일 R2 (층마다 모셔틀 1대)",
+   "center": [
+    60.0,
+    7.5,
+    49.6
+   ],
+   "size": [
+    1.8,
+    15.0,
+    56.0
+   ],
+   "color": "#6250d6",
+   "levels": 10
+  },
+  {
+   "id": "L2",
+   "type": "lift",
+   "label": "수직 리프트 L2 (입·출고 겸용)",
+   "center": [
+    60.0,
+    8.0,
+    20.4
+   ],
+   "size": [
+    2.4,
+    16.0,
+    2.4
+   ],
+   "color": "#6250d6"
+  },
+  {
+   "id": "L2-IN-1",
+   "type": "conveyor_slot",
+   "label": "L2 입고 버퍼 1",
+   "center": [
+    58.15,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "L2-IN-2",
+   "type": "conveyor_slot",
+   "label": "L2 입고 버퍼 2",
+   "center": [
+    56.85,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "L2-IN-3",
+   "type": "conveyor_slot",
+   "label": "L2 입고 버퍼 3",
+   "center": [
+    55.55,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "L2-IN-4",
+   "type": "conveyor_slot",
+   "label": "L2 입고 버퍼 4",
+   "center": [
+    54.25,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "L2-IN-5",
+   "type": "conveyor_slot",
+   "label": "L2 입고 버퍼 5",
+   "center": [
+    52.95,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "L2-OUT-1",
+   "type": "conveyor_slot",
+   "label": "L2 출고 버퍼 1",
+   "center": [
+    61.85,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "L2-OUT-2",
+   "type": "conveyor_slot",
+   "label": "L2 출고 버퍼 2",
+   "center": [
+    63.15,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "L2-OUT-3",
+   "type": "conveyor_slot",
+   "label": "L2 출고 버퍼 3",
+   "center": [
+    64.45,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "L2-OUT-4",
+   "type": "conveyor_slot",
+   "label": "L2 출고 버퍼 4",
+   "center": [
+    65.75,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "L2-OUT-5",
+   "type": "conveyor_slot",
+   "label": "L2 출고 버퍼 5",
+   "center": [
+    67.05,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "R3",
+   "type": "rail",
+   "label": "모셔틀 레일 R3 (층마다 모셔틀 1대)",
+   "center": [
+    98.2,
+    7.5,
+    49.6
+   ],
+   "size": [
+    1.8,
+    15.0,
+    56.0
+   ],
+   "color": "#6250d6",
+   "levels": 10
+  },
+  {
+   "id": "L3",
+   "type": "lift",
+   "label": "수직 리프트 L3 (입·출고 겸용)",
+   "center": [
+    98.2,
+    8.0,
+    20.4
+   ],
+   "size": [
+    2.4,
+    16.0,
+    2.4
+   ],
+   "color": "#6250d6"
+  },
+  {
+   "id": "L3-IN-1",
+   "type": "conveyor_slot",
+   "label": "L3 입고 버퍼 1",
+   "center": [
+    96.35,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "L3-IN-2",
+   "type": "conveyor_slot",
+   "label": "L3 입고 버퍼 2",
+   "center": [
+    95.05,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "L3-IN-3",
+   "type": "conveyor_slot",
+   "label": "L3 입고 버퍼 3",
+   "center": [
+    93.75,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "L3-IN-4",
+   "type": "conveyor_slot",
+   "label": "L3 입고 버퍼 4",
+   "center": [
+    92.45,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "L3-IN-5",
+   "type": "conveyor_slot",
+   "label": "L3 입고 버퍼 5",
+   "center": [
+    91.15,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#9fd9c2"
+  },
+  {
+   "id": "L3-OUT-1",
+   "type": "conveyor_slot",
+   "label": "L3 출고 버퍼 1",
+   "center": [
+    100.05,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "L3-OUT-2",
+   "type": "conveyor_slot",
+   "label": "L3 출고 버퍼 2",
+   "center": [
+    101.35,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "L3-OUT-3",
+   "type": "conveyor_slot",
+   "label": "L3 출고 버퍼 3",
+   "center": [
+    102.65,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "L3-OUT-4",
+   "type": "conveyor_slot",
+   "label": "L3 출고 버퍼 4",
+   "center": [
+    103.95,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "L3-OUT-5",
+   "type": "conveyor_slot",
+   "label": "L3 출고 버퍼 5",
+   "center": [
+    105.25,
+    0.3,
+    20.4
+   ],
+   "size": [
+    1.1,
+    0.6,
+    1.8
+   ],
+   "color": "#f6b79c"
+  },
+  {
+   "id": "band",
+   "type": "zone",
+   "label": "검수·지원 띠",
+   "center": [
+    60.0,
+    0.005,
+    26.5
+   ],
+   "size": [
+    120.0,
+    0.01,
+    9.8
+   ],
+   "color": "#f6f5f2"
+  },
+  {
+   "id": "fac_maintenance",
+   "type": "facility",
+   "label": "셔틀·리프트 정비",
+   "center": [
+    15.3,
+    1.25,
+    26.5
+   ],
+   "size": [
+    9.6,
+    2.5,
+    8.2
+   ],
+   "color": "#ffffff",
+   "area_m2": 78.72
+  },
+  {
+   "id": "QC-IN",
+   "type": "facility",
+   "label": "입고 검수·보류 (무게 불일치)",
+   "center": [
+    40.9,
+    1.25,
+    26.5
+   ],
+   "size": [
+    34.8,
+    2.5,
+    8.2
+   ],
+   "color": "#ffffff",
+   "area_m2": 285.36
+  },
+  {
+   "id": "QC-OUT",
+   "type": "facility",
+   "label": "포장·라벨링·출고 검수",
+   "center": [
+    79.1,
+    1.25,
+    26.5
+   ],
+   "size": [
+    34.8,
+    2.5,
+    8.2
+   ],
+   "color": "#ffffff",
+   "area_m2": 285.36
+  },
+  {
+   "id": "fac_spare_parts",
+   "type": "facility",
+   "label": "예비 셔틀·부품",
+   "center": [
+    104.7,
+    1.25,
+    26.5
+   ],
+   "size": [
+    9.6,
+    2.5,
+    8.2
+   ],
+   "color": "#ffffff",
+   "area_m2": 78.72
+  },
+  {
+   "id": "CHW1",
+   "type": "charger",
+   "label": "AMR 충전기 CHW1 (벽면)",
+   "center": [
+    0.3,
+    0.75,
+    23.6
+   ],
+   "size": [
+    0.6,
+    1.5,
+    2.0
+   ],
+   "color": "#eda100"
+  },
+  {
+   "id": "CHW1_park",
+   "type": "charger_park",
+   "label": "CHW1 충전 정차 칸",
+   "center": [
+    1.5,
+    0.005,
+    23.6
+   ],
+   "size": [
+    1.8,
+    0.01,
+    2.2
+   ],
+   "color": "#eda100"
+  },
+  {
+   "id": "CHW2",
+   "type": "charger",
+   "label": "AMR 충전기 CHW2 (벽면)",
+   "center": [
+    0.3,
+    0.75,
+    26.5
+   ],
+   "size": [
+    0.6,
+    1.5,
+    2.0
+   ],
+   "color": "#eda100"
+  },
+  {
+   "id": "CHW2_park",
+   "type": "charger_park",
+   "label": "CHW2 충전 정차 칸",
+   "center": [
+    1.5,
+    0.005,
+    26.5
+   ],
+   "size": [
+    1.8,
+    0.01,
+    2.2
+   ],
+   "color": "#eda100"
+  },
+  {
+   "id": "CHW3",
+   "type": "charger",
+   "label": "AMR 충전기 CHW3 (벽면)",
+   "center": [
+    0.3,
+    0.75,
+    29.4
+   ],
+   "size": [
+    0.6,
+    1.5,
+    2.0
+   ],
+   "color": "#eda100"
+  },
+  {
+   "id": "CHW3_park",
+   "type": "charger_park",
+   "label": "CHW3 충전 정차 칸",
+   "center": [
+    1.5,
+    0.005,
+    29.4
+   ],
+   "size": [
+    1.8,
+    0.01,
+    2.2
+   ],
+   "color": "#eda100"
+  },
+  {
+   "id": "CHE1",
+   "type": "charger",
+   "label": "AMR 충전기 CHE1 (벽면)",
+   "center": [
+    119.7,
+    0.75,
+    23.6
+   ],
+   "size": [
+    0.6,
+    1.5,
+    2.0
+   ],
+   "color": "#eda100"
+  },
+  {
+   "id": "CHE1_park",
+   "type": "charger_park",
+   "label": "CHE1 충전 정차 칸",
+   "center": [
+    118.5,
+    0.005,
+    23.6
+   ],
+   "size": [
+    1.8,
+    0.01,
+    2.2
+   ],
+   "color": "#eda100"
+  },
+  {
+   "id": "CHE2",
+   "type": "charger",
+   "label": "AMR 충전기 CHE2 (벽면)",
+   "center": [
+    119.7,
+    0.75,
+    26.5
+   ],
+   "size": [
+    0.6,
+    1.5,
+    2.0
+   ],
+   "color": "#eda100"
+  },
+  {
+   "id": "CHE2_park",
+   "type": "charger_park",
+   "label": "CHE2 충전 정차 칸",
+   "center": [
+    118.5,
+    0.005,
+    26.5
+   ],
+   "size": [
+    1.8,
+    0.01,
+    2.2
+   ],
+   "color": "#eda100"
+  },
+  {
+   "id": "CHE3",
+   "type": "charger",
+   "label": "AMR 충전기 CHE3 (벽면)",
+   "center": [
+    119.7,
+    0.75,
+    29.4
+   ],
+   "size": [
+    0.6,
+    1.5,
+    2.0
+   ],
+   "color": "#eda100"
+  },
+  {
+   "id": "CHE3_park",
+   "type": "charger_park",
+   "label": "CHE3 충전 정차 칸",
+   "center": [
+    118.5,
+    0.005,
+    29.4
+   ],
+   "size": [
+    1.8,
+    0.01,
+    2.2
+   ],
+   "color": "#eda100"
+  },
+  {
+   "id": "amr_wait_W",
+   "type": "amr_wait",
+   "label": "AMR 대기 (서쪽)",
+   "center": [
+    6.05,
+    0.005,
+    26.5
+   ],
+   "size": [
+    7.3,
+    0.01,
+    8.2
+   ],
+   "color": "#fff7e0"
+  },
+  {
+   "id": "amr_wait_E",
+   "type": "amr_wait",
+   "label": "AMR 대기 (동쪽)",
+   "center": [
+    113.95,
+    0.005,
+    26.5
+   ],
+   "size": [
+    7.3,
+    0.01,
+    8.2
+   ],
+   "color": "#fff7e0"
+  },
+  {
+   "id": "WAIT1",
+   "type": "amr_wait_spot",
+   "label": "AMR 쉬는 자리 WAIT1",
+   "center": [
+    33.0,
+    0.005,
+    19.8
+   ],
+   "size": [
+    1.2,
+    0.01,
+    1.2
+   ],
+   "color": "#eda100"
+  },
+  {
+   "id": "WAIT2",
+   "type": "amr_wait_spot",
+   "label": "AMR 쉬는 자리 WAIT2",
+   "center": [
+    36.6,
+    0.005,
+    19.8
+   ],
+   "size": [
+    1.2,
+    0.01,
+    1.2
+   ],
+   "color": "#eda100"
+  },
+  {
+   "id": "WAIT3",
+   "type": "amr_wait_spot",
+   "label": "AMR 쉬는 자리 WAIT3",
+   "center": [
+    84.6,
+    0.005,
+    19.8
+   ],
+   "size": [
+    1.2,
+    0.01,
+    1.2
+   ],
+   "color": "#eda100"
+  },
+  {
+   "id": "WAIT4",
+   "type": "amr_wait_spot",
+   "label": "AMR 쉬는 자리 WAIT4",
+   "center": [
+    87.0,
+    0.005,
+    19.8
+   ],
+   "size": [
+    1.2,
+    0.01,
+    1.2
+   ],
+   "color": "#eda100"
+  },
+  {
+   "id": "rack_R1W",
+   "type": "rack_block",
+   "label": "랙 블록 R1W (33줄 x 깊이 14 x 10층)",
+   "center": [
+    11.8,
+    7.5,
+    54.5
+   ],
+   "size": [
+    18.2,
+    15.0,
+    46.2
+   ],
+   "color": "#2a78d6",
+   "rows": 33,
+   "depth": 14,
+   "levels": 10
+  },
+  {
+   "id": "rack_R1E",
+   "type": "rack_block",
+   "label": "랙 블록 R1E (33줄 x 깊이 14 x 10층)",
+   "center": [
+    31.8,
+    7.5,
+    54.5
+   ],
+   "size": [
+    18.2,
+    15.0,
+    46.2
+   ],
+   "color": "#2a78d6",
+   "rows": 33,
+   "depth": 14,
+   "levels": 10
+  },
+  {
+   "id": "rack_R2W",
+   "type": "rack_block",
+   "label": "랙 블록 R2W (33줄 x 깊이 14 x 10층)",
+   "center": [
+    50.0,
+    7.5,
+    54.5
+   ],
+   "size": [
+    18.2,
+    15.0,
+    46.2
+   ],
+   "color": "#2a78d6",
+   "rows": 33,
+   "depth": 14,
+   "levels": 10
+  },
+  {
+   "id": "rack_R2E",
+   "type": "rack_block",
+   "label": "랙 블록 R2E (33줄 x 깊이 14 x 10층)",
+   "center": [
+    70.0,
+    7.5,
+    54.5
+   ],
+   "size": [
+    18.2,
+    15.0,
+    46.2
+   ],
+   "color": "#2a78d6",
+   "rows": 33,
+   "depth": 14,
+   "levels": 10
+  },
+  {
+   "id": "rack_R3W",
+   "type": "rack_block",
+   "label": "랙 블록 R3W (33줄 x 깊이 14 x 10층)",
+   "center": [
+    88.2,
+    7.5,
+    54.5
+   ],
+   "size": [
+    18.2,
+    15.0,
+    46.2
+   ],
+   "color": "#2a78d6",
+   "rows": 33,
+   "depth": 14,
+   "levels": 10
+  },
+  {
+   "id": "rack_R3E",
+   "type": "rack_block",
+   "label": "랙 블록 R3E (33줄 x 깊이 14 x 10층)",
+   "center": [
+    108.2,
+    7.5,
+    54.5
+   ],
+   "size": [
+    18.2,
+    15.0,
+    46.2
+   ],
+   "color": "#2a78d6",
+   "rows": 33,
+   "depth": 14,
+   "levels": 10
+  }
+ ]
+}

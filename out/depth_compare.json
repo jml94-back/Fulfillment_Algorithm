@@ -1,0 +1,46 @@
+{
+ "3레일·깊이10·40줄": {
+  "rails": 3,
+  "depth": 10,
+  "rows": 40,
+  "positions": 24000,
+  "lanes": 2400,
+  "width": 83.4,
+  "free_m2": 2194,
+  "thr4": 185,
+  "thr40": 637
+ },
+ "3레일·깊이12·34줄": {
+  "rails": 3,
+  "depth": 12,
+  "rows": 34,
+  "positions": 24480,
+  "lanes": 2040,
+  "width": 99.0,
+  "free_m2": 2152,
+  "thr4": 187,
+  "thr40": 637
+ },
+ "2레일·깊이15·40줄": {
+  "rails": 2,
+  "depth": 15,
+  "rows": 40,
+  "positions": 24000,
+  "lanes": 1600,
+  "width": 81.6,
+  "free_m2": 2294,
+  "thr4": 179,
+  "thr40": 427
+ },
+ "2레일·깊이16·38줄": {
+  "rails": 2,
+  "depth": 16,
+  "rows": 38,
+  "positions": 24320,
+  "lanes": 1520,
+  "width": 86.8,
+  "free_m2": 2246,
+  "thr4": 188,
+  "thr40": 450
+ }
+}

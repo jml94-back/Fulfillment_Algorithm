@@ -1,0 +1,74 @@
+{
+ "rails": [
+  {
+   "west_block": [
+    18.3,
+    31.3
+   ],
+   "rail": [
+    31.3,
+    33.1
+   ],
+   "east_block": [
+    33.1,
+    46.1
+   ]
+  },
+  {
+   "west_block": [
+    46.1,
+    59.1
+   ],
+   "rail": [
+    59.1,
+    60.9
+   ],
+   "east_block": [
+    60.9,
+    73.9
+   ]
+  },
+  {
+   "west_block": [
+    73.9,
+    86.9
+   ],
+   "rail": [
+    86.9,
+    88.7
+   ],
+   "east_block": [
+    88.7,
+    101.7
+   ]
+  }
+ ],
+ "lanes_per_side": 38,
+ "lane_depth": 10,
+ "levels": 10,
+ "rack_h": 15.0,
+ "building_h": 25.0,
+ "lanes_total": 2280,
+ "pallet_positions": 22800,
+ "store_x": [
+  18.0,
+  102.0
+ ],
+ "lane_y": [
+  9.0,
+  62.2
+ ],
+ "dock_y": [
+  24.3,
+  30.3,
+  36.3,
+  42.3,
+  48.3,
+  54.3
+ ],
+ "shuttle_sets": 30,
+ "lifts": 6,
+ "split": true,
+ "lift_buffer_each_side": 5,
+ "dock_staging_per_dock": 28
+}
