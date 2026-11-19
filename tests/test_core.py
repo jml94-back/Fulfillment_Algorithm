@@ -2,9 +2,9 @@ import random
 
 import pytest
 
-from warehouse import (ClassBasedSlotting, DistanceOracle, EmergencyEvent, FleetConfig, FleetSimulator,
+from warehouse import (ClassBasedSlotting, DistanceOracle, FleetConfig, FleetSimulator,
                        NearestSlotting, RandomSlotting, ROUTERS, SimConfig, Simulator, WarehouseLayout,
-                       astar, classify_abc, zone_for)
+                       astar, classify_abc)
 from warehouse.env import SlottingEnv
 from warehouse.inventory import Inventory, Pallet
 from warehouse.routing import tour_length
@@ -88,20 +88,6 @@ def test_fleet_no_collisions(L):
     assert len(f.logs) == len(r.recorded)
     naive = FleetSimulator(L, FleetConfig(n_amr=4, order_interval=10, avoidance=False), sim.oracle).run(r.recorded)
     assert naive.collisions > 0
-
-
-def test_emergency_zone_avoided(L):
-    sim = Simulator(L, SimConfig(n_skus=12, n_orders=200, record_trips=10**6))
-    r = sim.run(NearestSlotting(L, sim.oracle))
-    z = zone_for("leak", (L.dock[0] + 1, 3), L)
-    f = FleetSimulator(L, FleetConfig(n_amr=4, order_interval=10), sim.oracle).run(
-        r.recorded, [EmergencyEvent(60, z.cells, kind="leak")])
-    assert f.collisions == 0
-    # 구역 발생 후, 구역 안에 있다가 빠져나오는 경우를 제외하면 진입 없음
-    for tr in f.tracks:
-        for t in range(61, len(tr)):
-            if tr[t] in z.cells:
-                assert tr[t - 1] in z.cells, "entered a blocked zone"
 
 
 def test_env_roundtrip(L):

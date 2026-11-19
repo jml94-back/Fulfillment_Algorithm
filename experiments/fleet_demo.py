@@ -14,7 +14,8 @@ import sys
 from pathlib import Path
 
 from warehouse import (ClassBasedSlotting, EmergencyEvent, FleetConfig, FleetSimulator, SimConfig, Simulator,
-                       WarehouseLayout, viz, zone_for)
+                       WarehouseLayout, viz)
+from emergency import zone_for  # 비상 대응은 보류 중 (emergency/README.md)
 
 OUT = Path(sys.argv[1] if len(sys.argv) > 1 else "out")
 INTERVAL = 24.0          # 주문 간격(tick) = 28.8초
@@ -83,7 +84,7 @@ def main() -> None:
     summary["emergency"] = {"events": f.events_log, "collisions": f.collisions,
                             "skipped_stops": len(f.skipped_stops), "zone_ticks": entered,
                             "zones": [z1.to_dict(), z2.to_dict()]}
-    viz.animate_fleet(L, f.tracks, str(OUT / "fleet_emergency.gif"), t0=100, t1=420,
+    viz.animate_fleet(L, f.tracks, str(Path("emergency/out") / "fleet_emergency.gif"), t0=100, t1=420,
                       zones=[(z1.cells, t1, "랙 기울어짐"), (z2.cells, t2, "화재")])
     viz.animate_fleet(L, on.tracks, str(OUT / "fleet_4amr.gif"), t0=200, t1=440)
 

@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .layout import Cell, Slot, WarehouseLayout
+from warehouse.layout import Cell, Slot, WarehouseLayout
 
 # kind: (반경(체비쇼프 거리, 칸), 설명)
 RULES: dict[str, tuple[int, str]] = {
